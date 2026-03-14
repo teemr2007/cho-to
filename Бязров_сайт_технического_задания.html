@@ -3137,55 +3137,143 @@
         </div>
     
 
-        <!-- СТРАНИЦА 9: БИБЛИОТЕКА -->
-        <div id="page9" class="page-container">
-            <h1>Библиотека</h1>
-            <div class="search-box">
-                <input type="text" id="librarySearch" placeholder="Поиск книг...">
-            </div>
-            <div class="book-grid" id="bookGrid">
-                <div class="book-card" data-title="Ересь Хоруса: Рождение Предательства">
-                    <div class="book-cover"><i class="fas fa-book"></i></div>
-                    <div class="book-title">Ересь Хоруса: Рождение Предательства</div>
-                    <div class="book-author">Дэн Абнетт</div>
-                </div>
-                <div class="book-card" data-title="Возвышение Хоруса">
-                    <div class="book-cover"><i class="fas fa-book"></i></div>
-                    <div class="book-title">Возвышение Хоруса</div>
-                    <div class="book-author">Дэн Абнетт</div>
-                </div>
-                <div class="book-card" data-title="Лживые боги">
-                    <div class="book-cover"><i class="fas fa-book"></i></div>
-                    <div class="book-title">Лживые боги</div>
-                    <div class="book-author">Грэм Макнилл</div>
-                </div>
-                <div class="book-card" data-title="Галактика в огне">
-                    <div class="book-cover"><i class="fas fa-book"></i></div>
-                    <div class="book-title">Галактика в огне</div>
-                    <div class="book-author">Бен Каунтер</div>
-                </div>
-                <div class="book-card" data-title="Полёт Эйзенштейна">
-                    <div class="book-cover"><i class="fas fa-book"></i></div>
-                    <div class="book-title">Полёт Эйзенштейна</div>
-                    <div class="book-author">Джеймс Сваллоу</div>
-                </div>
-                <div class="book-card" data-title="Фулгрим">
-                    <div class="book-cover"><i class="fas fa-book"></i></div>
-                    <div class="book-title">Фулгрим</div>
-                    <div class="book-author">Грэм Макнилл</div>
-                </div>
-                <div class="book-card" data-title="Забытая империя">
-                    <div class="book-cover"><i class="fas fa-book"></i></div>
-                    <div class="book-title">Забытая империя</div>
-                    <div class="book-author">Дэн Абнетт</div>
-                </div>
-                <div class="book-card" data-title="Тёмный Империум">
-                    <div class="book-cover"><i class="fas fa-book"></i></div>
-                    <div class="book-title">Тёмный Империум</div>
-                    <div class="book-author">Гай Хейли</div>
-                </div>
-            </div>
-        </div>
+       <!-- СТРАНИЦА 9: БИБЛИОТЕКА (обновлена) -->
+<div id="page9" class="page-container">
+    <h1>Библиотека</h1>
+    <div class="search-box">
+        <input type="text" id="librarySearch" placeholder="Поиск книг...">
+    </div>
+    <div class="book-grid" id="bookGrid">
+        <!-- Книги будут загружены через JavaScript -->
+    </div>
+</div>
+
+<style>
+    .book-cover {
+        width: 100%;
+        height: 250px;
+        background: #2C2F2E;
+        border-radius: 8px;
+        margin-bottom: 15px;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .book-cover img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.3s ease;
+    }
+    .book-card:hover .book-cover img {
+        transform: scale(1.05);
+    }
+    .book-link {
+        display: inline-block;
+        margin-top: 10px;
+        padding: 8px 16px;
+        background: linear-gradient(135deg, #D4AF37, #9A7D0C);
+        color: #0A0C0B;
+        border-radius: 4px;
+        text-decoration: none;
+        font-size: 0.9rem;
+        transition: 0.3s;
+    }
+    .book-link:hover {
+        background: linear-gradient(135deg, #9A7D0C, #5D3A1A);
+        color: #fff;
+    }
+</style>
+
+<script>
+    (function() {
+        // Массив книг с реальными обложками и ссылками
+        const books = [
+            {
+                title: "Возвышение Хоруса",
+                author: "Дэн Абнетт",
+                isbn: "9781844165357",
+                coverUrl: "https://covers.openlibrary.org/b/isbn/9781844165357-L.jpg",
+                shopUrl: "https://www.google.com/search?q=Возвышение+Хоруса+электронная+книга"
+            },
+            {
+                title: "Лживые боги",
+                author: "Грэм Макнилл",
+                isbn: "9781844165364",
+                coverUrl: "https://covers.openlibrary.org/b/isbn/9781844165364-L.jpg",
+                shopUrl: "https://www.google.com/search?q=Лживые+боги+электронная+книга"
+            },
+            {
+                title: "Галактика в огне",
+                author: "Бен Каунтер",
+                isbn: "9781844165371",
+                coverUrl: "https://covers.openlibrary.org/b/isbn/9781844165371-L.jpg",
+                shopUrl: "https://www.google.com/search?q=Галактика+в+огне+электронная+книга"
+            },
+            {
+                title: "Полёт Эйзенштейна",
+                author: "Джеймс Сваллоу",
+                isbn: "9781844165388",
+                coverUrl: "https://covers.openlibrary.org/b/isbn/9781844165388-L.jpg",
+                shopUrl: "https://www.google.com/search?q=Полёт+Эйзенштейна+электронная+книга"
+            },
+            {
+                title: "Фулгрим",
+                author: "Грэм Макнилл",
+                isbn: "9781844165395",
+                coverUrl: "https://covers.openlibrary.org/b/isbn/9781844165395-L.jpg",
+                shopUrl: "https://www.google.com/search?q=Фулгрим+электронная+книга"
+            },
+            {
+                title: "Забытая империя",
+                author: "Дэн Абнетт",
+                isbn: "9781849707446",
+                coverUrl: "https://covers.openlibrary.org/b/isbn/9781849707446-L.jpg",
+                shopUrl: "https://www.google.com/search?q=Забытая+империя+электронная+книга"
+            },
+            {
+                title: "Тёмный Империум",
+                author: "Гай Хейли",
+                isbn: "9781784964751",
+                coverUrl: "https://covers.openlibrary.org/b/isbn/9781784964751-L.jpg",
+                shopUrl: "https://www.google.com/search?q=Тёмный+Империум+электронная+книга"
+            },
+            {
+                title: "Предательство",
+                author: "Аарон Дембски-Боуден",
+                isbn: "9781849704438",
+                coverUrl: "https://covers.openlibrary.org/b/isbn/9781849704438-L.jpg",
+                shopUrl: "https://www.google.com/search?q=Предательство+warhammer+электронная+книга"
+            }
+        ];
+
+        const bookGrid = document.getElementById('bookGrid');
+        if (bookGrid) {
+            function renderBooks(filteredBooks) {
+                bookGrid.innerHTML = filteredBooks.map(book => `
+                    <div class="book-card" data-title="${book.title.toLowerCase()}">
+                        <div class="book-cover">
+                            <img src="${book.coverUrl}" alt="${book.title}" loading="lazy" onerror="this.onerror=null; this.src='https://via.placeholder.com/200x300/2C2F2E/D4AF37?text=No+Cover'">
+                        </div>
+                        <div class="book-title">${book.title}</div>
+                        <div class="book-author">${book.author}</div>
+                        <a href="${book.shopUrl}" target="_blank" rel="noopener" class="book-link">Читать</a>
+                    </div>
+                `).join('');
+            }
+            renderBooks(books);
+
+            // Поиск по библиотеке
+            const searchInput = document.getElementById('librarySearch');
+            searchInput.addEventListener('input', function() {
+                const query = this.value.toLowerCase();
+                const filtered = books.filter(book => book.title.toLowerCase().includes(query));
+                renderBooks(filtered);
+            });
+        }
+    })();
+</script>
 
         <!-- СТРАНИЦА 10: ГАЛЕРЕЯ -->
         <div id="page10" class="page-container">
