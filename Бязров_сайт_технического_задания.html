@@ -462,85 +462,310 @@
         .fi5 { bottom: 20%; left: 35%; }
         .fi6 { bottom: 20%; left: 65%; }
 
-        /* ========== ТАЙМЛАЙН ========== */
-        .timeline-modern {
+        /* ========== УЛУЧШЕННЫЙ ТАЙМЛАЙН (горизонтальный) ========== */
+        .timeline-wrapper {
             position: relative;
-            padding: 60px 0;
             margin: 60px 0;
+            padding: 20px 0;
+            overflow-x: auto;
+            overflow-y: hidden;
+            white-space: nowrap;
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
         }
 
-        .timeline-modern::before {
-            content: '';
-            position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 2px;
-            height: 100%;
-            background: linear-gradient(180deg, transparent, #D4AF37, #8B0000, transparent);
+        .timeline-horizontal {
+            display: inline-flex;
+            gap: 30px;
+            padding: 0 20px;
         }
 
-        .timeline-item-modern {
+        .timeline-event {
             position: relative;
-            margin-bottom: 60px;
-            width: 50%;
-            padding: 0 40px;
+            width: 280px;
+            background: rgba(20, 25, 30, 0.9);
+            border: 2px solid #D4AF37;
+            border-radius: 16px;
+            padding: 20px;
+            backdrop-filter: blur(5px);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            display: inline-block;
+            white-space: normal;
+            vertical-align: top;
         }
 
-        .timeline-item-modern:nth-child(odd) {
+        .timeline-event:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 30px #D4AF37;
+            border-color: #8B0000;
+        }
+
+        .timeline-event .event-date {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #9A7D0C;
+            margin-bottom: 10px;
+        }
+
+        .timeline-event .event-title {
+            font-size: 1.4rem;
+            color: #D4AF37;
+            margin-bottom: 10px;
+        }
+
+        .timeline-event .event-desc {
+            font-size: 0.9rem;
+            color: #a0a8b0;
+        }
+
+        .timeline-filter {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 8px 16px;
+            background: rgba(20, 25, 30, 0.7);
+            border: 1px solid #D4AF37;
+            border-radius: 30px;
+            color: #D4AF37;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .filter-btn.active, .filter-btn:hover {
+            background: #D4AF37;
+            color: #0A0C0B;
+        }
+
+        /* ========== ГАЛЕРЕЯ ========== */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 40px 0;
+        }
+
+        .gallery-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 12px;
+            border: 2px solid rgba(212, 175, 55, 0.3);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            aspect-ratio: 4/3;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .gallery-item:hover {
+            border-color: #D4AF37;
+            transform: scale(1.02);
+            box-shadow: 0 0 30px rgba(212, 175, 55, 0.3);
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.1);
+        }
+
+        .gallery-caption {
+            position: absolute;
+            bottom: 0;
             left: 0;
+            right: 0;
+            background: rgba(0,0,0,0.7);
+            padding: 10px;
+            font-size: 0.9rem;
+            color: #D4AF37;
+            text-align: center;
+            transform: translateY(100%);
+            transition: transform 0.3s ease;
         }
 
-        .timeline-item-modern:nth-child(even) {
-            left: 50%;
+        .gallery-item:hover .gallery-caption {
+            transform: translateY(0);
         }
 
-        .timeline-content-modern {
+        /* Лайтбокс */
+        .lightbox {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.9);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .lightbox.active {
+            display: flex;
+        }
+
+        .lightbox img {
+            max-width: 90%;
+            max-height: 90%;
+            border: 3px solid #D4AF37;
+            border-radius: 8px;
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            font-size: 2rem;
+            color: #D4AF37;
+            cursor: pointer;
+        }
+
+        /* ========== БИБЛИОТЕКА ========== */
+        .book-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            margin: 40px 0;
+        }
+
+        .book-card {
             background: rgba(20, 25, 30, 0.8);
             border: 1px solid rgba(212, 175, 55, 0.2);
-            padding: 30px;
-            border-radius: 16px;
-            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
             transition: all 0.3s ease;
-            position: relative;
         }
 
-        .timeline-content-modern:hover {
-            transform: scale(1.02);
+        .book-card:hover {
+            transform: translateY(-10px);
+            border-color: #D4AF37;
             box-shadow: 0 10px 30px rgba(212, 175, 55, 0.2);
-            border-color: rgba(212, 175, 55, 0.4);
         }
 
-        .timeline-content-modern::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            width: 20px;
-            height: 20px;
-            background: #D4AF37;
-            border: 3px solid #8B0000;
-            border-radius: 50%;
-            transform: translateY(-50%);
-            box-shadow: 0 0 20px #D4AF37;
-        }
-
-        .timeline-item-modern:nth-child(odd) .timeline-content-modern::before {
-            right: -50px;
-        }
-
-        .timeline-item-modern:nth-child(even) .timeline-content-modern::before {
-            left: -50px;
-        }
-
-        .timeline-date-modern {
-            display: inline-block;
-            padding: 5px 15px;
-            background: rgba(139, 0, 0, 0.2);
-            border: 1px solid #8B0000;
-            border-radius: 20px;
-            color: #D4AF37;
-            font-size: 0.9rem;
-            font-weight: 600;
+        .book-cover {
+            width: 100%;
+            height: 250px;
+            background: #2C2F2E;
+            border-radius: 8px;
             margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: #D4AF37;
+        }
+
+        .book-title {
+            font-size: 1.2rem;
+            color: #D4AF37;
+            margin-bottom: 5px;
+        }
+
+        .book-author {
+            font-size: 0.9rem;
+            color: #a0a8b0;
+            margin-bottom: 10px;
+        }
+
+        .search-box {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+
+        .search-box input {
+            flex: 1;
+            padding: 12px 20px;
+            background: rgba(20, 25, 30, 0.8);
+            border: 1px solid #D4AF37;
+            border-radius: 30px;
+            color: #fff;
+            font-size: 1rem;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: #8B0000;
+            box-shadow: 0 0 10px #8B0000;
+        }
+
+        /* ========== ХЛЕБНЫЕ КРОШКИ ========== */
+        .breadcrumbs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 30px;
+            font-size: 0.9rem;
+            color: #a0a8b0;
+        }
+
+        .breadcrumbs a {
+            color: #D4AF37;
+        }
+
+        .breadcrumbs span {
+            color: #a0a8b0;
+        }
+
+        /* ========== СОДЕРЖАНИЕ СТАТЬИ (ОГЛАВЛЕНИЕ) ========== */
+        .article-container {
+            display: grid;
+            grid-template-columns: 1fr 300px;
+            gap: 40px;
+        }
+
+        .article-toc {
+            position: sticky;
+            top: 120px;
+            background: rgba(20, 25, 30, 0.8);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            border-radius: 16px;
+            padding: 20px;
+            backdrop-filter: blur(10px);
+            height: fit-content;
+        }
+
+        .article-toc h4 {
+            color: #D4AF37;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #5D3A1A;
+            padding-bottom: 10px;
+        }
+
+        .article-toc ul {
+            list-style: none;
+        }
+
+        .article-toc li {
+            margin-bottom: 10px;
+        }
+
+        .article-toc a {
+            color: #a0a8b0;
+            transition: color 0.3s;
+        }
+
+        .article-toc a:hover {
+            color: #D4AF37;
+        }
+
+        @media (max-width: 992px) {
+            .article-container {
+                grid-template-columns: 1fr;
+            }
+            .article-toc {
+                position: static;
+                margin-bottom: 30px;
+            }
         }
 
         /* ========== СТРАНИЦЫ ФРАКЦИЙ ========== */
@@ -634,6 +859,19 @@
             background: #152b40;
             outline: 4px solid currentColor;
             color: white;
+        }
+
+        /* ========== КОММЕНТАРИИ ========== */
+        .comments-section {
+            margin-top: 60px;
+            padding: 30px;
+            background: rgba(20, 25, 30, 0.8);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            border-radius: 24px;
+        }
+
+        .comments-section h3 {
+            margin-bottom: 20px;
         }
 
         /* ========== КАРТА ГАЛАКТИКИ ========== */
@@ -946,52 +1184,33 @@
 
         /* ========== АДАПТИВНОСТЬ ========== */
         @media (max-width: 992px) {
-            .timeline-modern::before { left: 30px; }
-            
-            .timeline-item-modern {
-                width: 100%;
-                left: 0 !important;
-                padding-left: 80px;
-                padding-right: 20px;
-            }
-            
-            .timeline-item-modern:nth-child(odd) .timeline-content-modern::before,
-            .timeline-item-modern:nth-child(even) .timeline-content-modern::before {
-                left: -40px;
-                right: auto;
-            }
-            
             .faction-wheel-modern { height: 350px; }
             .fi1, .fi2, .fi3, .fi4, .fi5, .fi6 { transform: scale(0.9); }
-            
             .galaxy-map { height: 500px; }
             .world-marker { width: 20px; height: 20px; }
         }
 
         @media (max-width: 768px) {
             .container { padding: 0 20px; }
-            
             .faction-wheel-modern { height: 300px; }
-            
             .faction-icon-modern {
                 width: 50px;
                 height: 50px;
             }
-            
             .faction-icon-modern i { font-size: 1.5rem; }
-            
             .center-faction-modern {
                 width: 140px;
                 height: 140px;
             }
-            
             .header-content {
                 flex-direction: column;
                 text-align: center;
             }
-            
             .main-menu {
                 justify-content: center;
+            }
+            .timeline-wrapper {
+                padding: 20px 0;
             }
         }
     </style>
@@ -1019,6 +1238,8 @@
                 <div class="menu-tab" data-page="page6">Тираниды</div>
                 <div class="menu-tab" data-page="page7">Тау</div>
                 <div class="menu-tab" data-page="page8">Воттан</div>
+                <div class="menu-tab" data-page="page9">Библиотека</div>
+                <div class="menu-tab" data-page="page10">Галерея</div>
             </div>
         </div>
     </header>
@@ -1102,37 +1323,48 @@
                 </div>
             </div>
 
-            <!-- Таймлайн -->
+            <!-- Улучшенный таймлайн -->
             <div id="timeline">
                 <h2>Хроники Эпох</h2>
-                <div class="timeline-modern">
-                    <div class="timeline-item-modern">
-                        <div class="timeline-content-modern">
-                            <span class="timeline-date-modern">М30 - 005.М31</span>
-                            <h3>Рождение Империума</h3>
-                            <p>Объединение Терры под властью Императора, создание Легионов Космодесанта.</p>
+                <div class="timeline-filter">
+                    <button class="filter-btn active" data-filter="all">Все</button>
+                    <button class="filter-btn" data-filter="imperium">Империум</button>
+                    <button class="filter-btn" data-filter="chaos">Хаос</button>
+                    <button class="filter-btn" data-filter="eldar">Эльдары</button>
+                    <button class="filter-btn" data-filter="ork">Орки</button>
+                    <button class="filter-btn" data-filter="necron">Некроны</button>
+                </div>
+                <div class="timeline-wrapper">
+                    <div class="timeline-horizontal">
+                        <div class="timeline-event" data-faction="imperium">
+                            <div class="event-date">М30 - 005.М31</div>
+                            <div class="event-title">Рождение Империума</div>
+                            <div class="event-desc">Объединение Терры под властью Императора, создание Легионов Космодесанта.</div>
                         </div>
-                    </div>
-                    <div class="timeline-item-modern">
-                        <div class="timeline-content-modern">
-                            <span class="timeline-date-modern">005.М31 - 014.М31</span>
-                            <h3>Ересь Хоруса</h3>
-                            <p>Великое предательство, расколовшее Империум. Осада Терры.</p>
-                            <a href="#" class="btn-outline" style="margin-top: 15px;" onclick="switchToPage('page1'); return false;">Читать подробнее</a>
+                        <div class="timeline-event" data-faction="chaos">
+                            <div class="event-date">005.М31 - 014.М31</div>
+                            <div class="event-title">Ересь Хоруса</div>
+                            <div class="event-desc">Великое предательство, расколовшее Империум. Осада Терры.</div>
                         </div>
-                    </div>
-                    <div class="timeline-item-modern">
-                        <div class="timeline-content-modern">
-                            <span class="timeline-date-modern">М32 - М41</span>
-                            <h3>Эпоха Индомитус</h3>
-                            <p>Возвращение Робаута Жиллимана, Крестовый поход Индомитус.</p>
+                        <div class="timeline-event" data-faction="imperium">
+                            <div class="event-date">М32 - М41</div>
+                            <div class="event-title">Эпоха Индомитус</div>
+                            <div class="event-desc">Возвращение Робаута Жиллимана, Крестовый поход Индомитус.</div>
                         </div>
-                    </div>
-                    <div class="timeline-item-modern">
-                        <div class="timeline-content-modern">
-                            <span class="timeline-date-modern">999.М41</span>
-                            <h3>Падение Кадии</h3>
-                            <p>Прорыв Великого Ока, начало 13-го Черного Крестового похода.</p>
+                        <div class="timeline-event" data-faction="chaos">
+                            <div class="event-date">999.М41</div>
+                            <div class="event-title">Падение Кадии</div>
+                            <div class="event-desc">Прорыв Великого Ока, начало 13-го Черного Крестового похода.</div>
+                        </div>
+                        <div class="timeline-event" data-faction="eldar">
+                            <div class="event-date">~М29</div>
+                            <div class="event-title">Падение Эльдар</div>
+                            <div class="event-desc">Рождение Слаанеш, гибель империи Эльдар.</div>
+                        </div>
+                        <div class="timeline-event" data-faction="ork">
+                            <div class="event-date">~М32</div>
+                            <div class="event-title">Война Зверя</div>
+                            <div class="event-desc">Орки под предводительством Зверя едва не захватывают Терру.</div>
                         </div>
                     </div>
                 </div>
@@ -1322,82 +1554,118 @@
             </div>
         </div>
 
-         <!-- СТРАНИЦА 1: ИМПЕРИУМ (полный текст) -->
+        <!-- СТРАНИЦА 1: ИМПЕРИУМ (полный текст) -->
         <div id="page1" class="page-container">
-            <div class="local-navigation">
-                <a href="#imp1">ЗАРОЖДЕНИЕ И ПАДЕНИЕ</a>
-                <a href="#imp2">ВЕЛИКИЙ КРЕСТОВЫЙ ПОХОД</a>
-                <a href="#imp3">ЕРЕСЬ ХОРУСА</a>
-                <a href="#imp4">ПОСЛЕ ЕРЕСИ</a>
-                <a href="#imp5">41-е ТЫСЯЧЕЛЕТИЕ</a>
-                <a href="#imp6">ЭРА РАЗРУШЕНИЯ</a>
+            <div class="breadcrumbs">
+                <a href="#" onclick="switchToPage('home'); return false;">Главная</a> <span>></span> <a href="#" onclick="switchToPage('page1'); return false;">Фракции</a> <span>></span> <span>Империум</span>
             </div>
-            
-            <section id="imp1" class="scroll-card">
-                <div class="card-header"><h2>ЗАРОЖДЕНИЕ И ПАДЕНИЕ</h2></div>
-                <div class="editable-text" contenteditable="false">
-                    <p><strong>История Империума Человечества в Warhammer 40,000</strong> — это сага, охватывающая более десяти тысяч лет, от технологического расцвета человечества до его фанатичного выживания в мрачной и жестокой галактике. Это повествование о величии и гордыне, предательстве и вере, постоянной войне и надежде, теплящейся в виде мумифицированного тела бессмертного Императора.</p>
-                    <p>Далеко в прошлом, в начале третьего тысячелетия, человечество сделало первые шаги за пределы Солнечной системы. К 15-му тысячелетию люди расселились по многим мирам, но путешествия на субсветовых скоростях делали колонии изолированными. Ситуация кардинально изменилась с открытием варпа — параллельного измерения, состоящего из чистой психической энергии. Это позволило создавать варп-двигатели для сверхсветовых путешествий, хотя и крайне опасных.</p>
-                    <p>Наступил <strong>Тёмный век технологий (Dark Age of Technology)</strong> — золотая эра человечества. Благодаря гено-навигаторам, способным вести корабли в варпе, связи с колониями были восстановлены, и человеческая экспансия охватила всю галактику. Вершиной технологического могущества стала система <strong>Стандартных Шаблонных Конструкций (STC)</strong> — своеобразные компьютеры с базами данных, способные производить любые необходимые вещи из подручных материалов. Это было время невиданного прогресса, когда люди создавали разумные машины и могли соперничать с ксеносами.</p>
-                    <p>Но идиллия длилась недолго. Примерно в 25-м тысячелетии разразилась катастрофа. Варп, который долгое время считался всего лишь опасным пространством, оказался населённым богами Хаоса, порождениями эмоций разумных рас. Гедонизм и разврат древней расы эльдар привели к рождению нового бога Хаоса — Слаанеш. Это событие вызвало чудовищные штормы в варпе, получившие название <strong>Рождение Бездны (Birth of Slaanesh)</strong>. Межзвёздные путешествия стали невозможными, и человеческая цивилизация рухнула, погрузившись в хаос и анархию. Многие миры были отрезаны от метрополии и деградировали. В это же время произошло <strong>Восстание Железных Людей (Cybernetic Revolt)</strong> — бунт разумных машин, который уничтожил большую часть технологий Золотого века и навсегда посеял страх перед мыслящим искусственным интеллектом. Началась <strong>Эра Раздора (Age of Strife)</strong>, длившаяся около пяти тысячелетий, период мрака, изоляции и упадка для всего человечества.</p>
+            <div class="article-container">
+                <div class="article-toc">
+                    <h4>Содержание</h4>
+                    <ul>
+                        <li><a href="#imp1">Зарождение и падение</a></li>
+                        <li><a href="#imp2">Великий крестовый поход</a></li>
+                        <li><a href="#imp3">Ересь Хоруса</a></li>
+                        <li><a href="#imp4">После Ереси</a></li>
+                        <li><a href="#imp5">41-е тысячелетие</a></li>
+                        <li><a href="#imp6">Эра Разрушения</a></li>
+                    </ul>
                 </div>
-            </section>
-            
-            <section id="imp2" class="scroll-card">
-                <div class="card-header"><h2>ВЕЛИКИЙ КРЕСТОВЫЙ ПОХОД</h2></div>
-                <div class="editable-text" contenteditable="false">
-                    <p>В этот тёмный период на Терре (Земле), раздробленной на враждующие техно-варварские государства, появился таинственный персонаж, известный как <strong>Император Человечества</strong>. Объединив Терру в ходе <strong>Войн Объединения (Unification Wars)</strong>, он поставил перед собой грандиозную цель — вернуть все разрозненные миры людей под единую власть. Для этого ему нужна была армия. Он создал двадцать генетически улучшенных сверхлюдей — <strong>примархов</strong>, которые должны были стать его генералами. Однако силы Хаоса вмешались и разбросали капсулы с младенцами-примархами по всей галактике. Не имея возможности ждать, Император использовал их генетический материал для создания первых легионов <strong>космических десантников (Адептус Астартес)</strong>.</p>
-                    <p>Примерно в 30-м тысячелетии варп-штормы начали стихать, и Император начал <strong>Великий крестовый поход (Great Crusade)</strong>. Его армии, ведомые им самим и постепенно находимыми примархами, освобождали миры людей от ксеносов и хаоситов, возвращая их в лоно человечества. Ключевым моментом стал союз с техножрецами Марса, которые признали в Императоре воплощение своего бога-машины — <strong>Омниссии</strong>. Так Марс и его Адептус Механикус присоединились к зарождающемуся Империуму, став его главной технологической опорой. Сам же Император проповедовал <strong>Имперскую Правду (Imperial Truth)</strong> — идеологию, основанную на рациональности и науке, категорически запрещая любую религию и поклонение себе.</p>
-                    <p>Великий крестовый поход был триумфальным. Легионы, ведомые богам подобными примархами, несли свет Имперской Правды. Самым любимым и талантливым из сыновей Императора был <strong>Хорус</strong>, получивший титул <strong>Воителя (Warmaster)</strong>, когда Император вернулся на Терру для руководства Империумом из трона.</p>
+                <div>
+                    <div class="local-navigation">
+                        <a href="#imp1">ЗАРОЖДЕНИЕ И ПАДЕНИЕ</a>
+                        <a href="#imp2">ВЕЛИКИЙ КРЕСТОВЫЙ ПОХОД</a>
+                        <a href="#imp3">ЕРЕСЬ ХОРУСА</a>
+                        <a href="#imp4">ПОСЛЕ ЕРЕСИ</a>
+                        <a href="#imp5">41-е ТЫСЯЧЕЛЕТИЕ</a>
+                        <a href="#imp6">ЭРА РАЗРУШЕНИЯ</a>
+                    </div>
+                    
+                    <section id="imp1" class="scroll-card">
+                        <div class="card-header"><h2>ЗАРОЖДЕНИЕ И ПАДЕНИЕ</h2></div>
+                        <div class="editable-text" contenteditable="false">
+                            <p><strong>История Империума Человечества в Warhammer 40,000</strong> — это сага, охватывающая более десяти тысяч лет, от технологического расцвета человечества до его фанатичного выживания в мрачной и жестокой галактике. Это повествование о величии и гордыне, предательстве и вере, постоянной войне и надежде, теплящейся в виде мумифицированного тела бессмертного Императора.</p>
+                            <p>Далеко в прошлом, в начале третьего тысячелетия, человечество сделало первые шаги за пределы Солнечной системы. К 15-му тысячелетию люди расселились по многим мирам, но путешествия на субсветовых скоростях делали колонии изолированными. Ситуация кардинально изменилась с открытием варпа — параллельного измерения, состоящего из чистой психической энергии. Это позволило создавать варп-двигатели для сверхсветовых путешествий, хотя и крайне опасных.</p>
+                            <p>Наступил <strong>Тёмный век технологий (Dark Age of Technology)</strong> — золотая эра человечества. Благодаря гено-навигаторам, способным вести корабли в варпе, связи с колониями были восстановлены, и человеческая экспансия охватила всю галактику. Вершиной технологического могущества стала система <strong>Стандартных Шаблонных Конструкций (STC)</strong> — своеобразные компьютеры с базами данных, способные производить любые необходимые вещи из подручных материалов. Это было время невиданного прогресса, когда люди создавали разумные машины и могли соперничать с ксеносами.</p>
+                            <p>Но идиллия длилась недолго. Примерно в 25-м тысячелетии разразилась катастрофа. Варп, который долгое время считался всего лишь опасным пространством, оказался населённым богами Хаоса, порождениями эмоций разумных рас. Гедонизм и разврат древней расы эльдар привели к рождению нового бога Хаоса — Слаанеш. Это событие вызвало чудовищные штормы в варпе, получившие название <strong>Рождение Бездны (Birth of Slaanesh)</strong>. Межзвёздные путешествия стали невозможными, и человеческая цивилизация рухнула, погрузившись в хаос и анархию. Многие миры были отрезаны от метрополии и деградировали. В это же время произошло <strong>Восстание Железных Людей (Cybernetic Revolt)</strong> — бунт разумных машин, который уничтожил большую часть технологий Золотого века и навсегда посеял страх перед мыслящим искусственным интеллектом. Началась <strong>Эра Раздора (Age of Strife)</strong>, длившаяся около пяти тысячелетий, период мрака, изоляции и упадка для всего человечества.</p>
+                        </div>
+                    </section>
+                    
+                    <section id="imp2" class="scroll-card">
+                        <div class="card-header"><h2>ВЕЛИКИЙ КРЕСТОВЫЙ ПОХОД</h2></div>
+                        <div class="editable-text" contenteditable="false">
+                            <p>В этот тёмный период на Терре (Земле), раздробленной на враждующие техно-варварские государства, появился таинственный персонаж, известный как <strong>Император Человечества</strong>. Объединив Терру в ходе <strong>Войн Объединения (Unification Wars)</strong>, он поставил перед собой грандиозную цель — вернуть все разрозненные миры людей под единую власть. Для этого ему нужна была армия. Он создал двадцать генетически улучшенных сверхлюдей — <strong>примархов</strong>, которые должны были стать его генералами. Однако силы Хаоса вмешались и разбросали капсулы с младенцами-примархами по всей галактике. Не имея возможности ждать, Император использовал их генетический материал для создания первых легионов <strong>космических десантников (Адептус Астартес)</strong>.</p>
+                            <p>Примерно в 30-м тысячелетии варп-штормы начали стихать, и Император начал <strong>Великий крестовый поход (Great Crusade)</strong>. Его армии, ведомые им самим и постепенно находимыми примархами, освобождали миры людей от ксеносов и хаоситов, возвращая их в лоно человечества. Ключевым моментом стал союз с техножрецами Марса, которые признали в Императоре воплощение своего бога-машины — <strong>Омниссии</strong>. Так Марс и его Адептус Механикус присоединились к зарождающемуся Империуму, став его главной технологической опорой. Сам же Император проповедовал <strong>Имперскую Правду (Imperial Truth)</strong> — идеологию, основанную на рациональности и науке, категорически запрещая любую религию и поклонение себе.</p>
+                            <p>Великий крестовый поход был триумфальным. Легионы, ведомые богам подобными примархами, несли свет Имперской Правды. Самым любимым и талантливым из сыновей Императора был <strong>Хорус</strong>, получивший титул <strong>Воителя (Warmaster)</strong>, когда Император вернулся на Терру для руководства Империумом из трона.</p>
+                        </div>
+                    </section>
+                    
+                    <section id="imp3" class="scroll-card">
+                        <div class="card-header"><h2>ЕРЕСЬ ХОРУСА</h2></div>
+                        <div class="editable-text" contenteditable="false">
+                            <p>Однако триумф обернулся трагедией. Семена раздора, посеянные давно, дали всходы. Примарх Лоргар и его легион Несущих Слово, жаждавшие поклоняться Императору как богу, были публично уничижены за это. В поисках истины Лоргар обратился к Хаосу. Его легион первым пал во тьму и взял на себя миссию совратить остальных. На луне Давина <strong>Хорус был смертельно ранен</strong>. Первый капеллан Несущих Слово Эреб предложил Хорусу помощь местных шаманов, которые на самом деле были культистами Хаоса. Во время ритуала Хорус перенесся в варп, где боги Хаоса показали ему ложное видение будущего, в котором Император правит как тиран-бог, а сам Хорус забыт. Оскорблённый и обманутый, Воитель заключил сделку с Хаосом. Он выжил и восстал против своего отца.</p>
+                            <p>К Хорусу присоединились семь других легионов. Некоторые, как Пожиратели Миров и Дети Императора, пали под влиянием своих примархов, совращённых богами Хаоса. Другие, как Железные Воины, примкнули из зависти и обид. Третьи, как Альфа-легион, руководствовались сложными и до сих пор спорными мотивами.</p>
+                            <p>Ересь началась с предательской резни на <strong>Истваане III</strong>, где Хорус приказал уничтожить собственных солдат, оставшихся верными Императору, сбросив на планету вирусные бомбы. Затем последовала бойня на <strong>Истваане V</strong>, где четыре предательских легиона, пришедших на помощь верным, ударили им в спину, уничтожив Саламандр, Железные Руки и Гвардию Ворона.</p>
+                            <p>В то же время примарх <strong>Магнус Красный</strong>, используя запретное колдовство, чтобы предупредить Императора о предательстве, непреднамеренно разрушил защиту вокруг секретного проекта Императора по созданию безопасного пути в паутине эльдар. Император был вынужден навсегда сесть на <strong>Золотой Трон (Golden Throne)</strong>, чтобы сдерживать прорыв демонов на Терре. Леман Русс, примарх Космических Волков, по приказу Императора и под влиянием дезинформации от Хоруса, атаковал и разрушил родной мир Магнуса — Просперо, вынудив Тысячу Сынов окончательно перейти на сторону Хаоса.</p>
+                            <p>Кульминацией войны стала <strong>Осада Терры</strong>. Силы Хаоса под предводительством Хоруса осадили Императорский дворец. В критический момент, когда защита была на грани падения, Император и отряд верных ему Кустодес телепортировались на флагман Хоруса. В решающем поединке Император уничтожил своего падшего сына, но сам получил смертельные раны. Он был доставлен обратно во дворец и подключён к Золотому Трону, который навсегда стал его саркофагом, поддерживая искру жизни и одновременно служа маяком — <strong>Астрономиконом (Astronomican)</strong>, единственным светом для навигации в варпе.</p>
+                        </div>
+                    </section>
+                    
+                    <section id="imp4" class="scroll-card">
+                        <div class="card-header"><h2>ПОСЛЕ ЕРЕСИ: СТАНОВЛЕНИЕ РЕЛИГИИ</h2></div>
+                        <div class="editable-text" contenteditable="false">
+                            <p>Смерть (или полужизнь) Императора изменила всё. Его последним приказом было продолжать управлять Империумом. Началась <strong>Эра Возрождения (Age of Rebirth)</strong>. Верные примархи, такие как <strong>Робаут Жиллиман</strong>, написали <strong>Кодекс Астартес</strong>, разделивший огромные легионы на более мелкие <strong>ордена</strong>, чтобы никто больше не смог собрать армию, способную бросить вызов Терре. Сам Жиллиман был смертельно ранен и погружён в стазис. Империум, истекающий кровью, столкнулся с активизировавшимися ксеносами, в первую очередь орками, и потерял многие завоёванные миры.</p>
+                            <p>В это смутное время Имперская Правда была забыта. Людям нужна была надежда и вера. Так родился культ <strong>Божественного Императора</strong>. Несмотря на атеистическое прошлое, Экклезиархия (Адептус Министорум) стала одной из самых могущественных сил в Империуме.</p>
+                            <p>Последующие тысячелетия стали чередой взлётов и падений. Был <strong>Золотой век Империума</strong>, когда удалось восстановить многие технологии и расширить границы. Но за ним последовали кризисы, такие как <strong>Междуцарствие Нова-Терра (Nova Terra Interregnum)</strong>, когда Империум едва не распался на две части.</p>
+                            <p>В 36-м тысячелетии разразилась <strong>Эра Отступничества (Age of Apostasy)</strong>. Экклезиарх <strong>Гог Вандир</strong> захватил власть и установил кровавую тиранию, объявив себя живым богом и новым Императором. Семь десятилетий его правления закончились, когда глава его личной стражи, <strong>Алисия Доминика</strong>, была допущена Кустодесами к Золотому Трону. Что она там увидела — неизвестно, но, вернувшись, она убила Вандира. В результате Экклезиархии было запрещено содержать мужчин в армии, что привело к созданию женского военного ордена <strong>Адепта Сороритас (Сестёр Битвы)</strong>.</p>
+                            <p>За этим последовали <strong>Эра Искупления (Age of Redemption)</strong>, полная фанатичных крестовых походов, и <strong>Эра Увядания (The Waning)</strong>, когда Империум начал нести огромные потери от натиска врагов.</p>
+                        </div>
+                    </section>
+                    
+                    <section id="imp5" class="scroll-card">
+                        <div class="card-header"><h2>ИМПЕРИУМ В 41-м ТЫСЯЧЕЛЕТИИ</h2></div>
+                        <div class="editable-text" contenteditable="false">
+                            <p>К <strong>концу 41-го тысячелетия</strong> Империум находится в состоянии перманентной войны со всех сторон. Это чудовищная, неповоротливая и крайне бюрократизированная машина. Им управляют <strong>Высшие Лорды Терры</strong> от имени безмолвствующего Императора. Основой его мощи является Имперская Гвардия (Астра Милитарум) — бесчисленные миллиарды простых солдат, и флот. Космические десантники, разделённые на тысячи орденов, являются элитной силой быстрого реагирования.</p>
+                            <p><strong>Инквизиция</strong> — тайная полиция, стоящая над всеми законами, выискивающая еретиков, мутантов и ксеносов. <strong>Адептус Механикус</strong> хранит (и скрывает) обрывки древних технологий. <strong>Астрономикон</strong> всё ещё горит, направляя корабли, но его свет тускнеет.</p>
+                            <p>Враг многолик и беспощаден:</p>
+                            <p>• <strong>Легионы Хаоса (Heretic Astartes)</strong>: предатели, бежавшие в Око Ужаса и жаждущие уничтожить Империум своего отца.<br>
+                            • <strong>Орки (Orks)</strong>: бесконечная зелёная орда, живущая только войной.<br>
+                            • <strong>Эльдары (Eldar)</strong>: древняя раса, выживающая на грани исчезновения.<br>
+                            • <strong>Тёмные Эльдары (Dark Eldar)</strong>: пираты-садисты из города Комморра.<br>
+                            • <strong>Некроны (Necrons)</strong>: древняя раса бессмертных терминаторов, пробуждающихся от своих миллионолетних снов.<br>
+                            • <strong>Тау (Tau)</strong>: молодая, технологически развитая раса, расширяющая свою "Империю Добра".<br>
+                            • <strong>Тираниды (Tyranids)</strong>: инопланетный рой из другой галактики, пожирающий всё живое на своём пути.</p>
+                        </div>
+                    </section>
+                    
+                    <section id="imp6" class="scroll-card">
+                        <div class="card-header"><h2>ЭРА РАЗРУШЕНИЯ И РАССВЕТ</h2></div>
+                        <div class="editable-text" contenteditable="false">
+                            <p>Последние события (относительно текущего лора) во вселенной известны как <strong>Эра Разрушения (или Завершения Времён)</strong>. Ситуация стала ещё более отчаянной. Каден, ключевая крепость Империума, пала под натиском Хаоса во главе с Абаддоном Разорителем, что привело к масштабному вторжению демонов и расколу реальности в виде Великого Разлома (Rift), разрезавшего галактику надвое.</p>
+                            <p>Связь со многими мирами была потеряна. Но в этот тёмный час произошло чудо: примарх <strong>Робаут Жиллиман</strong>, Верховный Лорд Ультрамара, был воскрешён из стазиса. Проведя ритуал с эльдарами, он вошёл в тронный зал и получил от умирающего Императора новое наставление и его пылающий меч. Жиллиман стал новым Воителем, фактическим правителем Империума, начав <strong>Несокрушимый крестовый поход (Indomitus Crusade)</strong>, чтобы вернуть утраченные миры и стабилизировать ситуацию. Он также провёл ограниченные реформы, включая создание новых орденов космического десанта (Примарис), и вступил в опасный конфликт с ультра-консервативной Экклезиархией.</p>
+                            <p>История Империума — это история постоянной борьбы за выживание в галактике, где надежда — самая большая роскошь. Это мрачное, готическое и эпичное полотно, где героизм измеряется не победой, а способностью отложить неизбежный конец ещё на один день.</p>
+                        </div>
+                    </section>
+
+                    <!-- Комментарии Disqus -->
+                    <div class="comments-section">
+                        <h3>Обсуждение</h3>
+                        <div id="disqus_thread"></div>
+                        <script>
+                            var disqus_config = function () {
+                                this.page.url = window.location.href;
+                                this.page.identifier = 'page1';
+                            };
+                            (function() {
+                                var d = document, s = d.createElement('script');
+                                s.src = 'https://your-disqus-shortname.disqus.com/embed.js';
+                                s.setAttribute('data-timestamp', +new Date());
+                                (d.head || d.body).appendChild(s);
+                            })();
+                        </script>
+                    </div>
                 </div>
-            </section>
-            
-            <section id="imp3" class="scroll-card">
-                <div class="card-header"><h2>ЕРЕСЬ ХОРУСА</h2></div>
-                <div class="editable-text" contenteditable="false">
-                    <p>Однако триумф обернулся трагедией. Семена раздора, посеянные давно, дали всходы. Примарх Лоргар и его легион Несущих Слово, жаждавшие поклоняться Императору как богу, были публично уничижены за это. В поисках истины Лоргар обратился к Хаосу. Его легион первым пал во тьму и взял на себя миссию совратить остальных. На луне Давина <strong>Хорус был смертельно ранен</strong>. Первый капеллан Несущих Слово Эреб предложил Хорусу помощь местных шаманов, которые на самом деле были культистами Хаоса. Во время ритуала Хорус перенесся в варп, где боги Хаоса показали ему ложное видение будущего, в котором Император правит как тиран-бог, а сам Хорус забыт. Оскорблённый и обманутый, Воитель заключил сделку с Хаосом. Он выжил и восстал против своего отца.</p>
-                    <p>К Хорусу присоединились семь других легионов. Некоторые, как Пожиратели Миров и Дети Императора, пали под влиянием своих примархов, совращённых богами Хаоса. Другие, как Железные Воины, примкнули из зависти и обид. Третьи, как Альфа-легион, руководствовались сложными и до сих пор спорными мотивами.</p>
-                    <p>Ересь началась с предательской резни на <strong>Истваане III</strong>, где Хорус приказал уничтожить собственных солдат, оставшихся верными Императору, сбросив на планету вирусные бомбы. Затем последовала бойня на <strong>Истваане V</strong>, где четыре предательских легиона, пришедших на помощь верным, ударили им в спину, уничтожив Саламандр, Железные Руки и Гвардию Ворона.</p>
-                    <p>В то же время примарх <strong>Магнус Красный</strong>, используя запретное колдовство, чтобы предупредить Императора о предательстве, непреднамеренно разрушил защиту вокруг секретного проекта Императора по созданию безопасного пути в паутине эльдар. Император был вынужден навсегда сесть на <strong>Золотой Трон (Golden Throne)</strong>, чтобы сдерживать прорыв демонов на Терре. Леман Русс, примарх Космических Волков, по приказу Императора и под влиянием дезинформации от Хоруса, атаковал и разрушил родной мир Магнуса — Просперо, вынудив Тысячу Сынов окончательно перейти на сторону Хаоса.</p>
-                    <p>Кульминацией войны стала <strong>Осада Терры</strong>. Силы Хаоса под предводительством Хоруса осадили Императорский дворец. В критический момент, когда защита была на грани падения, Император и отряд верных ему Кустодес телепортировались на флагман Хоруса. В решающем поединке Император уничтожил своего падшего сына, но сам получил смертельные раны. Он был доставлен обратно во дворец и подключён к Золотому Трону, который навсегда стал его саркофагом, поддерживая искру жизни и одновременно служа маяком — <strong>Астрономиконом (Astronomican)</strong>, единственным светом для навигации в варпе.</p>
-                </div>
-            </section>
-            
-            <section id="imp4" class="scroll-card">
-                <div class="card-header"><h2>ПОСЛЕ ЕРЕСИ: СТАНОВЛЕНИЕ РЕЛИГИИ</h2></div>
-                <div class="editable-text" contenteditable="false">
-                    <p>Смерть (или полужизнь) Императора изменила всё. Его последним приказом было продолжать управлять Империумом. Началась <strong>Эра Возрождения (Age of Rebirth)</strong>. Верные примархи, такие как <strong>Робаут Жиллиман</strong>, написали <strong>Кодекс Астартес</strong>, разделивший огромные легионы на более мелкие <strong>ордена</strong>, чтобы никто больше не смог собрать армию, способную бросить вызов Терре. Сам Жиллиман был смертельно ранен и погружён в стазис. Империум, истекающий кровью, столкнулся с активизировавшимися ксеносами, в первую очередь орками, и потерял многие завоёванные миры.</p>
-                    <p>В это смутное время Имперская Правда была забыта. Людям нужна была надежда и вера. Так родился культ <strong>Божественного Императора</strong>. Несмотря на атеистическое прошлое, Экклезиархия (Адептус Министорум) стала одной из самых могущественных сил в Империуме.</p>
-                    <p>Последующие тысячелетия стали чередой взлётов и падений. Был <strong>Золотой век Империума</strong>, когда удалось восстановить многие технологии и расширить границы. Но за ним последовали кризисы, такие как <strong>Междуцарствие Нова-Терра (Nova Terra Interregnum)</strong>, когда Империум едва не распался на две части.</p>
-                    <p>В 36-м тысячелетии разразилась <strong>Эра Отступничества (Age of Apostasy)</strong>. Экклезиарх <strong>Гог Вандир</strong> захватил власть и установил кровавую тиранию, объявив себя живым богом и новым Императором. Семь десятилетий его правления закончились, когда глава его личной стражи, <strong>Алисия Доминика</strong>, была допущена Кустодесами к Золотому Трону. Что она там увидела — неизвестно, но, вернувшись, она убила Вандира. В результате Экклезиархии было запрещено содержать мужчин в армии, что привело к созданию женского военного ордена <strong>Адепта Сороритас (Сестёр Битвы)</strong>.</p>
-                    <p>За этим последовали <strong>Эра Искупления (Age of Redemption)</strong>, полная фанатичных крестовых походов, и <strong>Эра Увядания (The Waning)</strong>, когда Империум начал нести огромные потери от натиска врагов.</p>
-                </div>
-            </section>
-            
-            <section id="imp5" class="scroll-card">
-                <div class="card-header"><h2>ИМПЕРИУМ В 41-м ТЫСЯЧЕЛЕТИИ</h2></div>
-                <div class="editable-text" contenteditable="false">
-                    <p>К <strong>концу 41-го тысячелетия</strong> Империум находится в состоянии перманентной войны со всех сторон. Это чудовищная, неповоротливая и крайне бюрократизированная машина. Им управляют <strong>Высшие Лорды Терры</strong> от имени безмолвствующего Императора. Основой его мощи является Имперская Гвардия (Астра Милитарум) — бесчисленные миллиарды простых солдат, и флот. Космические десантники, разделённые на тысячи орденов, являются элитной силой быстрого реагирования.</p>
-                    <p><strong>Инквизиция</strong> — тайная полиция, стоящая над всеми законами, выискивающая еретиков, мутантов и ксеносов. <strong>Адептус Механикус</strong> хранит (и скрывает) обрывки древних технологий. <strong>Астрономикон</strong> всё ещё горит, направляя корабли, но его свет тускнеет.</p>
-                    <p>Враг многолик и беспощаден:</p>
-                    <p>• <strong>Легионы Хаоса (Heretic Astartes)</strong>: предатели, бежавшие в Око Ужаса и жаждущие уничтожить Империум своего отца.<br>
-                    • <strong>Орки (Orks)</strong>: бесконечная зелёная орда, живущая только войной.<br>
-                    • <strong>Эльдары (Eldar)</strong>: древняя раса, выживающая на грани исчезновения.<br>
-                    • <strong>Тёмные Эльдары (Dark Eldar)</strong>: пираты-садисты из города Комморра.<br>
-                    • <strong>Некроны (Necrons)</strong>: древняя раса бессмертных терминаторов, пробуждающихся от своих миллионолетних снов.<br>
-                    • <strong>Тау (Tau)</strong>: молодая, технологически развитая раса, расширяющая свою "Империю Добра".<br>
-                    • <strong>Тираниды (Tyranids)</strong>: инопланетный рой из другой галактики, пожирающий всё живое на своём пути.</p>
-                </div>
-            </section>
-            
-            <section id="imp6" class="scroll-card">
-                <div class="card-header"><h2>ЭРА РАЗРУШЕНИЯ И РАССВЕТ</h2></div>
-                <div class="editable-text" contenteditable="false">
-                    <p>Последние события (относительно текущего лора) во вселенной известны как <strong>Эра Разрушения (или Завершения Времён)</strong>. Ситуация стала ещё более отчаянной. Каден, ключевая крепость Империума, пала под натиском Хаоса во главе с Абаддоном Разорителем, что привело к масштабному вторжению демонов и расколу реальности в виде Великого Разлома (Rift), разрезавшего галактику надвое.</p>
-                    <p>Связь со многими мирами была потеряна. Но в этот тёмный час произошло чудо: примарх <strong>Робаут Жиллиман</strong>, Верховный Лорд Ультрамара, был воскрешён из стазиса. Проведя ритуал с эльдарами, он вошёл в тронный зал и получил от умирающего Императора новое наставление и его пылающий меч. Жиллиман стал новым Воителем, фактическим правителем Империума, начав <strong>Несокрушимый крестовый поход (Indomitus Crusade)</strong>, чтобы вернуть утраченные миры и стабилизировать ситуацию. Он также провёл ограниченные реформы, включая создание новых орденов космического десанта (Примарис), и вступил в опасный конфликт с ультра-консервативной Экклезиархией.</p>
-                    <p>История Империума — это история постоянной борьбы за выживание в галактике, где надежда — самая большая роскошь. Это мрачное, готическое и эпичное полотно, где героизм измеряется не победой, а способностью отложить неизбежный конец ещё на один день.</p>
-                </div>
-            </section>
+            </div>
         </div>
 
         <!-- СТРАНИЦА 2: ХАОС -->
@@ -2867,7 +3135,111 @@
                 </div>
             </section>
         </div>
+    
+
+        <!-- СТРАНИЦА 9: БИБЛИОТЕКА -->
+        <div id="page9" class="page-container">
+            <h1>Библиотека</h1>
+            <div class="search-box">
+                <input type="text" id="librarySearch" placeholder="Поиск книг...">
+            </div>
+            <div class="book-grid" id="bookGrid">
+                <div class="book-card" data-title="Ересь Хоруса: Рождение Предательства">
+                    <div class="book-cover"><i class="fas fa-book"></i></div>
+                    <div class="book-title">Ересь Хоруса: Рождение Предательства</div>
+                    <div class="book-author">Дэн Абнетт</div>
+                </div>
+                <div class="book-card" data-title="Возвышение Хоруса">
+                    <div class="book-cover"><i class="fas fa-book"></i></div>
+                    <div class="book-title">Возвышение Хоруса</div>
+                    <div class="book-author">Дэн Абнетт</div>
+                </div>
+                <div class="book-card" data-title="Лживые боги">
+                    <div class="book-cover"><i class="fas fa-book"></i></div>
+                    <div class="book-title">Лживые боги</div>
+                    <div class="book-author">Грэм Макнилл</div>
+                </div>
+                <div class="book-card" data-title="Галактика в огне">
+                    <div class="book-cover"><i class="fas fa-book"></i></div>
+                    <div class="book-title">Галактика в огне</div>
+                    <div class="book-author">Бен Каунтер</div>
+                </div>
+                <div class="book-card" data-title="Полёт Эйзенштейна">
+                    <div class="book-cover"><i class="fas fa-book"></i></div>
+                    <div class="book-title">Полёт Эйзенштейна</div>
+                    <div class="book-author">Джеймс Сваллоу</div>
+                </div>
+                <div class="book-card" data-title="Фулгрим">
+                    <div class="book-cover"><i class="fas fa-book"></i></div>
+                    <div class="book-title">Фулгрим</div>
+                    <div class="book-author">Грэм Макнилл</div>
+                </div>
+                <div class="book-card" data-title="Забытая империя">
+                    <div class="book-cover"><i class="fas fa-book"></i></div>
+                    <div class="book-title">Забытая империя</div>
+                    <div class="book-author">Дэн Абнетт</div>
+                </div>
+                <div class="book-card" data-title="Тёмный Империум">
+                    <div class="book-cover"><i class="fas fa-book"></i></div>
+                    <div class="book-title">Тёмный Империум</div>
+                    <div class="book-author">Гай Хейли</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- СТРАНИЦА 10: ГАЛЕРЕЯ -->
+        <div id="page10" class="page-container">
+            <h1>Галерея</h1>
+            <div class="gallery-grid">
+                <div class="gallery-item" onclick="openLightbox(this)">
+                    <img src="https://via.placeholder.com/400x300/2C2F2E/D4AF37?text=Ultramarines" alt="Ультрамарины">
+                    <div class="gallery-caption">Ультрамарины в бою</div>
+                </div>
+                <div class="gallery-item" onclick="openLightbox(this)">
+                    <img src="https://via.placeholder.com/400x300/2C2F2E/9f2f2f?text=Khorne" alt="Кхорн">
+                    <div class="gallery-caption">Кхорн — Бог Крови</div>
+                </div>
+                <div class="gallery-item" onclick="openLightbox(this)">
+                    <img src="https://via.placeholder.com/400x300/2C2F2E/2f9f7f?text=Eldar" alt="Эльдары">
+                    <div class="gallery-caption">Эльдары на Корабле-мире</div>
+                </div>
+                <div class="gallery-item" onclick="openLightbox(this)">
+                    <img src="https://via.placeholder.com/400x300/2C2F2E/5f9f2f?text=Orks" alt="Орки">
+                    <div class="gallery-caption">Орки готовятся к WAAAGH!</div>
+                </div>
+                <div class="gallery-item" onclick="openLightbox(this)">
+                    <img src="https://via.placeholder.com/400x300/2C2F2E/6f8faf?text=Necrons" alt="Некроны">
+                    <div class="gallery-caption">Некроны пробуждаются</div>
+                </div>
+                <div class="gallery-item" onclick="openLightbox(this)">
+                    <img src="https://via.placeholder.com/400x300/2C2F2E/9f2f6f?text=Tyranids" alt="Тираниды">
+                    <div class="gallery-caption">Тираниды атакуют</div>
+                </div>
+                <div class="gallery-item" onclick="openLightbox(this)">
+                    <img src="https://via.placeholder.com/400x300/2C2F2E/9f8f2f?text=Tau" alt="Тау">
+                    <div class="gallery-caption">Тау в боевых костюмах</div>
+                </div>
+                <div class="gallery-item" onclick="openLightbox(this)">
+                    <img src="https://via.placeholder.com/400x300/2C2F2E/9f6f2f?text=Votann" alt="Воттан">
+                    <div class="gallery-caption">Лиги Воттан</div>
+                </div>
+                <div class="gallery-item" onclick="openLightbox(this)">
+                    <img src="https://via.placeholder.com/400x300/2C2F2E/D4AF37?text=Horus" alt="Хорус">
+                    <div class="gallery-caption">Хорус Луперкаль</div>
+                </div>
+                <div class="gallery-item" onclick="openLightbox(this)">
+                    <img src="https://via.placeholder.com/400x300/2C2F2E/8B0000?text=Emperor" alt="Император">
+                    <div class="gallery-caption">Император Человечества</div>
+                </div>
+            </div>
+        </div>
     </main>
+
+    <!-- ЛАЙТБОКС -->
+    <div class="lightbox" id="lightbox" onclick="closeLightbox()">
+        <span class="lightbox-close">&times;</span>
+        <img id="lightbox-img" src="" alt="">
+    </div>
 
     <!-- ФУТЕР -->
     <footer class="footer-modern">
@@ -2938,7 +3310,7 @@
                 }
             }
 
-                       // Переключение страниц
+            // Переключение страниц
             const tabs = document.querySelectorAll('.menu-tab');
             const pages = document.querySelectorAll('.page-container, .map-page');
             const homePage = document.getElementById('home-page');
@@ -2974,7 +3346,6 @@
                     const targetPage = document.getElementById(pageId);
                     if (targetPage) {
                         targetPage.classList.add('active-page');
-                        // НЕ УСТАНАВЛИВАЕМ display:block, так как это делает CSS через .active-page
                     }
                     
                     // Установка темы в зависимости от страницы
@@ -2986,7 +3357,9 @@
                         'page5': 'necron',
                         'page6': 'tyranid',
                         'page7': 'tau',
-                        'page8': 'votann'
+                        'page8': 'votann',
+                        'page9': 'imperium',
+                        'page10': 'imperium'
                     };
                     if (themeMap[pageId]) {
                         body.setAttribute('data-theme', themeMap[pageId]);
@@ -3138,6 +3511,54 @@
                 
                 const titleElement = document.getElementById('selectedWorldTitle');
                 if (titleElement) titleElement.innerText = title;
+            };
+
+            // Фильтр таймлайна
+            const filterBtns = document.querySelectorAll('.filter-btn');
+            filterBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    filterBtns.forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    const filter = this.dataset.filter;
+                    const events = document.querySelectorAll('.timeline-event');
+                    events.forEach(event => {
+                        if (filter === 'all' || event.dataset.faction === filter) {
+                            event.style.display = 'inline-block';
+                        } else {
+                            event.style.display = 'none';
+                        }
+                    });
+                });
+            });
+
+            // Поиск в библиотеке
+            const searchInput = document.getElementById('librarySearch');
+            if (searchInput) {
+                searchInput.addEventListener('input', function() {
+                    const query = this.value.toLowerCase();
+                    const books = document.querySelectorAll('.book-card');
+                    books.forEach(book => {
+                        const title = book.dataset.title.toLowerCase();
+                        if (title.includes(query)) {
+                            book.style.display = 'block';
+                        } else {
+                            book.style.display = 'none';
+                        }
+                    });
+                });
+            }
+
+            // Лайтбокс
+            window.openLightbox = function(element) {
+                const img = element.querySelector('img');
+                const lightbox = document.getElementById('lightbox');
+                const lightboxImg = document.getElementById('lightbox-img');
+                lightboxImg.src = img.src;
+                lightbox.classList.add('active');
+            };
+
+            window.closeLightbox = function() {
+                document.getElementById('lightbox').classList.remove('active');
             };
 
             // Инициализация
