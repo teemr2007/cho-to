@@ -730,12 +730,15 @@
             color: #D4AF37;
         }
 
-        .fi1 { top: 50%; left: 20%; transform: translate(-50%, -50%); }
-        .fi2 { top: 20%; left: 35%; }
-        .fi3 { top: 20%; left: 65%; }
-        .fi4 { top: 50%; left: 80%; transform: translate(-50%, -50%); }
-        .fi5 { bottom: 20%; left: 35%; }
-        .fi6 { bottom: 20%; left: 65%; }
+        /* Позиции для 8 фракций по кругу (как на скриншоте) */
+.fi1 { top: 15%; left: 30%; }                    /* Тау (вверху слева) */
+.fi2 { top: 15%; left: 70%; }                    /* Эльдары (вверху справа) */
+.fi3 { top: 30%; left: 85%; transform: translate(-50%, -50%); } /* Орки (справа вверху) */
+.fi4 { bottom: 30%; left: 85%; transform: translate(-50%, 50%); } /* Некроны (справа внизу) */
+.fi5 { bottom: 15%; left: 70%; }                 /* Хаос (внизу справа) */
+.fi6 { bottom: 15%; left: 30%; }                 /* Лиги Воттан (внизу слева) */
+.fi7 { bottom: 30%; left: 15%; transform: translate(50%, 50%); } /* Тираниды (слева внизу) */
+.fi8 { top: 30%; left: 15%; transform: translate(50%, -50%); } /* Империум (слева вверху) */
 
         /* ========== УЛУЧШЕННЫЙ ТАЙМЛАЙН (горизонтальный) ========== */
         .timeline-wrapper {
@@ -1596,44 +1599,52 @@
                 </div>
             </div>
 
-           <!-- ========== КОЛЕСО ФРАКЦИЙ ========== -->
+      <!-- ========== КОЛЕСО ФРАКЦИЙ ========== -->
 <div class="faction-wheel-modern">
     <div class="center-faction-modern">
         <div id="faction-name" style="font-size: 1.2rem; font-weight: 700;">Империум</div>
         <div id="faction-desc" style="font-size: 0.8rem; color: #a0a8b0;">Защитники человечества</div>
     </div>
     
-    <!-- ИМПЕРИУМ - вставьте ссылку в src="" -->
-    <div class="faction-icon-modern fi1" onmouseover="updateCenter('Империум', 'Защитники человечества')" onclick="switchToPage('page1')">
-        <img src="https://raw.githubusercontent.com/teemr2007/cho-to/main/imperium.webp" alt="Империум" style="width: 70%; height: 70%; object-fit: contain;">
+    <!-- 1. ТАУ (вверху слева) -->
+    <div class="faction-icon-modern fi1" onmouseover="updateCenter('Тау', 'Империя Высшего Блага')" onclick="switchToPage('page7')">
+        <img src="ССЫЛКА_НА_ТАУ" alt="Тау" style="width: 70%; height: 70%; object-fit: contain;">
     </div>
     
-    <!-- ХАОС - вставьте ссылку в src="" -->
-    <div class="faction-icon-modern fi2" onmouseover="updateCenter('Хаос', 'Слуги темных богов')" onclick="switchToPage('page2')">
-        <img src="https://raw.githubusercontent.com/teemr2007/cho-to/main/hao.webp" alt="Хаос" style="width: 70%; height: 70%; object-fit: contain;">
+    <!-- 2. ЭЛЬДАРЫ (вверху справа) -->
+    <div class="faction-icon-modern fi2" onmouseover="updateCenter('Эльдары', 'Древняя раса')" onclick="switchToPage('page3')">
+        <img src="ССЫЛКА_НА_ЭЛЬДАРЫ" alt="Эльдары" style="width: 70%; height: 70%; object-fit: contain;">
     </div>
     
-    <!-- ЭЛЬДАРЫ - вставьте ссылку в src="" -->
-    <div class="faction-icon-modern fi3" onmouseover="updateCenter('Эльдары', 'Древняя раса')" onclick="switchToPage('page3')">
-        <img src="https://raw.githubusercontent.com/teemr2007/cho-to/main/eldar.webp" alt="Эльдары" style="width: 70%; height: 70%; object-fit: contain;">
+    <!-- 3. ОРКИ (справа вверху) -->
+    <div class="faction-icon-modern fi3" onmouseover="updateCenter('Орки', 'Зеленая чума')" onclick="switchToPage('page4')">
+        <img src="ССЫЛКА_НА_ОРКИ" alt="Орки" style="width: 70%; height: 70%; object-fit: contain;">
     </div>
     
-    <!-- ОРКИ - вставьте ссылку в src="" -->
-    <div class="faction-icon-modern fi4" onmouseover="updateCenter('Орки', 'Зеленая чума')" onclick="switchToPage('page4')">
-        <img src="https://raw.githubusercontent.com/teemr2007/cho-to/main/ork.webp" alt="Орки" style="width: 70%; height: 70%; object-fit: contain;">
+    <!-- 4. НЕКРОНЫ (справа внизу) -->
+    <div class="faction-icon-modern fi4" onmouseover="updateCenter('Некроны', 'Нежить в металле')" onclick="switchToPage('page5')">
+        <img src="ССЫЛКА_НА_НЕКРОНЫ" alt="Некроны" style="width: 70%; height: 70%; object-fit: contain;">
     </div>
     
-    <!-- НЕКРОНЫ - вставьте ссылку в src="" -->
-    <div class="faction-icon-modern fi5" onmouseover="updateCenter('Некроны', 'Нежить в металле')" onclick="switchToPage('page5')">
-        <img src="https://raw.githubusercontent.com/teemr2007/cho-to/main/necron.webp" alt="Некроны" style="width: 70%; height: 70%; object-fit: contain;">
+    <!-- 5. ХАОС (внизу справа) -->
+    <div class="faction-icon-modern fi5" onmouseover="updateCenter('Хаос', 'Слуги темных богов')" onclick="switchToPage('page2')">
+        <img src="ССЫЛКА_НА_ХАОС" alt="Хаос" style="width: 70%; height: 70%; object-fit: contain;">
     </div>
     
-    <!-- ТИРАНИДЫ - вставьте ссылку в src="" -->
-    <div class="faction-icon-modern fi6" onmouseover="updateCenter('Тираниды', 'Пожиратели миров')" onclick="switchToPage('page6')">
-        <img src="https://raw.githubusercontent.com/teemr2007/cho-to/main/tiranyd.webp" alt="Тираниды" style="width: 70%; height: 70%; object-fit: contain;">
+    <!-- 6. ЛИГИ ВОТТАН (внизу слева) -->
+    <div class="faction-icon-modern fi6" onmouseover="updateCenter('Лиги Воттан', 'Кинсмены из Ядра')" onclick="switchToPage('page8')">
+        <img src="ССЫЛКА_НА_ЛИГИ_ВОТТАН" alt="Лиги Воттан" style="width: 70%; height: 70%; object-fit: contain;">
     </div>
     
-    <!-- Примечание: Доделать эту хрень для Тау и Воттан. Не забыть-->
+    <!-- 7. ТИРАНИДЫ (слева внизу) -->
+    <div class="faction-icon-modern fi7" onmouseover="updateCenter('Тираниды', 'Пожиратели миров')" onclick="switchToPage('page6')">
+        <img src="ССЫЛКА_НА_ТИРАНИДЫ" alt="Тираниды" style="width: 70%; height: 70%; object-fit: contain;">
+    </div>
+    
+    <!-- 8. ИМПЕРИУМ (слева вверху) -->
+    <div class="faction-icon-modern fi8" onmouseover="updateCenter('Империум', 'Защитники человечества')" onclick="switchToPage('page1')">
+        <img src="ССЫЛКА_НА_ИМПЕРИУМ" alt="Империум" style="width: 70%; height: 70%; object-fit: contain;">
+    </div>
 </div>
 
             <!-- Улучшенный таймлайн -->
