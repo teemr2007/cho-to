@@ -10,7 +10,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <style>
+        <style>
         /* ========== СБРОС И БАЗОВЫЕ СТИЛИ ========== */
         * {
             margin: 0;
@@ -20,7 +20,11 @@
 
         body {
             font-family: 'Montserrat', sans-serif;
-            background: #0a0c0e;
+            background: #0a0504;
+            background-image: 
+                repeating-linear-gradient(45deg, rgba(40, 20, 10, 0.3) 0px, rgba(40, 20, 10, 0.3) 2px, transparent 2px, transparent 8px),
+                repeating-linear-gradient(135deg, rgba(60, 30, 15, 0.2) 0px, rgba(60, 30, 15, 0.2) 4px, transparent 4px, transparent 12px),
+                radial-gradient(circle at 30% 40%, #2a1a0f 0%, #0a0603 80%);
             color: #e0e4e8;
             line-height: 1.6;
             min-height: 100vh;
@@ -29,28 +33,203 @@
             overflow-x: hidden;
         }
 
-        /* ========== ФОНОВЫЕ ЭФФЕКТЫ ========== */
-        body::before {
-            content: '';
+        /* ========== ФОНОВЫЕ ЭФФЕКТЫ WARHAMMER 40k ========== */
+        
+        /* Варп-туманность (движущаяся) */
+        .warp-nebula {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: radial-gradient(circle at 20% 30%, rgba(100, 50, 150, 0.1) 0%, transparent 40%),
-                        radial-gradient(circle at 80% 70%, rgba(150, 50, 50, 0.1) 0%, transparent 40%),
-                        radial-gradient(circle at 40% 80%, rgba(50, 100, 150, 0.08) 0%, transparent 50%),
-                        radial-gradient(circle at 70% 20%, rgba(150, 100, 50, 0.08) 0%, transparent 50%);
-            z-index: -2;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(180, 70, 150, 0.15) 0%, transparent 40%),
+                radial-gradient(circle at 80% 70%, rgba(70, 150, 200, 0.15) 0%, transparent 40%),
+                radial-gradient(circle at 40% 80%, rgba(150, 50, 50, 0.12) 0%, transparent 50%),
+                radial-gradient(circle at 70% 20%, rgba(200, 150, 50, 0.12) 0%, transparent 50%);
+            filter: blur(40px);
             pointer-events: none;
-            animation: ambientGlow 20s ease-in-out infinite alternate;
+            z-index: -5;
+            animation: warpDrift 30s ease-in-out infinite alternate;
+            mix-blend-mode: screen;
         }
 
-        @keyframes ambientGlow {
-            0% { opacity: 0.5; transform: scale(1); }
-            100% { opacity: 0.8; transform: scale(1.1); }
+        @keyframes warpDrift {
+            0% { transform: scale(1) rotate(0deg); opacity: 0.6; filter: blur(40px); }
+            50% { transform: scale(1.2) rotate(5deg); opacity: 0.9; filter: blur(30px); }
+            100% { transform: scale(0.9) rotate(-5deg); opacity: 0.7; filter: blur(50px); }
         }
 
+        /* Эффект "свечения варпа" (пульсирующие пятна) */
+        .warp-glow {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 50% 50%, rgba(150, 50, 200, 0.1) 0%, transparent 60%),
+                        radial-gradient(circle at 80% 20%, rgba(200, 100, 50, 0.1) 0%, transparent 50%),
+                        radial-gradient(circle at 20% 80%, rgba(50, 100, 200, 0.1) 0%, transparent 50%);
+            filter: blur(60px);
+            pointer-events: none;
+            z-index: -5;
+            animation: glowPulse 15s ease-in-out infinite alternate;
+            mix-blend-mode: overlay;
+        }
+
+        @keyframes glowPulse {
+            0% { opacity: 0.3; filter: blur(60px); }
+            100% { opacity: 0.7; filter: blur(80px); }
+        }
+
+        /* Варп-разряды (молнии) */
+        .warp-lightning {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(
+                90deg,
+                transparent 0px,
+                transparent 100px,
+                rgba(180, 70, 200, 0.03) 100px,
+                rgba(180, 70, 200, 0.03) 110px,
+                transparent 110px,
+                transparent 210px,
+                rgba(70, 150, 255, 0.03) 210px,
+                rgba(70, 150, 255, 0.03) 220px,
+                transparent 220px
+            );
+            pointer-events: none;
+            z-index: -4;
+            animation: lightningMove 8s linear infinite;
+        }
+
+        @keyframes lightningMove {
+            0% { transform: translateX(-100px) rotate(0deg); opacity: 0.3; }
+            50% { transform: translateX(100px) rotate(2deg); opacity: 0.7; }
+            100% { transform: translateX(-100px) rotate(0deg); opacity: 0.3; }
+        }
+
+        /* Эффект "искажения реальности" (рябь) */
+        .warp-ripple {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: repeating-radial-gradient(
+                circle at 30% 40%,
+                transparent 0px,
+                transparent 50px,
+                rgba(200, 100, 255, 0.02) 50px,
+                rgba(200, 100, 255, 0.02) 55px,
+                transparent 55px,
+                transparent 105px,
+                rgba(100, 200, 255, 0.02) 105px,
+                rgba(100, 200, 255, 0.02) 110px,
+                transparent 110px
+            );
+            pointer-events: none;
+            z-index: -3;
+            animation: ripplePulse 12s ease-in-out infinite;
+        }
+
+        @keyframes ripplePulse {
+            0% { transform: scale(1); opacity: 0.3; }
+            50% { transform: scale(1.1); opacity: 0.7; }
+            100% { transform: scale(1); opacity: 0.3; }
+        }
+
+        /* Имперский орел (едва заметный водяной знак) */
+        .imperial-aquila {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            width: 150px;
+            height: 150px;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" opacity="0.1"><path d="M20,50 L35,30 L50,40 L65,30 L80,50 L65,70 L50,60 L35,70 L20,50" fill="none" stroke="%23D4AF37" stroke-width="2"/><circle cx="50" cy="45" r="5" fill="%23D4AF37"/></svg>');
+            background-size: contain;
+            background-repeat: no-repeat;
+            pointer-events: none;
+            z-index: -2;
+            animation: aquilaGlow 10s ease-in-out infinite;
+        }
+
+        @keyframes aquilaGlow {
+            0%, 100% { opacity: 0.1; transform: scale(1); }
+            50% { opacity: 0.2; transform: scale(1.05); }
+        }
+
+        /* Символы Хаоса (плавно появляются и исчезают) */
+        .chaos-symbols {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(
+                45deg,
+                transparent 0px,
+                transparent 200px,
+                rgba(180, 50, 50, 0.02) 200px,
+                rgba(180, 50, 50, 0.02) 220px,
+                transparent 220px,
+                transparent 420px,
+                rgba(50, 50, 180, 0.02) 420px,
+                rgba(50, 50, 180, 0.02) 440px,
+                transparent 440px
+            );
+            pointer-events: none;
+            z-index: -3;
+            animation: symbolsFade 15s ease-in-out infinite;
+        }
+
+        @keyframes symbolsFade {
+            0%, 100% { opacity: 0.2; }
+            50% { opacity: 0.5; }
+        }
+
+        /* Парящие "души" (маленькие точки, имитирующие души в варпе) */
+        .warp-souls {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -2;
+        }
+
+        .soul {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background: rgba(212, 175, 55, 0.4);
+            border-radius: 50%;
+            box-shadow: 0 0 10px rgba(212, 175, 55, 0.6);
+            animation: soulFloat linear infinite;
+        }
+
+        @keyframes soulFloat {
+            0% {
+                transform: translateY(100vh) translateX(0) scale(1);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.8;
+            }
+            90% {
+                opacity: 0.8;
+            }
+            100% {
+                transform: translateY(-100vh) translateX(100px) scale(0.5);
+                opacity: 0;
+            }
+        }
+
+        /* Звёздное поле с мерцанием */
         .stars {
             position: fixed;
             top: 0;
@@ -58,7 +237,7 @@
             width: 100%;
             height: 100%;
             pointer-events: none;
-            z-index: -3;
+            z-index: -6;
         }
 
         .star {
@@ -73,6 +252,7 @@
             50% { opacity: var(--opacity-end, 1); }
         }
 
+        /* Мелкие частицы */
         .particles {
             position: fixed;
             top: 0;
@@ -102,6 +282,101 @@
                 transform: translateY(-100vh) translateX(100px);
                 opacity: 0;
             }
+        }
+
+        /* Тень и пульсация */
+        .shadow-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(ellipse at 50% 50%, transparent 0%, rgba(0,0,0,0.7) 100%);
+            pointer-events: none;
+            z-index: -1;
+            animation: shadowPulse 8s ease-in-out infinite;
+        }
+
+        @keyframes shadowPulse {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 0.8; }
+        }
+
+        /* Световые лучи */
+        .light-rays {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(
+                45deg,
+                transparent 0px,
+                transparent 20px,
+                rgba(212, 175, 55, 0.02) 20px,
+                rgba(212, 175, 55, 0.02) 40px
+            );
+            pointer-events: none;
+            z-index: -1;
+            animation: raysMove 15s linear infinite;
+        }
+
+        @keyframes raysMove {
+            0% { background-position: 0 0; }
+            100% { background-position: 200px 200px; }
+        }
+
+        /* Плавающие орбы */
+        .glowing-orb {
+            position: fixed;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(212, 175, 55, 0.15) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: -2;
+            animation: orbFloat 20s ease-in-out infinite;
+        }
+
+        .glowing-orb:nth-child(1) {
+            top: 10%;
+            left: 10%;
+            animation: orbFloat 20s ease-in-out infinite;
+        }
+
+        .glowing-orb:nth-child(2) {
+            bottom: 10%;
+            right: 10%;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(139, 0, 0, 0.1) 0%, transparent 70%);
+            animation: orbFloat 25s ease-in-out infinite reverse;
+        }
+
+        @keyframes orbFloat {
+            0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.3; }
+            33% { transform: translate(30px, -30px) scale(1.1); opacity: 0.5; }
+            66% { transform: translate(-20px, 20px) scale(0.9); opacity: 0.4; }
+        }
+
+        /* Мерцание */
+        .flicker-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.02);
+            pointer-events: none;
+            z-index: -1;
+            animation: flicker 4s step-end infinite;
+        }
+
+        @keyframes flicker {
+            0%, 100% { opacity: 0; }
+            25% { opacity: 0.1; }
+            50% { opacity: 0; }
+            75% { opacity: 0.05; }
         }
 
         /* ========== ТЕМЫ ФРАКЦИЙ ========== */
@@ -657,11 +932,21 @@
             background: #2C2F2E;
             border-radius: 8px;
             margin-bottom: 15px;
+            overflow: hidden;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 3rem;
-            color: #D4AF37;
+        }
+
+        .book-cover img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .book-card:hover .book-cover img {
+            transform: scale(1.05);
         }
 
         .book-title {
@@ -674,6 +959,23 @@
             font-size: 0.9rem;
             color: #a0a8b0;
             margin-bottom: 10px;
+        }
+
+        .book-link {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 8px 16px;
+            background: linear-gradient(135deg, #D4AF37, #9A7D0C);
+            color: #0A0C0B;
+            border-radius: 4px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: 0.3s;
+        }
+
+        .book-link:hover {
+            background: linear-gradient(135deg, #9A7D0C, #5D3A1A);
+            color: #fff;
         }
 
         .search-box {
@@ -976,14 +1278,14 @@
             opacity: 1;
         }
 
-        .marker-imperium { color: #2f6f9f; }
-        .marker-chaos { color: #9f2f2f; }
-        .marker-eldar { color: #2f9f7f; }
-        .marker-ork { color: #5f9f2f; }
-        .marker-necron { color: #6f8faf; }
-        .marker-tyranid { color: #9f2f6f; }
-        .marker-tau { color: #9f8f2f; }
-        .marker-votann { color: #9f6f2f; }
+        .marker-imperium { color: #d5cb05; }
+        .marker-chaos { color: #a61d1d; }
+        .marker-eldar { color: #751099; }
+        .marker-ork { color: #199500; }
+        .marker-necron { color: #163118; }
+        .marker-tyranid { color: #d8559f; }
+        .marker-tau { color: #07ad97; }
+        .marker-votann { color: #bd7518; }
 
         .segment-label {
             position: absolute;
@@ -1294,34 +1596,45 @@
                 </div>
             </div>
 
-            <!-- Колесо фракций -->
-            <div>
-                <h2>Силы Галактики</h2>
-                <div class="faction-wheel-modern">
-                    <div class="center-faction-modern">
-                        <div id="faction-name" style="font-size: 1.2rem; font-weight: 700;">Империум</div>
-                        <div id="faction-desc" style="font-size: 0.8rem; color: #a0a8b0;">Защитники человечества</div>
-                    </div>
-                    <div class="faction-icon-modern fi1" onmouseover="updateCenter('Империум', 'Защитники человечества')" onclick="switchToPage('page1')">
-                        <i class="fas fa-eagle"></i>
-                    </div>
-                    <div class="faction-icon-modern fi2" onmouseover="updateCenter('Хаос', 'Слуги темных богов')" onclick="switchToPage('page2')">
-                        <i class="fas fa-star"></i>
-                    </div>
-                    <div class="faction-icon-modern fi3" onmouseover="updateCenter('Эльдары', 'Древняя раса')" onclick="switchToPage('page3')">
-                        <i class="fas fa-gem"></i>
-                    </div>
-                    <div class="faction-icon-modern fi4" onmouseover="updateCenter('Орки', 'Зеленая чума')" onclick="switchToPage('page4')">
-                        <i class="fas fa-fist-raised"></i>
-                    </div>
-                    <div class="faction-icon-modern fi5" onmouseover="updateCenter('Некроны', 'Нежить в металле')" onclick="switchToPage('page5')">
-                        <i class="fas fa-robot"></i>
-                    </div>
-                    <div class="faction-icon-modern fi6" onmouseover="updateCenter('Тираниды', 'Пожиратели миров')" onclick="switchToPage('page6')">
-                        <i class="fas fa-bug"></i>
-                    </div>
-                </div>
-            </div>
+           <!-- ========== КОЛЕСО ФРАКЦИЙ ========== -->
+<div class="faction-wheel-modern">
+    <div class="center-faction-modern">
+        <div id="faction-name" style="font-size: 1.2rem; font-weight: 700;">Империум</div>
+        <div id="faction-desc" style="font-size: 0.8rem; color: #a0a8b0;">Защитники человечества</div>
+    </div>
+    
+    <!-- ИМПЕРИУМ - вставьте ссылку в src="" -->
+    <div class="faction-icon-modern fi1" onmouseover="updateCenter('Империум', 'Защитники человечества')" onclick="switchToPage('page1')">
+        <img src="https://raw.githubusercontent.com/teemr2007/cho-to/main/imperium.webp" alt="Империум" style="width: 70%; height: 70%; object-fit: contain;">
+    </div>
+    
+    <!-- ХАОС - вставьте ссылку в src="" -->
+    <div class="faction-icon-modern fi2" onmouseover="updateCenter('Хаос', 'Слуги темных богов')" onclick="switchToPage('page2')">
+        <img src="https://raw.githubusercontent.com/teemr2007/cho-to/main/hao.webp" alt="Хаос" style="width: 70%; height: 70%; object-fit: contain;">
+    </div>
+    
+    <!-- ЭЛЬДАРЫ - вставьте ссылку в src="" -->
+    <div class="faction-icon-modern fi3" onmouseover="updateCenter('Эльдары', 'Древняя раса')" onclick="switchToPage('page3')">
+        <img src="https://raw.githubusercontent.com/teemr2007/cho-to/main/eldar.webp" alt="Эльдары" style="width: 70%; height: 70%; object-fit: contain;">
+    </div>
+    
+    <!-- ОРКИ - вставьте ссылку в src="" -->
+    <div class="faction-icon-modern fi4" onmouseover="updateCenter('Орки', 'Зеленая чума')" onclick="switchToPage('page4')">
+        <img src="https://raw.githubusercontent.com/teemr2007/cho-to/main/ork.webp" alt="Орки" style="width: 70%; height: 70%; object-fit: contain;">
+    </div>
+    
+    <!-- НЕКРОНЫ - вставьте ссылку в src="" -->
+    <div class="faction-icon-modern fi5" onmouseover="updateCenter('Некроны', 'Нежить в металле')" onclick="switchToPage('page5')">
+        <img src="https://raw.githubusercontent.com/teemr2007/cho-to/main/necron.webp" alt="Некроны" style="width: 70%; height: 70%; object-fit: contain;">
+    </div>
+    
+    <!-- ТИРАНИДЫ - вставьте ссылку в src="" -->
+    <div class="faction-icon-modern fi6" onmouseover="updateCenter('Тираниды', 'Пожиратели миров')" onclick="switchToPage('page6')">
+        <img src="https://raw.githubusercontent.com/teemr2007/cho-to/main/tiranyd.webp" alt="Тираниды" style="width: 70%; height: 70%; object-fit: contain;">
+    </div>
+    
+    <!-- Примечание: Доделать эту хрень для Тау и Воттан. Не забыть-->
+</div>
 
             <!-- Улучшенный таймлайн -->
             <div id="timeline">
@@ -1510,14 +1823,14 @@
             </div>
 
             <div class="legend">
-                <div class="legend-item"><span class="legend-color" style="color: #2f6f9f; background: #2f6f9f;"></span><span>Империум</span></div>
-                <div class="legend-item"><span class="legend-color" style="color: #9f2f2f; background: #9f2f2f;"></span><span>Хаос</span></div>
-                <div class="legend-item"><span class="legend-color" style="color: #2f9f7f; background: #2f9f7f;"></span><span>Эльдары</span></div>
-                <div class="legend-item"><span class="legend-color" style="color: #5f9f2f; background: #5f9f2f;"></span><span>Орки</span></div>
-                <div class="legend-item"><span class="legend-color" style="color: #6f8faf; background: #6f8faf;"></span><span>Некроны</span></div>
-                <div class="legend-item"><span class="legend-color" style="color: #9f2f6f; background: #9f2f6f;"></span><span>Тираниды</span></div>
-                <div class="legend-item"><span class="legend-color" style="color: #9f8f2f; background: #9f8f2f;"></span><span>Тау</span></div>
-                <div class="legend-item"><span class="legend-color" style="color: #9f6f2f; background: #9f6f2f;"></span><span>Лиги Воттан</span></div>
+                <div class="legend-item"><span class="legend-color" style="color: #d5cb05; background: #d5cb05;"></span><span>Империум</span></div>
+                <div class="legend-item"><span class="legend-color" style="color: #a61d1d; background: #a61d1d;"></span><span>Хаос</span></div>
+                <div class="legend-item"><span class="legend-color" style="color: #751099; background: #751099;"></span><span>Эльдары</span></div>
+                <div class="legend-item"><span class="legend-color" style="color: #199500; background: #199500;"></span><span>Орки</span></div>
+                <div class="legend-item"><span class="legend-color" style="color: #163118; background: #163118;"></span><span>Некроны</span></div>
+                <div class="legend-item"><span class="legend-color" style="color: #d8559f; background: #d8559f;"></span><span>Тираниды</span></div>
+                <div class="legend-item"><span class="legend-color" style="color: #07ad97; background: #07ad97;"></span><span>Тау</span></div>
+                <div class="legend-item"><span class="legend-color" style="color: #bd7518; background: #bd7518;"></span><span>Лиги Воттан</span></div>
             </div>
 
             <div class="info-panel" id="infoPanel">
@@ -1559,19 +1872,6 @@
             <div class="breadcrumbs">
                 <a href="#" onclick="switchToPage('home'); return false;">Главная</a> <span>></span> <a href="#" onclick="switchToPage('page1'); return false;">Фракции</a> <span>></span> <span>Империум</span>
             </div>
-            <div class="article-container">
-                <div class="article-toc">
-                    <h4>Содержание</h4>
-                    <ul>
-                        <li><a href="#imp1">Зарождение и падение</a></li>
-                        <li><a href="#imp2">Великий крестовый поход</a></li>
-                        <li><a href="#imp3">Ересь Хоруса</a></li>
-                        <li><a href="#imp4">После Ереси</a></li>
-                        <li><a href="#imp5">41-е тысячелетие</a></li>
-                        <li><a href="#imp6">Эра Разрушения</a></li>
-                    </ul>
-                </div>
-                <div>
                     <div class="local-navigation">
                         <a href="#imp1">ЗАРОЖДЕНИЕ И ПАДЕНИЕ</a>
                         <a href="#imp2">ВЕЛИКИЙ КРЕСТОВЫЙ ПОХОД</a>
