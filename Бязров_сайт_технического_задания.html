@@ -1675,12 +1675,12 @@
     
     <!-- 3. ОРКИ (справа вверху) -->
     <div class="faction-icon-modern fi3" onmouseover="updateCenter('Орки', 'Зеленая чума')" onclick="switchToPage('page4')">
-        <img src="ССЫЛКА_НА_ОРКИ" alt="Орки" style="width: 70%; height: 70%; object-fit: contain;">
+        <img src="https://raw.githubusercontent.com/teemr2007/cho-to/main/ork.webp" alt="Орки" style="width: 70%; height: 70%; object-fit: contain;">
     </div>
     
     <!-- 4. НЕКРОНЫ (справа внизу) -->
     <div class="faction-icon-modern fi4" onmouseover="updateCenter('Некроны', 'Нежить в металле')" onclick="switchToPage('page5')">
-        <img src="ССЫЛКА_НА_НЕКРОНЫ" alt="Некроны" style="width: 70%; height: 70%; object-fit: contain;">
+        <img src="https://github.com/teemr2007/cho-to/raw/main/necron.png" alt="Некроны" style="width: 70%; height: 70%; object-fit: contain;">
     </div>
     
     <!-- 5. ХАОС (внизу справа) -->
@@ -1690,7 +1690,7 @@
     
     <!-- 6. ЛИГИ ВОТТАН (внизу слева) -->
     <div class="faction-icon-modern fi6" onmouseover="updateCenter('Лиги Воттан', 'Кинсмены из Ядра')" onclick="switchToPage('page8')">
-        <img src="ССЫЛКА_НА_ЛИГИ_ВОТТАН" alt="Лиги Воттан" style="width: 70%; height: 70%; object-fit: contain;">
+        <img src="" alt="Лиги Воттан" style="width: 70%; height: 70%; object-fit: contain;">
     </div>
     
     <!-- 7. ТИРАНИДЫ (слева внизу) -->
@@ -1700,7 +1700,7 @@
     
     <!-- 8. ИМПЕРИУМ (слева вверху) -->
     <div class="faction-icon-modern fi8" onmouseover="updateCenter('Империум', 'Защитники человечества')" onclick="switchToPage('page1')">
-        <img src="ССЫЛКА_НА_ИМПЕРИУМ" alt="Империум" style="width: 70%; height: 70%; object-fit: contain;">
+        <img src="https://raw.githubusercontent.com/teemr2007/cho-to/main/imperium.png" alt="Империум" style="width: 70%; height: 70%; object-fit: contain;">
     </div>
 </div>
 
@@ -1777,85 +1777,372 @@
             </div>
         </div>
 
-<!-- ========== КАРТА ГАЛАКТИКИ (реалистичная структура) ========== -->
+<!-- ========== КАРТА ГАЛАКТИКИ (с тултипом при наведении) ========== -->
 <div id="map-page" class="map-page">
     <div style="text-align: center; margin-bottom: 40px;">
-        <h1>КАРТА ГАЛАКТИКИ · 41-е ТЫСЯЧЕЛЕТИЕ</h1>
-        <p style="color: #a0a8b0; font-size: 1.1rem;">Реалистичная карта Млечного Пути. Сегментумы отмечены цветными зонами. Планеты движутся по своим орбитам. Наведите на мир, чтобы увидеть информацию, нажмите для подробной статьи.</p>
+        <h1>СЕГМЕНТУМ МАКСИМУС</h1>
+        <p style="color: #a0a8b0; font-size: 1.1rem;">Интерактивная карта галактики в 41-м тысячелетии. Используйте колёсико мыши или кнопки для масштабирования. Наведите на мир, чтобы увидеть информацию, нажмите для подробной статьи.</p>
     </div>
 
-    <div class="galaxy-map-container" style="position: relative; width: 100%; height: 750px; overflow: hidden; border-radius: 24px; background: radial-gradient(ellipse at center, #03050a 0%, #010101 100%); border: 2px solid rgba(212, 175, 55, 0.3);">
-        
-        <!-- Звёздный фон -->
-        <canvas id="starfieldCanvas" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none;"></canvas>
-        
-        <!-- Сегментумы (цветные зоны) -->
-        <svg class="segment-zones" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none;" viewBox="0 0 1000 1000" preserveAspectRatio="none">
-            <defs>
-                <!-- Градиенты для сегментумов -->
-                <radialGradient id="segSol" cx="50%" cy="50%" r="40%">
-                    <stop offset="0%" stop-color="#2f6f9f" stop-opacity="0.15"/>
-                    <stop offset="100%" stop-color="#2f6f9f" stop-opacity="0"/>
-                </radialGradient>
-                <radialGradient id="segObscurus" cx="30%" cy="30%" r="45%">
-                    <stop offset="0%" stop-color="#9f2f2f" stop-opacity="0.12"/>
-                    <stop offset="100%" stop-color="#9f2f2f" stop-opacity="0"/>
-                </radialGradient>
-                <radialGradient id="segUltima" cx="70%" cy="30%" r="45%">
-                    <stop offset="0%" stop-color="#5f9f2f" stop-opacity="0.12"/>
-                    <stop offset="100%" stop-color="#5f9f2f" stop-opacity="0"/>
-                </radialGradient>
-                <radialGradient id="segPacificus" cx="30%" cy="70%" r="45%">
-                    <stop offset="0%" stop-color="#2f9f7f" stop-opacity="0.12"/>
-                    <stop offset="100%" stop-color="#2f9f7f" stop-opacity="0"/>
-                </radialGradient>
-                <radialGradient id="segTempestus" cx="70%" cy="70%" r="45%">
-                    <stop offset="0%" stop-color="#9f8f2f" stop-opacity="0.12"/>
-                    <stop offset="100%" stop-color="#9f8f2f" stop-opacity="0"/>
-                </radialGradient>
-            </defs>
+    <div class="galaxy-map-container" style="position: relative; width: 100%; height: 700px; overflow: hidden; border-radius: 24px; border: 2px solid rgba(212, 175, 55, 0.3);">
+        <div class="galaxy-map" id="galaxyMap" style="position: relative; width: 100%; height: 100%; transform-origin: center center; transition: transform 0.1s ease-out;">
+            <div class="spiral-arm arm1"></div>
+            <div class="spiral-arm arm2"></div>
+            <div class="spiral-arm arm3"></div>
+            <div class="spiral-arm arm4"></div>
             
-            <!-- Ядро галактики -->
-            <circle cx="500" cy="500" r="85" fill="url(#coreGlow)" filter="url(#glow)"/>
-            <circle cx="500" cy="500" r="45" fill="#ffaa66" opacity="0.9"/>
+            <div class="galactic-core"></div>
             
-            <!-- Зоны сегментумов (полупрозрачные области) -->
-            <circle cx="500" cy="500" r="320" fill="url(#segSol)" stroke="rgba(212, 175, 55, 0.2)" stroke-width="2" stroke-dasharray="5,5"/>
+            <!-- ========== МАРКЕРЫ МИРОВ ========== -->
+            <!-- ИМПЕРИУМ -->
+            <div class="world-marker marker-imperium" style="top: 45%; left: 55%;" 
+                 data-title="Терра"
+                 data-faction="Империум"
+                 data-coord="Сегментум Солар"
+                 data-desc="Священная планета Земля, тронный мир Императора Человечества. Здесь находится Золотой Трон и Императорский Дворец. Сердце Империума и центр Астрономикона."
+                 data-image="https://via.placeholder.com/200x150/2f6f9f/D4AF37?text=Terra">
+                <div class="marker-dot"></div>
+                <span class="marker-label">Терра</span>
+            </div>
             
-            <!-- Сегментум Обскурус (северо-запад) -->
-            <ellipse cx="300" cy="300" rx="220" ry="200" fill="url(#segObscurus)" stroke="rgba(159, 47, 47, 0.4)" stroke-width="2"/>
-            <!-- Сегментум Ультима (северо-восток) -->
-            <ellipse cx="700" cy="300" rx="220" ry="200" fill="url(#segUltima)" stroke="rgba(95, 159, 47, 0.4)" stroke-width="2"/>
-            <!-- Сегментум Пацификус (юго-запад) -->
-            <ellipse cx="300" cy="700" rx="220" ry="200" fill="url(#segPacificus)" stroke="rgba(47, 159, 127, 0.4)" stroke-width="2"/>
-            <!-- Сегментум Темпестус (юго-восток) -->
-            <ellipse cx="700" cy="700" rx="220" ry="200" fill="url(#segTempestus)" stroke="rgba(159, 143, 47, 0.4)" stroke-width="2"/>
+            <div class="world-marker marker-imperium" style="top: 40%; left: 65%;" 
+                 data-title="Марс"
+                 data-faction="Империум"
+                 data-coord="Сегментум Солар"
+                 data-desc="Кузница Империума, мир Адептус Механикус. Здесь производятся титаны, оружие и техника для всей Имперской военной машины."
+                 data-image="https://via.placeholder.com/200x150/2f6f9f/D4AF37?text=Mars">
+                <div class="marker-dot"></div>
+                <span class="marker-label">Марс</span>
+            </div>
             
-            <!-- Спиральные рукава (реалистичные) -->
-            <path d="M500 500 L540 420 C570 380 600 360 640 350 C680 340 720 345 760 360" stroke="rgba(212, 175, 55, 0.35)" stroke-width="6" fill="none"/>
-            <path d="M500 500 L460 420 C430 380 400 360 360 350 C320 340 280 345 240 360" stroke="rgba(212, 175, 55, 0.35)" stroke-width="6" fill="none"/>
-            <path d="M500 500 L540 580 C570 620 600 640 640 650 C680 660 720 655 760 640" stroke="rgba(212, 175, 55, 0.35)" stroke-width="6" fill="none"/>
-            <path d="M500 500 L460 580 C430 620 400 640 360 650 C320 660 280 655 240 640" stroke="rgba(212, 175, 55, 0.35)" stroke-width="6" fill="none"/>
-            <path d="M500 500 L520 470 C540 445 565 430 595 425" stroke="rgba(212, 175, 55, 0.25)" stroke-width="4" fill="none"/>
-            <path d="M500 500 L480 470 C460 445 435 430 405 425" stroke="rgba(212, 175, 55, 0.25)" stroke-width="4" fill="none"/>
-        </svg>
-        
-        <!-- Ядро галактики с анимацией -->
-        <div class="galactic-core-animated"></div>
-        
-        <!-- Контейнер для планет -->
-        <div id="planets-container" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></div>
-        
-        <!-- Метки сегментумов -->
-        <div class="segment-label seg-sol" style="position: absolute; top: 48%; left: 48%; transform: translate(-50%, -50%);">СЕГМЕНТУМ СОЛАР</div>
-        <div class="segment-label seg-obscurus" style="position: absolute; top: 22%; left: 22%; transform: translate(-50%, -50%);">СЕГМЕНТУМ ОБСКУРУС</div>
-        <div class="segment-label seg-ultima" style="position: absolute; top: 22%; left: 78%; transform: translate(-50%, -50%);">СЕГМЕНТУМ УЛЬТИМА</div>
-        <div class="segment-label seg-pacificus" style="position: absolute; top: 78%; left: 22%; transform: translate(-50%, -50%);">СЕГМЕНТУМ ПАЦИФИКУС</div>
-        <div class="segment-label seg-tempestus" style="position: absolute; top: 78%; left: 78%; transform: translate(-50%, -50%);">СЕГМЕНТУМ ТЕМПЕСТУС</div>
-        
-        <div class="map-controls">
-            <div class="map-btn" onclick="togglePlanetOrbit()"><i class="fas fa-play" id="orbitToggleIcon"></i></div>
-            <div class="map-btn" onclick="resetMapView()"><i class="fas fa-home"></i></div>
+            <div class="world-marker marker-imperium" style="top: 35%; left: 70%;" 
+                 data-title="Макрагг"
+                 data-faction="Империум"
+                 data-coord="Сегментум Ультима"
+                 data-desc="Родной мир Ультрамаринов, столица Ультрамара. Мир чести и доблести, где был воскрешён Робаут Жиллиман."
+                 data-image="https://via.placeholder.com/200x150/2f6f9f/D4AF37?text=Macragge">
+                <div class="marker-dot"></div>
+                <span class="marker-label">Макрагг</span>
+            </div>
+            
+            <div class="world-marker marker-imperium" style="top: 30%; left: 45%;" 
+                 data-title="Кадия"
+                 data-faction="Империум"
+                 data-coord="Сегментум Обскурус"
+                 data-desc="Планета-крепость, павшая перед силами Хаоса в 13-м Чёрном Крестовом походе. Её гибель привела к образованию Великого Разлома."
+                 data-image="https://via.placeholder.com/200x150/2f6f9f/D4AF37?text=Cadia">
+                <div class="marker-dot"></div>
+                <span class="marker-label">Кадия</span>
+            </div>
+            
+            <div class="world-marker marker-imperium" style="top: 55%; left: 40%;" 
+                 data-title="Офелия VII"
+                 data-faction="Империум"
+                 data-coord="Сегментум Пацификус"
+                 data-desc="Священный мир Экклезиархии, центр Имперской веры. Здесь находится Великая Кафедральная церковь."
+                 data-image="https://via.placeholder.com/200x150/2f6f9f/D4AF37?text=Ophelia">
+                <div class="marker-dot"></div>
+                <span class="marker-label">Офелия VII</span>
+            </div>
+            
+            <div class="world-marker marker-imperium" style="top: 50%; left: 35%;" 
+                 data-title="Баал"
+                 data-faction="Империум"
+                 data-coord="Сегментум Ультима"
+                 data-desc="Родной мир Кровавых Ангелов, опустошённый во время вторжения Левиафана, но возрождённый после возвращения примарха Сангвиния."
+                 data-image="https://via.placeholder.com/200x150/2f6f9f/D4AF37?text=Baal">
+                <div class="marker-dot"></div>
+                <span class="marker-label">Баал</span>
+            </div>
+            
+            <div class="world-marker marker-imperium" style="top: 60%; left: 75%;" 
+                 data-title="Ностромо"
+                 data-faction="Империум"
+                 data-coord="Сегментум Обскурус"
+                 data-desc="Родной мир Ночных Призраков, уничтоженный приказом самого примарха Конрада Кёрза."
+                 data-image="https://via.placeholder.com/200x150/2f6f9f/D4AF37?text=Nostromo">
+                <div class="marker-dot"></div>
+                <span class="marker-label">Ностромо</span>
+            </div>
+            
+            <div class="world-marker marker-imperium" style="top: 25%; left: 80%;" 
+                 data-title="Медуза"
+                 data-faction="Империум"
+                 data-coord="Сегментум Обскурус"
+                 data-desc="Родной мир Железных Рук, суровый мир с высокими перегрузками, закаливший легион Ферруса Мануса."
+                 data-image="https://via.placeholder.com/200x150/2f6f9f/D4AF37?text=Medusa">
+                <div class="marker-dot"></div>
+                <span class="marker-label">Медуза</span>
+            </div>
+            
+            <!-- ХАОС -->
+            <div class="world-marker marker-chaos" style="top: 25%; left: 30%;" 
+                 data-title="Око Ужаса"
+                 data-faction="Хаос"
+                 data-coord="Сегментум Обскурус"
+                 data-desc="Огромная варп-дыра в центре галактики, образовавшаяся при рождении Слаанеш. Вход в царство Хаоса, где скрываются Легионы Предателей."
+                 data-image="https://via.placeholder.com/200x150/9f2f2f/D4AF37?text=Eye+of+Terror">
+                <div class="marker-dot"></div>
+                <span class="marker-label">Око Ужаса</span>
+            </div>
+            
+            <div class="world-marker marker-chaos" style="top: 20%; left: 35%;" 
+                 data-title="Кузница Душ"
+                 data-faction="Хаос"
+                 data-coord="Сегментум Обскурус"
+                 data-desc="Демонический мир в Оке Ужаса, где производятся адские машины для армий Хаоса."
+                 data-image="https://via.placeholder.com/200x150/9f2f2f/D4AF37?text=Soulforge">
+                <div class="marker-dot"></div>
+                <span class="marker-label">Кузница Душ</span>
+            </div>
+            
+            <div class="world-marker marker-chaos" style="top: 75%; left: 25%;" 
+                 data-title="Медренгард"
+                 data-faction="Хаос"
+                 data-coord="Сегментум Обскурус"
+                 data-desc="Крепость-мир Железных Воинов, где Пертурабо правит своими легионами."
+                 data-image="https://via.placeholder.com/200x150/9f2f2f/D4AF37?text=Medrengard">
+                <div class="marker-dot"></div>
+                <span class="marker-label">Медренгард</span>
+            </div>
+            
+            <div class="world-marker marker-chaos" style="top: 80%; left: 30%;" 
+                 data-title="Сорт"
+                 data-faction="Хаос"
+                 data-coord="Сегментум Обскурус"
+                 data-desc="Демонический мир Тзинча, где обитают Лорды Изменений и бесконечные лабиринты."
+                 data-image="https://via.placeholder.com/200x150/9f2f2f/D4AF37?text=Sortiarius">
+                <div class="marker-dot"></div>
+                <span class="marker-label">Сортиарий</span>
+            </div>
+            
+            <!-- ЭЛЬДАРЫ -->
+            <div class="world-marker marker-eldar" style="top: 60%; left: 15%;" 
+                 data-title="Ийден"
+                 data-faction="Эльдары"
+                 data-coord="Сегментум Ультима"
+                 data-desc="Корабль-мир эльдар, почти уничтоженный флотом-ульем Кракен. Ныне мир-некрополь, где живые сражаются бок о бок с призрачными стражами."
+                 data-image="https://via.placeholder.com/200x150/2f9f7f/D4AF37?text=Iyanden">
+                <div class="marker-dot"></div>
+                <span class="marker-label">Ийден</span>
+            </div>
+            
+            <div class="world-marker marker-eldar" style="top: 15%; left: 85%;" 
+                 data-title="Улгве"
+                 data-faction="Эльдары"
+                 data-coord="Сегментум Пацификус"
+                 data-desc="Загадочный корабль-мир, известный своими провидцами и странными пророчествами."
+                 data-image="https://via.placeholder.com/200x150/2f9f7f/D4AF37?text=Ulthwe">
+                <div class="marker-dot"></div>
+                <span class="marker-label">Улгве</span>
+            </div>
+            
+            <div class="world-marker marker-eldar" style="top: 70%; left: 85%;" 
+                 data-title="Сайм-Ханн"
+                 data-faction="Эльдары"
+                 data-coord="Сегментум Ультима"
+                 data-desc="Корабль-мир диких наездников, известный своими авангардными атаками и стремительными рейдами."
+                 data-image="https://via.placeholder.com/200x150/2f9f7f/D4AF37?text=Saim-Hann">
+                <div class="marker-dot"></div>
+                <span class="marker-label">Сайм-Ханн</span>
+            </div>
+            
+            <div class="world-marker marker-eldar" style="top: 35%; left: 10%;" 
+                 data-title="Бьель-Тан"
+                 data-faction="Эльдары"
+                 data-coord="Сегментум Пацификус"
+                 data-desc="Корабль-мир воинов, стремящийся восстановить былое величие эльдар силой оружия."
+                 data-image="https://raw.githubusercontent.com/teemr2007/cho-to/main/biel-tan.webp">
+                <div class="marker-dot"></div>
+                <span class="marker-label">Бьель-Тан</span>
+            </div>
+            
+            <!-- ОРКИ -->
+            <div class="world-marker marker-ork" style="top: 70%; left: 80%;" 
+                 data-title="Армагеддон"
+                 data-faction="Орки"
+                 data-coord="Сегментум Солар"
+                 data-desc="Промышленный мир, подвергшийся нескольким нашествиям орков под предводительством Газгкулла."
+                 data-image="https://via.placeholder.com/200x150/5f9f2f/D4AF37?text=Armageddon">
+                <div class="marker-dot"></div>
+                <span class="marker-label">Армагеддон</span>
+            </div>
+            
+            <div class="world-marker marker-ork" style="top: 55%; left: 85%;" 
+                 data-title="Октариус"
+                 data-faction="Орки"
+                 data-coord="Сегментум Ультима"
+                 data-desc="Огромный комплекс миров, где орки ведут бесконечную войну с тиранидами."
+                 data-image="https://via.placeholder.com/200x150/5f9f2f/D4AF37?text=Octarius">
+                <div class="marker-dot"></div>
+                <span class="marker-label">Октариус</span>
+            </div>
+            
+            <div class="world-marker marker-ork" style="top: 85%; left: 65%;" 
+                 data-title="Урк"
+                 data-faction="Орки"
+                 data-coord="Сегментум Ультима"
+                 data-desc="Родной мир Газгкулла, где будущий великий вождь получил своё первое видение от Горка и Морка."
+                 data-image="https://via.placeholder.com/200x150/5f9f2f/D4AF37?text=Urk">
+                <div class="marker-dot"></div>
+                <span class="marker-label">Урк</span>
+            </div>
+            
+            <div class="world-marker marker-ork" style="top: 45%; left: 75%;" 
+                 data-title="Калдор"
+                 data-faction="Орки"
+                 data-coord="Сегментум Ультима"
+                 data-desc="Мир-свалка, где орки собирают металлолом для своих гигантских машин."
+                 data-image="https://via.placeholder.com/200x150/5f9f2f/D4AF37?text=Calder">
+                <div class="marker-dot"></div>
+                <span class="marker-label">Калдор</span>
+            </div>
+            
+            <!-- НЕКРОНЫ -->
+            <div class="world-marker marker-necron" style="top: 80%; left: 45%;" 
+                 data-title="Солемнас"
+                 data-faction="Некроны"
+                 data-coord="Сегментум Ультима"
+                 data-desc="Мир-музей Тразина Бесконечного, где собраны величайшие артефакты и существа галактики."
+                 data-image="https://raw.githubusercontent.com/teemr2007/cho-to/main/solemnas.webp">
+                <div class="marker-dot"></div>
+                <span class="marker-label">Солемнас</span>
+            </div>
+            
+            <div class="world-marker marker-necron" style="top: 10%; left: 20%;" 
+                 data-title="Мандрагора"
+                 data-faction="Некроны"
+                 data-coord="Сегментум Обскурус"
+                 data-desc="Древний мир некронов, где пробуждается одна из самых могущественных династий."
+                 data-image="https://raw.githubusercontent.com/teemr2007/cho-to/main/mandragora.webp">
+                <div class="marker-dot"></div>
+                <span class="marker-label">Мандрагора</span>
+            </div>
+            
+            <div class="world-marker marker-necron" style="top: 65%; left: 55%;" 
+                 data-title="Гидрафакс"
+                 data-faction="Некроны"
+                 data-coord="Сегментум Темпестус"
+                 data-desc="Мир-гробница династии Мепхрит, известной своим разрушительным оружием."
+                 data-image="https://via.placeholder.com/200x150/6f8faf/D4AF37?text=Gidrafax">
+                <div class="marker-dot"></div>
+                <span class="marker-label">Гидрафакс</span>
+            </div>
+            
+            <div class="world-marker marker-necron" style="top: 85%; left: 15%;" 
+                 data-title="Анкара"
+                 data-faction="Некроны"
+                 data-coord="Сегментум Темпестус"
+                 data-desc="Цитадель династии Новиок, ведущей тайные эксперименты по возвращению плоти."
+                 data-image="https://via.placeholder.com/200x150/6f8faf/D4AF37?text=Ankara">
+                <div class="marker-dot"></div>
+                <span class="marker-label">Анкара</span>
+            </div>
+            
+            <!-- ТИРАНИДЫ -->
+            <div class="world-marker marker-tyranid" style="top: 85%; left: 70%;" 
+                 data-title="Тиран"
+                 data-faction="Тираниды"
+                 data-coord="Сегментум Ультима"
+                 data-desc="Первая планета, уничтоженная тиранидами. Стерта до камня флотом-ульем Бегемот."
+                 data-image="https://via.placeholder.com/200x150/9f2f6f/D4AF37?text=Tyran">
+                <div class="marker-dot"></div>
+                <span class="marker-label">Тиран</span>
+            </div>
+            
+            <div class="world-marker marker-tyranid" style="top: 90%; left: 90%;" 
+                 data-title="Горгон"
+                 data-faction="Тираниды"
+                 data-coord="Сегментум Пацификус"
+                 data-desc="Мир, поглощённый флотом-ульем Горгон, известным своей адаптивностью."
+                 data-image="https://via.placeholder.com/200x150/9f2f6f/D4AF37?text=Gorgon">
+                <div class="marker-dot"></div>
+                <span class="marker-label">Горгон</span>
+            </div>
+            
+            <div class="world-marker marker-tyranid" style="top: 75%; left: 95%;" 
+                 data-title="Кронос"
+                 data-faction="Тираниды"
+                 data-coord="Сегментум Ультима"
+                 data-desc="Флот-улей, специализирующийся на охоте за демонами и псайкерами."
+                 data-image="https://via.placeholder.com/200x150/9f2f6f/D4AF37?text=Kronos">
+                <div class="marker-dot"></div>
+                <span class="marker-label">Кронос</span>
+            </div>
+            
+            <!-- ТАУ -->
+            <div class="world-marker marker-tau" style="top: 45%; left: 95%;" 
+                 data-title="Тау"
+                 data-faction="Тау"
+                 data-coord="Сегментум Ультима"
+                 data-desc="Родной мир Империи Тау, центр философии Высшего Блага."
+                 data-image="https://via.placeholder.com/200x150/9f8f2f/D4AF37?text=Tau">
+                <div class="marker-dot"></div>
+                <span class="marker-label">Тау</span>
+            </div>
+            
+            <div class="world-marker marker-tau" style="top: 40%; left: 90%;" 
+                 data-title="Виор'ла"
+                 data-faction="Тау"
+                 data-coord="Сегментум Ультима"
+                 data-desc="Мир-кузница Тау, производящий лучшие боевые костюмы."
+                 data-image="https://via.placeholder.com/200x150/9f8f2f/D4AF37?text=Viorla">
+                <div class="marker-dot"></div>
+                <span class="marker-label">Виор'ла</span>
+            </div>
+            
+            <div class="world-marker marker-tau" style="top: 35%; left: 85%;" 
+                 data-title="Да'лит"
+                 data-faction="Тау"
+                 data-coord="Сегментум Ультима"
+                 data-desc="Священный мир, где были обнаружены первые артефакты Древних."
+                 data-image="https://via.placeholder.com/200x150/9f8f2f/D4AF37?text=Dalyth">
+                <div class="marker-dot"></div>
+                <span class="marker-label">Да'лит</span>
+            </div>
+            
+            <!-- ЛИГИ ВОТТАН -->
+            <div class="world-marker marker-votann" style="top: 50%; left: 50%;" 
+                 data-title="Ядро Галактики"
+                 data-faction="Лиги Воттан"
+                 data-coord="Центр Галактики"
+                 data-desc="Таинственная область в центре галактики, где скрываются Лиги Воттан со своими древними технологиями и Воттанами."
+                 data-image="https://via.placeholder.com/200x150/9f6f2f/D4AF37?text=Core">
+                <div class="marker-dot"></div>
+                <span class="marker-label">Ядро</span>
+            </div>
+            
+            <div class="world-marker marker-votann" style="top: 48%; left: 52%;" 
+                 data-title="Галлеус"
+                 data-faction="Лиги Воттан"
+                 data-coord="Ядро Галактики"
+                 data-desc="Один из крупнейших миров-крепостей Лиг Воттан, центр Тран-Гиперион."
+                 data-image="https://via.placeholder.com/200x150/9f6f2f/D4AF37?text=Galleus">
+                <div class="marker-dot"></div>
+                <span class="marker-label">Галлеус</span>
+            </div>
+            
+            <div class="world-marker marker-votann" style="top: 52%; left: 48%;" 
+                 data-title="Тормон"
+                 data-faction="Лиги Воттан"
+                 data-coord="Ядро Галактики"
+                 data-desc="Мир-архив, где хранятся древнейшие Воттаны и базы знаний."
+                 data-image="https://via.placeholder.com/200x150/9f6f2f/D4AF37?text=Thormon">
+                <div class="marker-dot"></div>
+                <span class="marker-label">Тормон</span>
+            </div>
+
+            <div class="segment-label" style="top: 20%; left: 20%;">Сегментум Пацификус</div>
+            <div class="segment-label" style="top: 20%; left: 70%;">Сегментум Обскурус</div>
+            <div class="segment-label" style="top: 70%; left: 20%;">Сегментум Темпестус</div>
+            <div class="segment-label" style="top: 70%; left: 70%;">Сегментум Ультима</div>
+            <div class="segment-label" style="top: 45%; left: 45%;">Сегментум Солар</div>
+
+            <div class="map-controls">
+                <div class="map-btn" onclick="zoomIn()"><i class="fas fa-plus"></i></div>
+                <div class="map-btn" onclick="zoomOut()"><i class="fas fa-minus"></i></div>
+                <div class="map-btn" onclick="resetMap()"><i class="fas fa-home"></i></div>
+            </div>
         </div>
     </div>
 
@@ -1868,80 +2155,70 @@
         <div class="legend-item"><span class="legend-color" style="color: #9f2f6f; background: #9f2f6f;"></span><span>Тираниды</span></div>
         <div class="legend-item"><span class="legend-color" style="color: #9f8f2f; background: #9f8f2f;"></span><span>Тау</span></div>
         <div class="legend-item"><span class="legend-color" style="color: #9f6f2f; background: #9f6f2f;"></span><span>Лиги Воттан</span></div>
-        <div class="legend-item"><span style="background: none;">•</span><span>Сегментумы</span></div>
     </div>
 
     <!-- Тултип -->
-    <div id="worldTooltip" class="world-tooltip" style="display: none; position: fixed; background: rgba(10, 12, 14, 0.95); border: 2px solid #D4AF37; border-radius: 12px; padding: 15px; max-width: 280px; z-index: 1000; backdrop-filter: blur(10px);">
+    <div id="worldTooltip" class="world-tooltip" style="display: none; position: fixed; background: rgba(10, 12, 14, 0.95); border: 2px solid #D4AF37; border-radius: 12px; padding: 15px; max-width: 280px; z-index: 1000; backdrop-filter: blur(10px); box-shadow: 0 0 30px rgba(0,0,0,0.5);">
         <div id="tooltipImage" style="width: 100%; height: 120px; background: #2C2F2E; border-radius: 8px; margin-bottom: 10px; overflow: hidden;">
             <img src="" alt="" style="width: 100%; height: 100%; object-fit: cover;">
         </div>
-        <div id="tooltipTitle" style="font-size: 1.2rem; color: #D4AF37; font-weight: bold;"></div>
-        <div id="tooltipFaction" style="font-size: 0.8rem; margin-bottom: 8px;"></div>
+        <div id="tooltipTitle" style="font-size: 1.2rem; color: #D4AF37; font-weight: bold; margin-bottom: 5px;"></div>
+        <div id="tooltipFaction" style="font-size: 0.8rem; color: #a0a8b0; margin-bottom: 8px;"></div>
         <div id="tooltipDesc" style="font-size: 0.85rem; color: #e0e4e8; line-height: 1.4;"></div>
     </div>
 
     <div class="info-panel" id="infoPanel">
-        <h2 id="selectedWorldTitle">Галактика Млечный Путь</h2>
+        <h2 id="selectedWorldTitle">Терра</h2>
         <div class="world-details" id="worldDetails">
-            <div class="world-card">
-                <div class="faction-tag" style="background: rgba(212, 175, 55, 0.2); color: #D4AF37;">Информация</div>
-                <p class="desc">Нажмите на любую планету, чтобы узнать её историю. Планеты движутся по орбитам, отражая реальное расположение миров в галактике. Сегментумы — основные административные области Империума.</p>
+            <div class="world-card" id="terra-info">
+                <div class="faction-tag" style="background: rgba(47, 111, 159, 0.2); color: #2f6f9f;">Империум</div>
+                <div class="coord">Сегментум Солар</div>
+                <p class="desc">Священная планета Земля, тронный мир Императора Человечества. Здесь находится Золотой Трон и Императорский Дворец. Сердце Империума и центр Астрономикона.</p>
             </div>
         </div>
     </div>
 </div>
 
 <style>
-/* Стили для сегментумов */
-.segment-label {
-    font-family: 'Cinzel', serif;
-    font-size: 0.85rem;
-    font-weight: bold;
-    color: rgba(212, 175, 55, 0.7);
-    text-shadow: 0 0 10px rgba(0,0,0,0.5);
-    letter-spacing: 2px;
+/* Стили для спиральных рукавов */
+.spiral-arm {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: repeating-radial-gradient(circle at 30% 50%, transparent 0%, transparent 20%, rgba(212, 175, 55, 0.03) 20.1%, rgba(212, 175, 55, 0.03) 25%);
     pointer-events: none;
-    white-space: nowrap;
-    background: rgba(0,0,0,0.5);
-    padding: 4px 12px;
-    border-radius: 20px;
-    backdrop-filter: blur(4px);
-    border: 1px solid rgba(212, 175, 55, 0.3);
 }
 
-.seg-sol { background: rgba(47, 111, 159, 0.2); border-color: #2f6f9f; }
-.seg-obscurus { background: rgba(159, 47, 47, 0.2); border-color: #9f2f2f; }
-.seg-ultima { background: rgba(95, 159, 47, 0.2); border-color: #5f9f2f; }
-.seg-pacificus { background: rgba(47, 159, 127, 0.2); border-color: #2f9f7f; }
-.seg-tempestus { background: rgba(159, 143, 47, 0.2); border-color: #9f8f2f; }
+.arm1 { transform: rotate(0deg); }
+.arm2 { transform: rotate(90deg); }
+.arm3 { transform: rotate(180deg); }
+.arm4 { transform: rotate(270deg); }
 
-/* Анимация ядра */
-.galactic-core-animated {
+.galactic-core {
     position: absolute;
     top: 50%;
     left: 50%;
+    transform: translate(-50%, -50%);
     width: 200px;
     height: 200px;
-    transform: translate(-50%, -50%);
-    background: radial-gradient(circle, #ffcc88 0%, #ffaa66 30%, #886644 60%, transparent 80%);
+    background: radial-gradient(circle, #D4AF37 0%, #8B0000 50%, transparent 80%);
     border-radius: 50%;
     filter: blur(20px);
-    animation: corePulse 3s ease-in-out infinite;
+    opacity: 0.4;
+    animation: corePulse 4s ease-in-out infinite;
     pointer-events: none;
-    z-index: 2;
 }
 
 @keyframes corePulse {
-    0%, 100% { opacity: 0.6; transform: translate(-50%, -50%) scale(1); filter: blur(20px); }
-    50% { opacity: 1; transform: translate(-50%, -50%) scale(1.05); filter: blur(25px); }
+    0%, 100% { opacity: 0.4; transform: translate(-50%, -50%) scale(1); }
+    50% { opacity: 0.6; transform: translate(-50%, -50%) scale(1.1); }
 }
 
 /* Маркеры планет */
 .world-marker {
     position: absolute;
-    width: 28px;
-    height: 28px;
+    width: 24px;
+    height: 24px;
     transform: translate(-50%, -50%);
     cursor: pointer;
     transition: all 0.2s ease;
@@ -1950,7 +2227,7 @@
 
 .world-marker:hover {
     transform: translate(-50%, -50%) scale(1.3);
-    filter: drop-shadow(0 0 15px currentColor);
+    filter: drop-shadow(0 0 12px currentColor);
     z-index: 20;
 }
 
@@ -1960,11 +2237,11 @@
     background: currentColor;
     border-radius: 50%;
     animation: markerGlow 2s ease-in-out infinite;
-    box-shadow: 0 0 15px currentColor;
+    box-shadow: 0 0 10px currentColor;
 }
 
 @keyframes markerGlow {
-    0%, 100% { opacity: 0.8; transform: scale(1); }
+    0%, 100% { opacity: 0.7; transform: scale(1); }
     50% { opacity: 1; transform: scale(1.1); }
 }
 
@@ -1976,518 +2253,226 @@
     white-space: nowrap;
     background: rgba(10, 12, 14, 0.9);
     color: white;
-    padding: 4px 8px;
+    padding: 3px 6px;
     border-radius: 4px;
-    font-size: 0.7rem;
+    font-size: 0.65rem;
     border: 1px solid currentColor;
     opacity: 0;
     transition: opacity 0.2s;
     pointer-events: none;
-    margin-top: 5px;
+    margin-top: 4px;
     font-family: 'Montserrat', sans-serif;
+    letter-spacing: 0.5px;
 }
 
 .world-marker:hover .marker-label {
     opacity: 1;
 }
+
+.segment-label {
+    position: absolute;
+    color: rgba(212, 175, 55, 0.6);
+    font-family: 'Cinzel', serif;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    transform: translate(-50%, -50%);
+    white-space: nowrap;
+    text-shadow: 0 0 5px rgba(0,0,0,0.5);
+    pointer-events: none;
+    background: rgba(0,0,0,0.4);
+    padding: 2px 8px;
+    border-radius: 4px;
+    backdrop-filter: blur(2px);
+}
+
+.map-controls {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    display: flex;
+    gap: 10px;
+    z-index: 50;
+}
+
+.map-btn {
+    width: 40px;
+    height: 40px;
+    background: rgba(20, 25, 30, 0.8);
+    border: 1px solid #D4AF37;
+    border-radius: 8px;
+    color: #D4AF37;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(5px);
+}
+
+.map-btn:hover {
+    background: #D4AF37;
+    color: #0A0C0B;
+    transform: scale(1.1);
+}
+
+.legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+    margin: 30px 0;
+    padding: 20px;
+    background: rgba(20, 25, 30, 0.5);
+    border-radius: 12px;
+    border: 1px solid rgba(212, 175, 55, 0.2);
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.9rem;
+}
+
+.legend-color {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    box-shadow: 0 0 10px currentColor;
+}
 </style>
+
 <script>
-                      // Переменные для масштабирования и перетаскивания карты
-            let scale = 1;
-            let panX = 0;
-            let panY = 0;
-            let isDragging = false;
-            let startX, startY;
-            
-            const mapContainer = document.querySelector('.galaxy-map-container');
-            const map = document.getElementById('galaxyMap');
-            
-            // Функция применения трансформации
-            function applyTransform() {
-                if (map) {
-                    map.style.transform = `scale(${scale}) translate(${panX / scale}px, ${panY / scale}px)`;
-                }
-            }
-            
-            // Масштабирование относительно центра контейнера
-            window.zoomIn = function() {
-                const newScale = Math.min(scale + 0.15, 3);
-                if (newScale !== scale) {
-                    scale = newScale;
-                    applyTransform();
-                }
-            };
-            
-            window.zoomOut = function() {
-                const newScale = Math.max(scale - 0.15, 0.4);
-                if (newScale !== scale) {
-                    scale = newScale;
-                    applyTransform();
-                }
-            };
-            
-            window.resetMap = function() {
-                scale = 1;
-                panX = 0;
-                panY = 0;
-                applyTransform();
-            };
-            
-            // Перетаскивание карты
-            if (mapContainer) {
-                mapContainer.addEventListener('mousedown', (e) => {
-                    // Не начинаем перетаскивание, если клик на маркере
-                    if (e.target.closest('.world-marker')) return;
-                    
-                    isDragging = true;
-                    startX = e.clientX - panX;
-                    startY = e.clientY - panY;
-                    mapContainer.style.cursor = 'grabbing';
-                    e.preventDefault();
-                });
-                
-                window.addEventListener('mousemove', (e) => {
-                    if (!isDragging) return;
-                    
-                    panX = e.clientX - startX;
-                    panY = e.clientY - startY;
-                    
-                    // Ограничиваем перемещение, чтобы карта не уходила слишком далеко
-                    const maxPanX = 500 * scale;
-                    const maxPanY = 500 * scale;
-                    panX = Math.min(Math.max(panX, -maxPanX), maxPanX);
-                    panY = Math.min(Math.max(panY, -maxPanY), maxPanY);
-                    
-                    applyTransform();
-                });
-                
-                window.addEventListener('mouseup', () => {
-                    isDragging = false;
-                    if (mapContainer) mapContainer.style.cursor = 'grab';
-                });
-                
-                // Масштабирование колесиком мыши
-                mapContainer.addEventListener('wheel', (e) => {
-                    e.preventDefault();
-                    const delta = e.deltaY > 0 ? -0.1 : 0.1;
-                    const newScale = Math.min(Math.max(scale + delta, 0.4), 3);
-                    
-                    if (newScale !== scale) {
-                        // Вычисляем позицию курсора относительно карты для плавного зума
-                        const rect = mapContainer.getBoundingClientRect();
-                        const mouseX = e.clientX - rect.left;
-                        const mouseY = e.clientY - rect.top;
-                        
-                        // Корректируем панорамирование, чтобы зум происходил относительно курсора
-                        const scaleFactor = newScale / scale;
-                        panX = mouseX - (mouseX - panX) * scaleFactor;
-                        panY = mouseY - (mouseY - panY) * scaleFactor;
-                        
-                        scale = newScale;
-                        applyTransform();
-                    }
-                });
-            }
-            
-            // Инициализация
+// ========== МАСШТАБИРОВАНИЕ КАРТЫ ==========
+let scale = 1;
+let panX = 0;
+let panY = 0;
+let isDragging = false;
+let startX, startY;
+const mapContainer = document.querySelector('.galaxy-map-container');
+const map = document.getElementById('galaxyMap');
+
+function applyTransform() {
+    if (map) {
+        map.style.transform = `scale(${scale}) translate(${panX / scale}px, ${panY / scale}px)`;
+    }
+}
+
+window.zoomIn = function() {
+    scale = Math.min(scale + 0.15, 3);
+    applyTransform();
+};
+
+window.zoomOut = function() {
+    scale = Math.max(scale - 0.15, 0.4);
+    applyTransform();
+};
+
+window.resetMap = function() {
+    scale = 1;
+    panX = 0;
+    panY = 0;
+    applyTransform();
+};
+
+if (mapContainer) {
+    mapContainer.addEventListener('mousedown', (e) => {
+        if (e.target.closest('.world-marker')) return;
+        isDragging = true;
+        startX = e.clientX - panX;
+        startY = e.clientY - panY;
+        mapContainer.style.cursor = 'grabbing';
+        e.preventDefault();
+    });
+    
+    window.addEventListener('mousemove', (e) => {
+        if (!isDragging) return;
+        panX = e.clientX - startX;
+        panY = e.clientY - startY;
+        const maxPanX = 500 * scale;
+        const maxPanY = 500 * scale;
+        panX = Math.min(Math.max(panX, -maxPanX), maxPanX);
+        panY = Math.min(Math.max(panY, -maxPanY), maxPanY);
+        applyTransform();
+    });
+    
+    window.addEventListener('mouseup', () => {
+        isDragging = false;
+        if (mapContainer) mapContainer.style.cursor = 'grab';
+    });
+    
+    mapContainer.addEventListener('wheel', (e) => {
+        e.preventDefault();
+        const delta = e.deltaY > 0 ? -0.1 : 0.1;
+        const newScale = Math.min(Math.max(scale + delta, 0.4), 3);
+        if (newScale !== scale) {
+            const rect = mapContainer.getBoundingClientRect();
+            const mouseX = e.clientX - rect.left;
+            const mouseY = e.clientY - rect.top;
+            const scaleFactor = newScale / scale;
+            panX = mouseX - (mouseX - panX) * scaleFactor;
+            panY = mouseY - (mouseY - panY) * scaleFactor;
+            scale = newScale;
             applyTransform();
+        }
+    });
+}
+
+// ========== ТУЛТИП ПРИ НАВЕДЕНИИ ==========
+const markers = document.querySelectorAll('.world-marker');
+const tooltip = document.getElementById('worldTooltip');
+let tooltipTimeout;
+
+markers.forEach(marker => {
+    marker.addEventListener('mouseenter', (e) => {
+        const title = marker.getAttribute('data-title') || marker.querySelector('.marker-label')?.innerText || 'Неизвестный мир';
+        const faction = marker.getAttribute('data-faction') || '';
+        const desc = marker.getAttribute('data-desc') || 'Нет описания';
+        const image = marker.getAttribute('data-image') || 'https://via.placeholder.com/200x150/2C2F2E/D4AF37?text=No+Image';
+        
+        document.getElementById('tooltipImage').querySelector('img').src = image;
+        document.getElementById('tooltipTitle').innerText = title;
+        
+        let factionColor = '#a0a8b0';
+        if (marker.classList.contains('marker-imperium')) factionColor = '#2f6f9f';
+        else if (marker.classList.contains('marker-chaos')) factionColor = '#9f2f2f';
+        else if (marker.classList.contains('marker-eldar')) factionColor = '#2f9f7f';
+        else if (marker.classList.contains('marker-ork')) factionColor = '#5f9f2f';
+        else if (marker.classList.contains('marker-necron')) factionColor = '#6f8faf';
+        else if (marker.classList.contains('marker-tyranid')) factionColor = '#9f2f6f';
+        else if (marker.classList.contains('marker-tau')) factionColor = '#9f8f2f';
+        else if (marker.classList.contains('marker-votann')) factionColor = '#9f6f2f';
+        
+        document.getElementById('tooltipFaction').innerHTML = `<span style="color: ${factionColor}">${faction}</span>`;
+        document.getElementById('tooltipDesc').innerText = desc;
+        
+        const rect = marker.getBoundingClientRect();
+        tooltip.style.display = 'block';
+        tooltip.style.left = (rect.right + 15) + 'px';
+        tooltip.style.top = (rect.top - 20) + 'px';
+        
+        const tooltipRect = tooltip.getBoundingClientRect();
+        if (tooltipRect.right > window.innerWidth) {
+            tooltip.style.left = (rect.left - tooltipRect.width - 15) + 'px';
+        }
+        if (tooltipRect.bottom > window.innerHeight) {
+            tooltip.style.top = (rect.bottom - tooltipRect.height) + 'px';
+        }
+        
+        clearTimeout(tooltipTimeout);
+    });
+    
+    marker.addEventListener('mouseleave', () => {
+        tooltipTimeout = setTimeout(() => {
+            tooltip.style.display = 'none';
+        }, 200);
+    });
+});
+
+// Инициализация
+applyTransform();
 </script>
-<script>
-                // Обработка наведения на маркеры (показ тултипа с картинкой)
-            const markers = document.querySelectorAll('.world-marker');
-            const tooltip = document.getElementById('worldTooltip');
-            let tooltipTimeout;
-            
-            markers.forEach(marker => {
-                marker.addEventListener('mouseenter', (e) => {
-                    // Получаем данные из атрибутов data-*
-                    const title = marker.getAttribute('data-title') || marker.querySelector('.marker-label')?.innerText || 'Неизвестный мир';
-                    const faction = marker.getAttribute('data-faction') || '';
-                    const desc = marker.getAttribute('data-desc') || 'Нет описания';
-                    const image = marker.getAttribute('data-image') || 'https://via.placeholder.com/200x150/2C2F2E/D4AF37?text=No+Image';
-                    
-                    // Заполняем тултип
-                    document.getElementById('tooltipImage').querySelector('img').src = image;
-                    document.getElementById('tooltipTitle').innerText = title;
-                    document.getElementById('tooltipFaction').innerHTML = `<span style="color: ${marker.classList.contains('marker-imperium') ? '#2f6f9f' : (marker.classList.contains('marker-chaos') ? '#9f2f2f' : (marker.classList.contains('marker-eldar') ? '#2f9f7f' : (marker.classList.contains('marker-ork') ? '#5f9f2f' : (marker.classList.contains('marker-necron') ? '#6f8faf' : (marker.classList.contains('marker-tyranid') ? '#9f2f6f' : (marker.classList.contains('marker-tau') ? '#9f8f2f' : '#9f6f2f'))))))}">${faction}</span>`;
-                    document.getElementById('tooltipDesc').innerText = desc;
-                    
-                    // Позиционируем тултип рядом с курсором
-                    const rect = marker.getBoundingClientRect();
-                    tooltip.style.display = 'block';
-                    tooltip.style.left = (rect.right + 15) + 'px';
-                    tooltip.style.top = (rect.top - 20) + 'px';
-                    
-                    // Проверка, чтобы тултип не выходил за экран
-                    const tooltipRect = tooltip.getBoundingClientRect();
-                    if (tooltipRect.right > window.innerWidth) {
-                        tooltip.style.left = (rect.left - tooltipRect.width - 15) + 'px';
-                    }
-                    if (tooltipRect.bottom > window.innerHeight) {
-                        tooltip.style.top = (rect.bottom - tooltipRect.height) + 'px';
-                    }
-                    
-                    clearTimeout(tooltipTimeout);
-                });
-                
-                marker.addEventListener('mouseleave', () => {
-                    tooltipTimeout = setTimeout(() => {
-                        tooltip.style.display = 'none';
-                    }, 200);
-                });
-            });
-            
-            // При движении мыши обновляем позицию тултипа (если нужно)
-            document.addEventListener('mousemove', (e) => {
-                if (tooltip.style.display === 'block') {
-                    // Небольшая задержка, чтобы тултип не прыгал
-                    return;
-                }
-            });
-</script>
-<script>
-                // ========== ЗВЁЗДНЫЙ ФОН ==========
-            function createStarfield() {
-                const canvas = document.getElementById('starfieldCanvas');
-                if (!canvas) return;
-                
-                const ctx = canvas.getContext('2d');
-                
-                function resizeCanvas() {
-                    const container = canvas.parentElement;
-                    canvas.width = container.clientWidth;
-                    canvas.height = container.clientHeight;
-                }
-                resizeCanvas();
-                window.addEventListener('resize', resizeCanvas);
-                
-                const stars = [];
-                const starCount = 800;
-                
-                // Создаём звёзды
-                for (let i = 0; i < starCount; i++) {
-                    stars.push({
-                        x: Math.random() * canvas.width,
-                        y: Math.random() * canvas.height,
-                        radius: Math.random() * 1.5 + 0.5,
-                        alpha: Math.random() * 0.5 + 0.3,
-                        speed: Math.random() * 0.02 + 0.005
-                    });
-                }
-                
-                function drawStars() {
-                    if (!canvas || !ctx) return;
-                    ctx.clearRect(0, 0, canvas.width, canvas.height);
-                    
-                    for (let star of stars) {
-                        ctx.beginPath();
-                        ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
-                        ctx.fillStyle = `rgba(255, 255, 200, ${star.alpha + Math.sin(Date.now() * star.speed) * 0.2})`;
-                        ctx.fill();
-                    }
-                }
-                
-                function animateStars() {
-                    drawStars();
-                    requestAnimationFrame(animateStars);
-                }
-                
-                animateStars();
-            }
-            
-            // ========== ПЛАНЕТЫ С ОРБИТАЛЬНЫМ ДВИЖЕНИЕМ ==========
-            const planets = [
-                { name: "Терра", faction: "imperium", angle: 0, radius: 180, speed: 0.002, size: 28, desc: "Священная планета Земля, тронный мир Императора", coord: "Сегментум Солар" },
-                { name: "Марс", faction: "imperium", angle: 45, radius: 220, speed: 0.0018, size: 26, desc: "Кузница Империума, мир Адептус Механикус", coord: "Сегментум Солар" },
-                { name: "Макрагг", faction: "imperium", angle: 90, radius: 260, speed: 0.0015, size: 28, desc: "Родной мир Ультрамаринов", coord: "Сегментум Ультима" },
-                { name: "Кадия", faction: "imperium", angle: 135, radius: 300, speed: 0.0012, size: 26, desc: "Планета-крепость, павшая перед Хаосом", coord: "Сегментум Обскурус" },
-                { name: "Око Ужаса", faction: "chaos", angle: 210, radius: 320, speed: 0.001, size: 32, desc: "Варп-дыра, вход в царство Хаоса", coord: "Сегментум Обскурус" },
-                { name: "Ийден", faction: "eldar", angle: 280, radius: 280, speed: 0.0016, size: 26, desc: "Корабль-мир эльдар", coord: "Сегментум Ультима" },
-                { name: "Армагеддон", faction: "ork", angle: 315, radius: 340, speed: 0.0011, size: 28, desc: "Промышленный мир, осаждённый орками", coord: "Сегментум Солар" },
-                { name: "Солемнас", faction: "necron", angle: 180, radius: 380, speed: 0.0009, size: 26, desc: "Мир-музей Тразина Бесконечного", coord: "Сегментум Ультима" },
-                { name: "Тиран", faction: "tyranid", angle: 250, radius: 360, speed: 0.0013, size: 28, desc: "Первая планета, уничтоженная тиранидами", coord: "Сегментум Ультима" },
-                { name: "Тау", faction: "tau", angle: 300, radius: 400, speed: 0.0008, size: 26, desc: "Родной мир Империи Тау", coord: "Сегментум Ультима" },
-                { name: "Ядро Галактики", faction: "votann", angle: 0, radius: 100, speed: 0.003, size: 32, desc: "Центр галактики, дом Лиг Воттан", coord: "Ядро" },
-                { name: "Баал", faction: "imperium", angle: 70, radius: 240, speed: 0.0017, size: 26, desc: "Родной мир Кровавых Ангелов", coord: "Сегментум Ультима" },
-                { name: "Фенрис", faction: "imperium", angle: 110, radius: 200, speed: 0.0019, size: 26, desc: "Мир Космических Волков", coord: "Сегментум Обскурус" },
-                { name: "Комморра", faction: "eldar", angle: 340, radius: 420, speed: 0.0007, size: 28, desc: "Тёмный город Друкари", coord: "Сеть Паутины" },
-                { name: "Улгве", faction: "eldar", angle: 290, radius: 310, speed: 0.0014, size: 26, desc: "Корабль-мир провидцев", coord: "Сегментум Пацификус" },
-                { name: "Октариус", faction: "ork", angle: 330, radius: 390, speed: 0.001, size: 28, desc: "Зона войны орков с тиранидами", coord: "Сегментум Ультима" }
-            ];
-            
-            let planetsContainer;
-            let planetElements = [];
-            let animationId = null;
-            let orbitAnimationEnabled = true;
-            
-            function createPlanetMarkers() {
-                planetsContainer = document.getElementById('planets-container');
-                if (!planetsContainer) return;
-                
-                planetsContainer.innerHTML = '';
-                planetElements = [];
-                
-                planets.forEach((planet, index) => {
-                    const marker = document.createElement('div');
-                    marker.className = `world-marker marker-${planet.faction}`;
-                    marker.setAttribute('data-title', planet.name);
-                    marker.setAttribute('data-faction', getFactionName(planet.faction));
-                    marker.setAttribute('data-coord', planet.coord);
-                    marker.setAttribute('data-desc', planet.desc);
-                    marker.setAttribute('data-image', `https://via.placeholder.com/200x150/${getFactionColor(planet.faction)}/D4AF37?text=${planet.name}`);
-                    
-                    const dot = document.createElement('div');
-                    dot.className = 'marker-dot';
-                    const label = document.createElement('span');
-                    label.className = 'marker-label';
-                    label.innerText = planet.name;
-                    
-                    marker.appendChild(dot);
-                    marker.appendChild(label);
-                    
-                    marker.addEventListener('mouseenter', showTooltip);
-                    marker.addEventListener('mouseleave', hideTooltip);
-                    marker.addEventListener('click', () => {
-                        // Переход на страницу соответствующей фракции
-                        const pageMap = {
-                            'imperium': 'page1', 'chaos': 'page2', 'eldar': 'page3',
-                            'ork': 'page4', 'necron': 'page5', 'tyranid': 'page6',
-                            'tau': 'page7', 'votann': 'page8'
-                        };
-                        if (pageMap[planet.faction]) {
-                            switchToPage(pageMap[planet.faction]);
-                        }
-                    });
-                    
-                    planetsContainer.appendChild(marker);
-                    planetElements.push({
-                        element: marker,
-                        planet: planet,
-                        x: 0, y: 0
-                    });
-                });
-            }
-            
-            function getFactionName(faction) {
-                const names = {
-                    'imperium': 'Империум', 'chaos': 'Хаос', 'eldar': 'Эльдары',
-                    'ork': 'Орки', 'necron': 'Некроны', 'tyranid': 'Тираниды',
-                    'tau': 'Тау', 'votann': 'Лиги Воттан'
-                };
-                return names[faction] || 'Неизвестно';
-            }
-            
-            function getFactionColor(faction) {
-                const colors = {
-                    'imperium': '2f6f9f', 'chaos': '9f2f2f', 'eldar': '2f9f7f',
-                    'ork': '5f9f2f', 'necron': '6f8faf', 'tyranid': '9f2f6f',
-                    'tau': '9f8f2f', 'votann': '9f6f2f'
-                };
-                return colors[faction] || '808080';
-            }
-            
-            function updatePlanetPositions() {
-                if (!planetsContainer) return;
-                
-                const containerRect = planetsContainer.parentElement.getBoundingClientRect();
-                const centerX = containerRect.width / 2;
-                const centerY = containerRect.height / 2;
-                
-                planetElements.forEach(item => {
-                    const planet = item.planet;
-                    if (orbitAnimationEnabled) {
-                        planet.angle += planet.speed;
-                    }
-                    
-                    const x = centerX + Math.cos(planet.angle) * planet.radius;
-                    const y = centerY + Math.sin(planet.angle) * planet.radius;
-                    
-                    item.element.style.left = x + 'px';
-                    item.element.style.top = y + 'px';
-                    item.x = x;
-                    item.y = y;
-                });
-                
-                if (orbitAnimationEnabled) {
-                    animationId = requestAnimationFrame(updatePlanetPositions);
-                }
-            }
-            
-            function startOrbitAnimation() {
-                if (animationId) cancelAnimationFrame(animationId);
-                orbitAnimationEnabled = true;
-                updatePlanetPositions();
-            }
-            
-            window.toggleOrbitAnimation = function() {
-                orbitAnimationEnabled = !orbitAnimationEnabled;
-                const toggleBtn = document.getElementById('toggleOrbitBtn');
-                if (toggleBtn) {
-                    toggleBtn.innerHTML = orbitAnimationEnabled ? '<i class="fas fa-pause"></i>' : '<i class="fas fa-play"></i>';
-                }
-                if (orbitAnimationEnabled) {
-                    updatePlanetPositions();
-                }
-            };
-            
-            // Функции тултипа
-            let tooltipTimeout;
-            
-            function showTooltip(e) {
-                const marker = e.currentTarget;
-                const title = marker.getAttribute('data-title');
-                const faction = marker.getAttribute('data-faction');
-                const desc = marker.getAttribute('data-desc');
-                const image = marker.getAttribute('data-image');
-                const tooltip = document.getElementById('worldTooltip');
-                
-                if (!tooltip) return;
-                
-                document.getElementById('tooltipImage').querySelector('img').src = image;
-                document.getElementById('tooltipTitle').innerText = title;
-                
-                let factionColor = '#a0a8b0';
-                if (marker.classList.contains('marker-imperium')) factionColor = '#2f6f9f';
-                else if (marker.classList.contains('marker-chaos')) factionColor = '#9f2f2f';
-                else if (marker.classList.contains('marker-eldar')) factionColor = '#2f9f7f';
-                else if (marker.classList.contains('marker-ork')) factionColor = '#5f9f2f';
-                else if (marker.classList.contains('marker-necron')) factionColor = '#6f8faf';
-                else if (marker.classList.contains('marker-tyranid')) factionColor = '#9f2f6f';
-                else if (marker.classList.contains('marker-tau')) factionColor = '#9f8f2f';
-                else if (marker.classList.contains('marker-votann')) factionColor = '#9f6f2f';
-                
-                document.getElementById('tooltipFaction').innerHTML = `<span style="color: ${factionColor}">${faction}</span>`;
-                document.getElementById('tooltipDesc').innerText = desc;
-                
-                const rect = marker.getBoundingClientRect();
-                tooltip.style.display = 'block';
-                tooltip.style.left = (rect.right + 15) + 'px';
-                tooltip.style.top = (rect.top - 20) + 'px';
-                
-                const tooltipRect = tooltip.getBoundingClientRect();
-                if (tooltipRect.right > window.innerWidth) {
-                    tooltip.style.left = (rect.left - tooltipRect.width - 15) + 'px';
-                }
-                if (tooltipRect.bottom > window.innerHeight) {
-                    tooltip.style.top = (rect.bottom - tooltipRect.height) + 'px';
-                }
-                
-                clearTimeout(tooltipTimeout);
-            }
-            
-            function hideTooltip() {
-                tooltipTimeout = setTimeout(() => {
-                    const tooltip = document.getElementById('worldTooltip');
-                    if (tooltip) tooltip.style.display = 'none';
-                }, 200);
-            }
-            
-            // Инициализация карты
-            createStarfield();
-            createPlanetMarkers();
-            startOrbitAnimation();
-            
-            // Масштабирование и перетаскивание (как в предыдущей версии)
-            let scale = 1;
-            let panX = 0;
-            let panY = 0;
-            let isDragging = false;
-            let startX, startY;
-            
-            const mapContainer = document.querySelector('.galaxy-map-container');
-            const map = document.getElementById('galaxyMap');
-            
-            function applyTransform() {
-                if (map) {
-                    map.style.transform = `scale(${scale}) translate(${panX / scale}px, ${panY / scale}px)`;
-                }
-            }
-            
-            window.zoomIn = function() {
-                scale = Math.min(scale + 0.15, 3);
-                applyTransform();
-            };
-            
-            window.zoomOut = function() {
-                scale = Math.max(scale - 0.15, 0.4);
-                applyTransform();
-            };
-            
-            window.resetMap = function() {
-                scale = 1;
-                panX = 0;
-                panY = 0;
-                applyTransform();
-            };
-            
-            if (mapContainer) {
-                mapContainer.addEventListener('mousedown', (e) => {
-                    if (e.target.closest('.world-marker')) return;
-                    isDragging = true;
-                    startX = e.clientX - panX;
-                    startY = e.clientY - panY;
-                    mapContainer.style.cursor = 'grabbing';
-                    e.preventDefault();
-                });
-                
-                window.addEventListener('mousemove', (e) => {
-                    if (!isDragging) return;
-                    panX = e.clientX - startX;
-                    panY = e.clientY - startY;
-                    const maxPanX = 500 * scale;
-                    const maxPanY = 500 * scale;
-                    panX = Math.min(Math.max(panX, -maxPanX), maxPanX);
-                    panY = Math.min(Math.max(panY, -maxPanY), maxPanY);
-                    applyTransform();
-                });
-                
-                window.addEventListener('mouseup', () => {
-                    isDragging = false;
-                    if (mapContainer) mapContainer.style.cursor = 'grab';
-                });
-                
-                mapContainer.addEventListener('wheel', (e) => {
-                    e.preventDefault();
-                    const delta = e.deltaY > 0 ? -0.1 : 0.1;
-                    const newScale = Math.min(Math.max(scale + delta, 0.4), 3);
-                    if (newScale !== scale) {
-                        const rect = mapContainer.getBoundingClientRect();
-                        const mouseX = e.clientX - rect.left;
-                        const mouseY = e.clientY - rect.top;
-                        const scaleFactor = newScale / scale;
-                        panX = mouseX - (mouseX - panX) * scaleFactor;
-                        panY = mouseY - (mouseY - panY) * scaleFactor;
-                        scale = newScale;
-                        applyTransform();
-                    }
-                });
-            }
-            
-            applyTransform();
-            
-            // Обработка изменения размера окна
-            window.addEventListener('resize', () => {
-                const canvas = document.getElementById('starfieldCanvas');
-                if (canvas) {
-                    const container = canvas.parentElement;
-                    canvas.width = container.clientWidth;
-                    canvas.height = container.clientHeight;
-                }
-                // Пересчитываем позиции планет
-                if (planetsContainer) {
-                    const containerRect = planetsContainer.parentElement.getBoundingClientRect();
-                    planetElements.forEach(item => {
-                        const planet = item.planet;
-                        const centerX = containerRect.width / 2;
-                        const centerY = containerRect.height / 2;
-                        const x = centerX + Math.cos(planet.angle) * planet.radius;
-                        const y = centerY + Math.sin(planet.angle) * planet.radius;
-                        item.element.style.left = x + 'px';
-                        item.element.style.top = y + 'px';
-                    });
-                }
-            });
-</script>
+
 
 
         <!-- СТРАНИЦА 1: ИМПЕРИУМ (полный текст) -->
