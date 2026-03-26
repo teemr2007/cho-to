@@ -2464,14 +2464,14 @@ if (timelineWrapper) {
     </div>
 
     <div class="legend">
-        <div class="legend-item"><span class="legend-color" style="color: #2f6f9f; background: #2f6f9f;"></span><span>Империум</span></div>
-        <div class="legend-item"><span class="legend-color" style="color: #9f2f2f; background: #9f2f2f;"></span><span>Хаос</span></div>
-        <div class="legend-item"><span class="legend-color" style="color: #2f9f7f; background: #2f9f7f;"></span><span>Эльдары</span></div>
-        <div class="legend-item"><span class="legend-color" style="color: #5f9f2f; background: #5f9f2f;"></span><span>Орки</span></div>
-        <div class="legend-item"><span class="legend-color" style="color: #6f8faf; background: #6f8faf;"></span><span>Некроны</span></div>
-        <div class="legend-item"><span class="legend-color" style="color: #9f2f6f; background: #9f2f6f;"></span><span>Тираниды</span></div>
-        <div class="legend-item"><span class="legend-color" style="color: #9f8f2f; background: #9f8f2f;"></span><span>Тау</span></div>
-        <div class="legend-item"><span class="legend-color" style="color: #9f6f2f; background: #9f6f2f;"></span><span>Лиги Воттан</span></div>
+        <div class="legend-item"><span class="legend-color" style="color: #d5cb05; background: #d5cb05;"></span><span>Империум</span></div>
+        <div class="legend-item"><span class="legend-color" style="color: #a61d1d; background: #a61d1d;"></span><span>Хаос</span></div>
+        <div class="legend-item"><span class="legend-color" style="color: #751099; background: #751099;"></span><span>Эльдары</span></div>
+        <div class="legend-item"><span class="legend-color" style="color: #199500; background: #199500;"></span><span>Орки</span></div>
+        <div class="legend-item"><span class="legend-color" style="color: #163118; background: #163118;"></span><span>Некроны</span></div>
+        <div class="legend-item"><span class="legend-color" style="color: #d8559f; background: #d8559f;"></span><span>Тираниды</span></div>
+        <div class="legend-item"><span class="legend-color" style="color: #07ad97; background: #07ad97;"></span><span>Тау</span></div>
+        <div class="legend-item"><span class="legend-color" style="color: #bd7518; background: #bd7518;"></span><span>Лиги Воттан</span></div>
     </div>
 
     <!-- Тултип -->
@@ -2488,7 +2488,7 @@ if (timelineWrapper) {
         <h2 id="selectedWorldTitle">Терра</h2>
         <div class="world-details" id="worldDetails">
             <div class="world-card" id="terra-info">
-                <div class="faction-tag" style="background: rgba(47, 111, 159, 0.2); color: #2f6f9f;">Империум</div>
+                <div class="faction-tag" style="background: rgba(47, 111, 159, 0.2); color: #d5cb05;">Империум</div>
                 <div class="coord">Сегментум Солар</div>
                 <p class="desc">Священная планета Земля, тронный мир Императора Человечества. Здесь находится Золотой Трон и Императорский Дворец. Сердце Империума и центр Астрономикона.</p>
             </div>
@@ -2751,14 +2751,14 @@ markers.forEach(marker => {
         document.getElementById('tooltipTitle').innerText = title;
         
         let factionColor = '#a0a8b0';
-        if (marker.classList.contains('marker-imperium')) factionColor = '#2f6f9f';
-        else if (marker.classList.contains('marker-chaos')) factionColor = '#9f2f2f';
-        else if (marker.classList.contains('marker-eldar')) factionColor = '#2f9f7f';
-        else if (marker.classList.contains('marker-ork')) factionColor = '#5f9f2f';
-        else if (marker.classList.contains('marker-necron')) factionColor = '#6f8faf';
-        else if (marker.classList.contains('marker-tyranid')) factionColor = '#9f2f6f';
-        else if (marker.classList.contains('marker-tau')) factionColor = '#9f8f2f';
-        else if (marker.classList.contains('marker-votann')) factionColor = '#9f6f2f';
+        if (marker.classList.contains('marker-imperium')) factionColor = '#d5cb05';
+        else if (marker.classList.contains('marker-chaos')) factionColor = '#a61d1d';
+        else if (marker.classList.contains('marker-eldar')) factionColor = '#751099';
+        else if (marker.classList.contains('marker-ork')) factionColor = '#199500';
+        else if (marker.classList.contains('marker-necron')) factionColor = '#163118';
+        else if (marker.classList.contains('marker-tyranid')) factionColor = '#d8559f';
+        else if (marker.classList.contains('marker-tau')) factionColor = '#07ad97';
+        else if (marker.classList.contains('marker-votann')) factionColor = '#bd7518';
         
         document.getElementById('tooltipFaction').innerHTML = `<span style="color: ${factionColor}">${faction}</span>`;
         document.getElementById('tooltipDesc').innerText = desc;
@@ -4558,7 +4558,7 @@ applyTransform();
     <footer class="footer-modern">
         <div class="container">
             <p>✦ IN THE GRIM DARKNESS OF THE FAR FUTURE THERE IS ONLY WAR ✦</p>
-            <p style="margin-top: 20px;">© 2024 <span>CODEX IMPERIALIS</span>. Warhammer 40,000 и связанные логотипы являются товарными знаками Games Workshop Limited.</p>
+            <p style="margin-top: 20px;">© 2026 <span>CODEX IMPERIALIS</span>. Warhammer 40,000 и связанные логотипы являются товарными знаками Games Workshop Limited.</p>
         </div>
     </footer>
 
@@ -4799,14 +4799,14 @@ applyTransform();
                 
                 let factionColor;
                 switch(faction) {
-                    case 'Империум': factionColor = '#2f6f9f'; break;
-                    case 'Хаос': factionColor = '#9f2f2f'; break;
-                    case 'Эльдары': factionColor = '#2f9f7f'; break;
-                    case 'Орки': factionColor = '#5f9f2f'; break;
-                    case 'Некроны': factionColor = '#6f8faf'; break;
-                    case 'Тираниды': factionColor = '#9f2f6f'; break;
-                    case 'Тау': factionColor = '#9f8f2f'; break;
-                    case 'Лиги Воттан': factionColor = '#9f6f2f'; break;
+                    case 'Империум': factionColor = '#d5cb05'; break;
+                    case 'Хаос': factionColor = '#a61d1d'; break;
+                    case 'Эльдары': factionColor = '#751099'; break;
+                    case 'Орки': factionColor = '#199500'; break;
+                    case 'Некроны': factionColor = '#163118'; break;
+                    case 'Тираниды': factionColor = '#d8559f'; break;
+                    case 'Тау': factionColor = '#07ad97'; break;
+                    case 'Лиги Воттан': factionColor = '#bd7518'; break;
                     default: factionColor = '#808080';
                 }
                 
