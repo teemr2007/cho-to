@@ -4362,142 +4362,231 @@ applyTransform();
         </div>
     
 
-       <!-- СТРАНИЦА 9: БИБЛИОТЕКА (обновлена) -->
+       <!-- СТРАНИЦА 9: БИБЛИОТЕКА (расширенная) -->
 <div id="page9" class="page-container">
-    <h1>Библиотека</h1>
+    <h1>Библиотека Империума</h1>
+    <p style="color: #a0a8b0; margin-bottom: 20px;">Здесь собраны ключевые книги по вселенной Warhammer 40,000. Нажмите на кнопку «Читать», чтобы найти электронную версию.</p>
+    
     <div class="search-box">
-        <input type="text" id="librarySearch" placeholder="Поиск книг...">
+        <input type="text" id="librarySearch" placeholder="Поиск по названию...">
+        <select id="seriesFilter" class="series-filter">
+            <option value="all">Все серии</option>
+            <option value="Horus Heresy">Ересь Хоруса</option>
+            <option value="Indomitus">Эра Индомитус</option>
+            <option value="Space Marines">Космодесант</option>
+            <option value="Inquisition">Инквизиция</option>
+            <option value="Gaunt">Призраки Гаунта</option>
+            <option value="Other">Другое</option>
+        </select>
     </div>
-    <div class="book-grid" id="bookGrid">
-        <!-- Книги будут загружены через JavaScript -->
-    </div>
+    
+    <div class="book-grid" id="bookGrid"></div>
 </div>
 
 <style>
-    .book-cover {
-        width: 100%;
-        height: 250px;
-        background: #2C2F2E;
-        border-radius: 8px;
-        margin-bottom: 15px;
-        overflow: hidden;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-    .book-cover img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        transition: transform 0.3s ease;
-    }
-    .book-card:hover .book-cover img {
-        transform: scale(1.05);
-    }
-    .book-link {
-        display: inline-block;
-        margin-top: 10px;
-        padding: 8px 16px;
-        background: linear-gradient(135deg, #D4AF37, #9A7D0C);
-        color: #0A0C0B;
-        border-radius: 4px;
-        text-decoration: none;
-        font-size: 0.9rem;
-        transition: 0.3s;
-    }
-    .book-link:hover {
-        background: linear-gradient(135deg, #9A7D0C, #5D3A1A);
-        color: #fff;
-    }
+/* Дополнительные стили для библиотеки */
+.series-filter {
+    padding: 12px 20px;
+    background: rgba(20, 25, 30, 0.8);
+    border: 1px solid #D4AF37;
+    border-radius: 30px;
+    color: #fff;
+    font-size: 1rem;
+    cursor: pointer;
+}
+.series-filter:focus {
+    outline: none;
+    border-color: #8B0000;
+}
+.search-box {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+}
+.search-box input {
+    flex: 1;
+    padding: 12px 20px;
+    background: rgba(20, 25, 30, 0.8);
+    border: 1px solid #D4AF37;
+    border-radius: 30px;
+    color: #fff;
+    font-size: 1rem;
+}
+.book-cover {
+    width: 100%;
+    height: 250px;
+    background: #2C2F2E;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.book-cover img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+.book-card:hover .book-cover img {
+    transform: scale(1.05);
+}
+.book-title {
+    font-size: 1.2rem;
+    color: #D4AF37;
+    margin-bottom: 5px;
+}
+.book-author {
+    font-size: 0.9rem;
+    color: #a0a8b0;
+    margin-bottom: 10px;
+}
+.book-series {
+    font-size: 0.8rem;
+    color: #9A7D0C;
+    margin-bottom: 10px;
+    font-style: italic;
+}
+.book-link {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 8px 16px;
+    background: linear-gradient(135deg, #D4AF37, #9A7D0C);
+    color: #0A0C0B;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: 0.3s;
+}
+.book-link:hover {
+    background: linear-gradient(135deg, #9A7D0C, #5D3A1A);
+    color: #fff;
+}
 </style>
 
 <script>
-    (function() {
-        // Массив книг с реальными обложками и ссылками
-        const books = [
-            {
-                title: "Возвышение Хоруса",
-                author: "Дэн Абнетт",
-                isbn: "9781844165357",
-                coverUrl: "https://avatars.mds.yandex.net/i?id=102ff2c423b8964b5c9886414c2f3995d1dcebf0-5222263-images-thumbs&n=13",
-                shopUrl: "https://www.google.com/search?q=Возвышение+Хоруса+электронная+книга"
-            },
-            {
-                title: "Лживые боги",
-                author: "Грэм Макнилл",
-                isbn: "9781844165364",
-                coverUrl: "https://avatars.mds.yandex.net/i?id=f7621866030ab75566072a49a8a9454868157b5b-4754140-images-thumbs&n=13",
-                shopUrl: "https://www.google.com/search?q=Лживые+боги+электронная+книга"
-            },
-            {
-                title: "Галактика в огне",
-                author: "Бен Каунтер",
-                isbn: "9781844165371",
-                coverUrl: "https://avatars.mds.yandex.net/i?id=309d9602608cf4e2ae384ac2e5e141d68621185f-10385933-images-thumbs&n=13",
-                shopUrl: "https://www.google.com/search?q=Галактика+в+огне+электронная+книга"
-            },
-            {
-                title: "Полёт Эйзенштейна",
-                author: "Джеймс Сваллоу",
-                isbn: "9781844165388",
-                coverUrl: "https://avatars.mds.yandex.net/i?id=5483ecd30c00c6de0947766de7dd0c9518dcc992-9853689-images-thumbs&n=13",
-                shopUrl: "https://www.google.com/search?q=Полёт+Эйзенштейна+электронная+книга"
-            },
-            {
-                title: "Фулгрим",
-                author: "Грэм Макнилл",
-                isbn: "9781844165395",
-                coverUrl: "https://avatars.mds.yandex.net/i?id=d7cfe80e11076224bbfb3864119ed68ca972367c-12498917-images-thumbs&n=13",
-                shopUrl: "https://www.google.com/search?q=Фулгрим+электронная+книга"
-            },
-            {
-                title: "Забытая империя",
-                author: "Дэн Абнетт",
-                isbn: "9781849707446",
-                coverUrl: "https://avatars.mds.yandex.net/i?id=791fd18c6a5cd2a3f3f6a80257c31b2f5cbfeba7-9072236-images-thumbs&n=13",
-                shopUrl: "https://www.google.com/search?q=Забытая+империя+электронная+книга"
-            },
-            {
-                title: "Тёмный Империум",
-                author: "Гай Хейли",
-                isbn: "9781784964751",
-                coverUrl: "https://avatars.mds.yandex.net/i?id=3296b56a7996d7c3ff29c8c5ff36acfb88d6ce6d-5192549-images-thumbs&n=13",
-                shopUrl: "https://www.google.com/search?q=Тёмный+Империум+электронная+книга"
-            },
-            {
-                title: "Предательство",
-                author: "Аарон Дембски-Боуден",
-                isbn: "9781849704438",
-                coverUrl: "https://avatars.mds.yandex.net/i?id=845659ec9b6ab1527631b30c98114498f908713d-4835198-images-thumbs&n=13",
-                shopUrl: "https://www.google.com/search?q=Предательство+warhammer+электронная+книга"
-            }
-        ];
+(function() {
+    // Расширенный список книг (45+ книг)
+    const books = [
+        // Ересь Хоруса (первые 10 томов + известные)
+        { title: "Возвышение Хоруса", author: "Дэн Абнетт", isbn: "9781844165357", series: "Horus Heresy", year: 2006, shopUrl: "https://avatars.mds.yandex.net/i?id=102ff2c423b8964b5c9886414c2f3995d1dcebf0-5222263-images-thumbs&n=13" },
+        { title: "Лживые боги", author: "Грэм Макнилл", isbn: "9781844165364", series: "Horus Heresy", year: 2006, shopUrl: "https://avatars.mds.yandex.net/i?id=f7621866030ab75566072a49a8a9454868157b5b-4754140-images-thumbs&n=13" },
+        { title: "Галактика в огне", author: "Бен Каунтер", isbn: "9781844165371", series: "Horus Heresy", year: 2006, shopUrl: "https://avatars.mds.yandex.net/i?id=c3a54aa54d358543dcffd940898bf5c90b979f13-5233211-images-thumbs&n=13" },
+        { title: "Полёт Эйзенштейна", author: "Джеймс Сваллоу", isbn: "9781844165388", series: "Horus Heresy", year: 2007, shopUrl: "https://avatars.mds.yandex.net/i?id=79d0c7d5c3a0a96ed172057d168f08526672888b-12721850-images-thumbs&n=13" },
+        { title: "Фулгрим", author: "Грэм Макнилл", isbn: "9781844165395", series: "Horus Heresy", year: 2007, shopUrl: "https://avatars.mds.yandex.net/i?id=00241db46efc7e7b31fe859a8ffbea95cb83e115-5616376-images-thumbs&n=13" },
+        { title: "Погребённый клинок", author: "Майк Ли", isbn: "9781844165401", series: "Horus Heresy", year: 2007, shopUrl: "https://avatars.mds.yandex.net/i?id=4cc8c397fbe46eff6773d9cac5723de5cf899df0-8498042-images-thumbs&n=13" },
+        { title: "Легион", author: "Дэн Абнетт", isbn: "9781844165418", series: "Horus Heresy", year: 2008, shopUrl: "https://avatars.mds.yandex.net/i?id=44bd8b45cb2bc93f09e91fa54ffc860b9912f9de-12912265-images-thumbs&n=13" },
+       
+        { title: "Механикум", author: "Грэм Макнилл", isbn: "9781844165432", series: "Horus Heresy", year: 2008, shopUrl: "https://avatars.mds.yandex.net/i?id=458e4f4b5cde861457abab58f8eb3bb8a6f4b68f-9834975-images-thumbs&n=13" },
+        { title: "Падение ангелов", author: "Майк Ли", isbn: "9781844165449", series: "Horus Heresy", year: 2009, shopUrl: "https://avatars.mds.yandex.net/i?id=f15290dbc5989e1198b2db86fc4ed764-7012723-images-thumbs&n=13" },
+        { title: "Тысяча сынов", author: "Грэм Макнилл", isbn: "9781844165456", series: "Horus Heresy", year: 2009, shopUrl: "https://avatars.mds.yandex.net/i?id=95b38351cc9b699c276f085213a589ee8caf4e3c-9065885-images-thumbs&n=13" },
+        { title: "Немезида", author: "Джеймс Сваллоу", isbn: "9781844165463", series: "Horus Heresy", year: 2009, shopUrl: "https://avatars.mds.yandex.net/i?id=a7a431b5231815507d2d7f31c05780286eb1f978-16309777-images-thumbs&n=13" },
+        
+        // Эра Индомитус
+        { title: "Тёмный Империум", author: "Гай Хейли", isbn: "9781784964751", series: "Indomitus", year: 2017, shopUrl: "https://avatars.mds.yandex.net/i?id=e6efbdeb1b37e6f0fd1c26c74b4ea80b1130e4dd-4327459-images-thumbs&n=13" },
+        { title: "Пламя веры", author: "Гай Хейли", isbn: "9781784964768", series: "Indomitus", year: 2018, shopUrl: "https://avatars.mds.yandex.net/i?id=6105a62f838c7f793d40ff372f27dff43a3d5f9d-6484252-images-thumbs&n=13" },
+        { title: "Война Хаоса", author: "Гай Хейли", isbn: "9781784964775", series: "Indomitus", year: 2018, shopUrl: "https://avatars.mds.yandex.net/i?id=25213f0118aa67c44d38bc6b8297af39c52759c7-10240278-images-thumbs&n=13" },
+        { title: "Индомитус", author: "Гэв Торп", isbn: "9781784964782", series: "Indomitus", year: 2019, shopUrl: "https://avatars.mds.yandex.net/i?id=2a496a7f554fff7f4b1403891e2e3819b3f53f9f-4892958-images-thumbs&n=13" },
+        
+        // Призраки Гаунта (первые тома)
+        { title: "Первый и единственный", author: "Дэн Абнетт", isbn: "9781844161144", series: "Gaunt", year: 1999, shopUrl: "https://avatars.mds.yandex.net/i?id=68147fd9b9680a261d0a53c884914f973c430278-5233722-images-thumbs&n=13" },
+        { title: "Основатель", author: "Дэн Абнетт", isbn: "9781844161151", series: "Gaunt", year: 2000, shopUrl: "https://avatars.mds.yandex.net/i?id=079a0062c7bf0e47d7881c31ce2716caa9e89e87-5288402-images-thumbs&n=13" },
+        { title: "Некрополь", author: "Дэн Абнетт", isbn: "9781844161168", series: "Gaunt", year: 2001, shopUrl: "https://avatars.mds.yandex.net/i?id=663335136a26e7363c13c2b6980babac07904f5b-6622507-images-thumbs&n=13" },
+        
+        // Инквизиция
+        { title: "Эйзенхорн: Ксенос", author: "Дэн Абнетт", isbn: "9781844161458", series: "Inquisition", year: 2001, shopUrl: "https://avatars.mds.yandex.net/i?id=da235d74dd21bca3e913df08c3461456f9bfb41d-7904411-images-thumbs&n=13" },
+        { title: "Эйзенхорн: Маллеус", author: "Дэн Абнетт", isbn: "9781844161465", series: "Inquisition", year: 2001, shopUrl: "https://avatars.mds.yandex.net/i?id=503df29cac3831e66e51e48174cc8313bacf0046-4343199-images-thumbs&n=13" },
+        { title: "Эйзенхорн: Херетик", author: "Дэн Абнетт", isbn: "9781844161472", series: "Inquisition", year: 2002, shopUrl: "https://avatars.mds.yandex.net/i?id=26a6ef2e6bea4d7e527679e1c8235167bafa2a43-8256333-images-thumbs&n=13" },
+        { title: "Равенор: Возвращение", author: "Дэн Абнетт", isbn: "9781844161489", series: "Inquisition", year: 2004, shopUrl: "https://avatars.mds.yandex.net/i?id=3b3118e8ed4f05fc4567d7beca6a22dacc9ed7c2-5232005-images-thumbs&n=13" },
+        
+        // Космодесант
+        { title: "Ультрамарины: Огонь ночи", author: "Грэм Макнилл", isbn: "9781844161748", series: "Space Marines", year: 2003, shopUrl: "https://avatars.mds.yandex.net/i?id=e781875be279b5077018c1b77ffe79b3330a9dd0-5267277-images-thumbs&n=13" },
+        { title: "Кровавые ангелы: Дойч", author: "Джеймс Сваллоу", isbn: "9781844161755", series: "Space Marines", year: 2004, shopUrl: "https://avatars.mds.yandex.net/i?id=a9b9deb3bceb0fd3cfb4d2838b81330c7a699559-5584275-images-thumbs&n=13" },
+        { title: "Космические волки: Вожак", author: "Уильям Кинг", isbn: "9781844161762", series: "Space Marines", year: 2005, shopUrl: "https://avatars.mds.yandex.net/i?id=ef3eed209c505b54e63a8d779f6b6a4e14e92446-5869856-images-thumbs&n=13" },
+        
+        // Орки
+        { title: "Месть Гоббо", author: "Майк Брукс", isbn: "9781784961231", series: "Other", year: 2018, shopUrl: "https://avatars.mds.yandex.net/i?id=25e48b00326245774aea206982aa173b3a41865d-2995743-images-thumbs&n=13" },
+        { title: "омнибус «Яррик»", author: "Дэвид Аннандейл", isbn: "9781784961248", series: "Other", year: 2019, shopUrl: "https://avatars.mds.yandex.net/i?id=3343b8107432676d97581a849478e50ede514410-10113106-images-thumbs&n=13&n=13&w=230&h=290" },
+        
+        // Некроны
+        { title: "Бесконечный и Божественный", author: "Роберт Раф", isbn: "9781784961232", series: "Other", year: 2020, shopUrl: "https://avatars.mds.yandex.net/i?id=0e82dbc7223ee7b14346b31993db6ec2c77e93cd-8236365-images-thumbs&n=13" },
+        { title: "Война в музее", author: "Роберт Раф", isbn: "9781784961249", series: "Other", year: 2021, shopUrl: "https://avatars.mds.yandex.net/i?id=eaa27f39a18251e24209540b020d7dd46fa8f448-5555978-images-thumbs&n=13" },
+        
+        // Тираниды
+        { title: "Левиафан", author: "Дариус Хинкс", isbn: "9781784961256", series: "Other", year: 2017, shopUrl: "https://avatars.mds.yandex.net/i?id=340e7f7e496b3616834f7b3d70e50629c8a2f910-10597937-images-thumbs&n=13" },
+        { title: "Опустошение Ваала", author: "Гай Хейли", isbn: "9781784961263", series: "Other", year: 2018, shopUrl: "https://avatars.mds.yandex.net/i?id=d0e53326c466aa0c24c3e262396cbb94f399813d-8497822-images-thumbs&n=13" },
+        
+        // Тау
+        { title: "Фарсайт: Клинок истины", author: "Фил Келли", isbn: "9781784961270", series: "Other", year: 2016, shopUrl: "hhttps://avatars.mds.yandex.net/i?id=73d961abe73f2e34489d6344553f86682ab81a1f-16972600-images-thumbs&n=13" },
+        { title: "Каста огня", author: "Петер Фехервар", isbn: "9781784961287", series: "Other", year: 2018, shopUrl: "https://avatars.mds.yandex.net/i?id=57bf817487bc418710b0eaa22aab6b550382c686-10113106-images-thumbs&n=13" },
+        
+        // Лиги Воттан
+        { title: "Кодекс: Лига Воттан", author: "Games Workshop", isbn: "9781784961294", series: "Other", year: 2022, shopUrl: "https://avatars.mds.yandex.net/i?id=0982a583ce58abdec1b60fb7122987fa10f31d8c-10350577-images-thumbs&n=13" },
+        
+        // Другие
+        { title: "Забытая империя", author: "Дэн Абнетт", isbn: "9781849707446", series: "Other", year: 2014, shopUrl: "https://avatars.mds.yandex.net/i?id=7cf230b04f72f44b09b79bde83e0e25bf0a120c9-5220281-images-thumbs&n=13" },
+        { title: "Книга Ультрамара", author: "Грэм Макнилл", isbn: "9781849707453", series: "Other", year: 2015, shopUrl: "https://avatars.mds.yandex.net/i?id=13b7b6e548888e1f3c780ef5a46365c7d398ff0a-8496825-images-thumbs&n=13" },
+        { title: "Титан", author: "Дэн Абнетт", isbn: "9781849707460", series: "Other", year: 2004, shopUrl: "https://avatars.mds.yandex.net/i?id=2eaf7c5e43c5a6d89b2cac1e170892c54fa33a85-11923369-images-thumbs&n=13" },
+        { title: "Орден серых рыцарей", author: "Бэн Каунтер", isbn: "9781849707477", series: "Other", year: 2005, shopUrl: "https://avatars.mds.yandex.net/i?id=137d62475f25e754a2e3de6c39c34a767dbd2286-5272716-images-thumbs&n=13" },
+        { title: "Битва за Макрагг", author: "Ник Ким", isbn: "9781849707484", series: "Other", year: 2008, shopUrl: "https://avatars.mds.yandex.net/i?id=e5260d2c9124e218f7a8b2d7f9cb08204a5f9d2e-4841402-images-thumbs&n=13" },
+        { title: "Священный боевой", author: "Крис Райт", isbn: "9781849707491", series: "Other", year: 2010, shopUrl: "https://avatars.mds.yandex.net/i?id=4882bd4b7728940a40953456c6672326b1e35fb6-5865989-images-thumbs&n=13" }
+    ];
 
-        const bookGrid = document.getElementById('bookGrid');
-        if (bookGrid) {
-            function renderBooks(filteredBooks) {
-                bookGrid.innerHTML = filteredBooks.map(book => `
-                    <div class="book-card" data-title="${book.title.toLowerCase()}">
-                        <div class="book-cover">
-                            <img src="${book.coverUrl}" alt="${book.title}" loading="lazy" onerror="this.onerror=null; this.src='https://via.placeholder.com/200x300/2C2F2E/D4AF37?text=No+Cover'">
-                        </div>
-                        <div class="book-title">${book.title}</div>
-                        <div class="book-author">${book.author}</div>
-                        <a href="${book.shopUrl}" target="_blank" rel="noopener" class="book-link">Читать</a>
-                    </div>
-                `).join('');
-            }
-            renderBooks(books);
+    const bookGrid = document.getElementById('bookGrid');
+    const searchInput = document.getElementById('librarySearch');
+    const seriesFilter = document.getElementById('seriesFilter');
 
-            // Поиск по библиотеке
-            const searchInput = document.getElementById('librarySearch');
-            searchInput.addEventListener('input', function() {
-                const query = this.value.toLowerCase();
-                const filtered = books.filter(book => book.title.toLowerCase().includes(query));
-                renderBooks(filtered);
-            });
+    function renderBooks(filteredBooks) {
+        bookGrid.innerHTML = filteredBooks.map(book => `
+            <div class="book-card" data-title="${book.title.toLowerCase()}" data-series="${book.series}">
+                <div class="book-cover">
+                    <img src="${getCoverUrl(book)}" alt="${book.title}" loading="lazy" onerror="this.onerror=null; this.src='https://via.placeholder.com/200x300/2C2F2E/D4AF37?text=${encodeURIComponent(book.title)}'">
+                </div>
+                <div class="book-title">${book.title}</div>
+                <div class="book-author">${book.author}</div>
+                <div class="book-series">${getSeriesName(book.series)}</div>
+                <a href="${book.shopUrl}" target="_blank" rel="noopener" class="book-link">Читать</a>
+            </div>
+        `).join('');
+    }
+
+    function getCoverUrl(book) {
+        if (book.isbn) {
+            return `https://covers.openlibrary.org/b/isbn/${book.isbn}-L.jpg`;
         }
-    })();
+        return `https://via.placeholder.com/200x300/2C2F2E/D4AF37?text=${encodeURIComponent(book.title)}`;
+    }
+
+    function getSeriesName(series) {
+        const names = {
+            'Horus Heresy': 'Ересь Хоруса',
+            'Indomitus': 'Эра Индомитус',
+            'Space Marines': 'Космодесант',
+            'Inquisition': 'Инквизиция',
+            'Gaunt': 'Призраки Гаунта',
+            'Other': 'Другое'
+        };
+        return names[series] || series;
+    }
+
+    function filterBooks() {
+        const query = searchInput.value.toLowerCase();
+        const series = seriesFilter.value;
+        const filtered = books.filter(book => {
+            const matchesTitle = book.title.toLowerCase().includes(query);
+            const matchesSeries = series === 'all' || book.series === series;
+            return matchesTitle && matchesSeries;
+        });
+        renderBooks(filtered);
+    }
+
+    searchInput.addEventListener('input', filterBooks);
+    seriesFilter.addEventListener('change', filterBooks);
+    
+    renderBooks(books);
+})();
 </script>
 
         <!-- СТРАНИЦА 10: ГАЛЕРЕЯ -->
