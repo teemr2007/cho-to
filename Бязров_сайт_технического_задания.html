@@ -1665,12 +1665,12 @@
     
     <!-- 1. ТАУ (вверху слева) -->
     <div class="faction-icon-modern fi1" onmouseover="updateCenter('Тау', 'Империя Высшего Блага')" onclick="switchToPage('page7')">
-        <img src="ССЫЛКА_НА_ТАУ" alt="Тау" style="width: 70%; height: 70%; object-fit: contain;">
+        <img src="https://raw.githubusercontent.com/teemr2007/cho-to/main/tay.webp" alt="Тау" style="width: 70%; height: 70%; object-fit: contain;">
     </div>
     
     <!-- 2. ЭЛЬДАРЫ (вверху справа) -->
     <div class="faction-icon-modern fi2" onmouseover="updateCenter('Эльдары', 'Древняя раса')" onclick="switchToPage('page3')">
-        <img src="ССЫЛКА_НА_ЭЛЬДАРЫ" alt="Эльдары" style="width: 70%; height: 70%; object-fit: contain;">
+        <img src="https://raw.githubusercontent.com/teemr2007/cho-to/main/eldar.webp" alt="Эльдары" style="width: 70%; height: 70%; object-fit: contain;">
     </div>
     
     <!-- 3. ОРКИ (справа вверху) -->
@@ -1685,17 +1685,17 @@
     
     <!-- 5. ХАОС (внизу справа) -->
     <div class="faction-icon-modern fi5" onmouseover="updateCenter('Хаос', 'Слуги темных богов')" onclick="switchToPage('page2')">
-        <img src="ССЫЛКА_НА_ХАОС" alt="Хаос" style="width: 70%; height: 70%; object-fit: contain;">
+        <img src="https://raw.githubusercontent.com/teemr2007/cho-to/main/hao.webp" alt="Хаос" style="width: 70%; height: 70%; object-fit: contain;">
     </div>
     
     <!-- 6. ЛИГИ ВОТТАН (внизу слева) -->
     <div class="faction-icon-modern fi6" onmouseover="updateCenter('Лиги Воттан', 'Кинсмены из Ядра')" onclick="switchToPage('page8')">
-        <img src="" alt="Лиги Воттан" style="width: 70%; height: 70%; object-fit: contain;">
+        <img src="https://raw.githubusercontent.com/teemr2007/cho-to/main/votann.webp" alt="Лиги Воттан" style="width: 70%; height: 70%; object-fit: contain;">
     </div>
     
     <!-- 7. ТИРАНИДЫ (слева внизу) -->
     <div class="faction-icon-modern fi7" onmouseover="updateCenter('Тираниды', 'Пожиратели миров')" onclick="switchToPage('page6')">
-        <img src="ССЫЛКА_НА_ТИРАНИДЫ" alt="Тираниды" style="width: 70%; height: 70%; object-fit: contain;">
+        <img src="https://raw.githubusercontent.com/teemr2007/cho-to/main/tiranyd.webp" alt="Тираниды" style="width: 70%; height: 70%; object-fit: contain;">
     </div>
     
     <!-- 8. ИМПЕРИУМ (слева вверху) -->
@@ -1704,52 +1704,271 @@
     </div>
 </div>
 
-            <!-- Улучшенный таймлайн -->
-            <div id="timeline">
-                <h2>Хроники Эпох</h2>
-                <div class="timeline-filter">
-                    <button class="filter-btn active" data-filter="all">Все</button>
-                    <button class="filter-btn" data-filter="imperium">Империум</button>
-                    <button class="filter-btn" data-filter="chaos">Хаос</button>
-                    <button class="filter-btn" data-filter="eldar">Эльдары</button>
-                    <button class="filter-btn" data-filter="ork">Орки</button>
-                    <button class="filter-btn" data-filter="necron">Некроны</button>
-                </div>
-                <div class="timeline-wrapper">
-                    <div class="timeline-horizontal">
-                        <div class="timeline-event" data-faction="imperium">
-                            <div class="event-date">М30 - 005.М31</div>
-                            <div class="event-title">Рождение Империума</div>
-                            <div class="event-desc">Объединение Терры под властью Императора, создание Легионов Космодесанта.</div>
-                        </div>
-                        <div class="timeline-event" data-faction="chaos">
-                            <div class="event-date">005.М31 - 014.М31</div>
-                            <div class="event-title">Ересь Хоруса</div>
-                            <div class="event-desc">Великое предательство, расколовшее Империум. Осада Терры.</div>
-                        </div>
-                        <div class="timeline-event" data-faction="imperium">
-                            <div class="event-date">М32 - М41</div>
-                            <div class="event-title">Эпоха Индомитус</div>
-                            <div class="event-desc">Возвращение Робаута Жиллимана, Крестовый поход Индомитус.</div>
-                        </div>
-                        <div class="timeline-event" data-faction="chaos">
-                            <div class="event-date">999.М41</div>
-                            <div class="event-title">Падение Кадии</div>
-                            <div class="event-desc">Прорыв Великого Ока, начало 13-го Черного Крестового похода.</div>
-                        </div>
-                        <div class="timeline-event" data-faction="eldar">
-                            <div class="event-date">~М29</div>
-                            <div class="event-title">Падение Эльдар</div>
-                            <div class="event-desc">Рождение Слаанеш, гибель империи Эльдар.</div>
-                        </div>
-                        <div class="timeline-event" data-faction="ork">
-                            <div class="event-date">~М32</div>
-                            <div class="event-title">Война Зверя</div>
-                            <div class="event-desc">Орки под предводительством Зверя едва не захватывают Терру.</div>
-                        </div>
-                    </div>
-                </div>
+           <div id="timeline">
+    <h2>Хроники Эпох</h2>
+    <div class="timeline-filter">
+        <button class="filter-btn active" data-filter="all">Все</button>
+        <button class="filter-btn" data-filter="ancient">Древние</button>
+        <button class="filter-btn" data-filter="imperium">Империум</button>
+        <button class="filter-btn" data-filter="chaos">Хаос</button>
+        <button class="filter-btn" data-filter="eldar">Эльдары</button>
+        <button class="filter-btn" data-filter="ork">Орки</button>
+        <button class="filter-btn" data-filter="necron">Некроны</button>
+        <button class="filter-btn" data-filter="tyranid">Тираниды</button>
+        <button class="filter-btn" data-filter="tau">Тау</button>
+    </div>
+    <div class="timeline-wrapper">
+        <div class="timeline-horizontal">
+            <!-- Древние -->
+            <div class="timeline-event" data-faction="ancient">
+                <div class="event-date">~65 млн лет назад</div>
+                <div class="event-title">Война в Небесах</div>
+                <div class="event-desc">Древние создают эльдар, орков и краутов для борьбы с некронами и К'тан. Падение Древних, Великий Сон некронов.</div>
             </div>
+            <div class="timeline-event" data-faction="eldar">
+                <div class="event-date">~60 млн - 25 тыс. лет</div>
+                <div class="event-title">Империя Тысячи Солнц</div>
+                <div class="event-desc">Эльдар доминируют в галактике, создают корабли-миры, Сеть Паутины, систему Путей.</div>
+            </div>
+            <div class="timeline-event" data-faction="imperium">
+                <div class="event-date">М15 - М25</div>
+                <div class="event-title">Тёмный век технологий</div>
+                <div class="event-desc">Золотая эра человечества: создание STC, разумных машин, экспансия по галактике.</div>
+            </div>
+            <div class="timeline-event" data-faction="chaos eldar">
+                <div class="event-date">~М25</div>
+                <div class="event-title">Рождение Слаанеш</div>
+                <div class="event-desc">Гедонизм эльдар приводит к рождению Слаанеш. Гибель империи эльдар, образование Ока Ужаса. Начало Эры Раздора.</div>
+            </div>
+            <div class="timeline-event" data-faction="imperium">
+                <div class="event-date">М25 - М30</div>
+                <div class="event-title">Эра Раздора</div>
+                <div class="event-desc">Варп-штормы изолируют миры. Восстание Железных Людей. Человечество деградирует.</div>
+            </div>
+            <div class="timeline-event" data-faction="imperium">
+                <div class="event-date">798.М30 - 005.М31</div>
+                <div class="event-title">Великий крестовый поход</div>
+                <div class="event-desc">Император объединяет Терру, создаёт примархов и легионы Астартес. Освобождение миров человечества.</div>
+            </div>
+            <div class="timeline-event" data-faction="chaos">
+                <div class="event-date">005.М31 - 014.М31</div>
+                <div class="event-title">Ересь Хоруса</div>
+                <div class="event-desc">Хорус совращён Хаосом. Резня на Истваане III и V. Осада Терры. Император на Золотом Троне.</div>
+            </div>
+            <div class="timeline-event" data-faction="imperium">
+                <div class="event-date">М31 - М36</div>
+                <div class="event-title">После Ереси</div>
+                <div class="event-desc">Кодекс Астартес, разделение легионов. Рождение культа Императора. Эра Отступничества, создание Сестёр Битвы.</div>
+            </div>
+            <div class="timeline-event" data-faction="ork">
+                <div class="event-date">~М32</div>
+                <div class="event-title">Война Зверя</div>
+                <div class="event-desc">Орки под предводительством Зверя осаждают Терру. Империум на грани уничтожения.</div>
+            </div>
+            <div class="timeline-event" data-faction="tyranid">
+                <div class="event-date">745.М41</div>
+                <div class="event-title">Первая война за Тиранид</div>
+                <div class="event-desc">Ульевой флот Бегемот уничтожает мир Тирани. Битва за Макрагг.</div>
+            </div>
+            <div class="timeline-event" data-faction="tyranid">
+                <div class="event-date">992.М41</div>
+                <div class="event-title">Вторая война за Тиранид</div>
+                <div class="event-desc">Флот Кракен атакует сотни миров. Уничтожение корабля-мира Ийден.</div>
+            </div>
+            <div class="timeline-event" data-faction="tyranid">
+                <div class="event-date">997.М41</div>
+                <div class="event-title">Третья война за Тиранид</div>
+                <div class="event-desc">Флот Левиафан приносит Тень в Варпе. Остановлен у Макрагга.</div>
+            </div>
+            <div class="timeline-event" data-faction="tau">
+                <div class="event-date">~М38</div>
+                <div class="event-title">Возвышение Тау</div>
+                <div class="event-desc">Появление Эта. Объединение каст. Начало экспансии.</div>
+            </div>
+            <div class="timeline-event" data-faction="necron">
+                <div class="event-date">М41 - М42</div>
+                <div class="event-title">Пробуждение некронов</div>
+                <div class="event-desc">Династии некронов пробуждаются по всей галактике. Иммотек, Тразин и другие повелители возвращают свои миры.</div>
+            </div>
+            <div class="timeline-event" data-faction="chaos">
+                <div class="event-date">999.М41</div>
+                <div class="event-title">Падение Кадии</div>
+                <div class="event-desc">13-й Чёрный крестовый поход Абаддона. Разрушение Кадии. Образование Великого Разлома.</div>
+            </div>
+            <div class="timeline-event" data-faction="imperium">
+                <div class="event-date">000.М42</div>
+                <div class="event-title">Великий Разлом</div>
+                <div class="event-desc">Галактика расколота надвое. Тысячи миров отрезаны от Империума.</div>
+            </div>
+            <div class="timeline-event" data-faction="imperium">
+                <div class="event-date">001.М42 - наст.</div>
+                <div class="event-title">Возвращение Жиллимана</div>
+                <div class="event-desc">Робаут Жиллиман воскрешён. Начинает Несокрушимый крестовый поход. Создание Примарис.</div>
+            </div>
+            <div class="timeline-event" data-faction="imperium">
+                <div class="event-date">~М42</div>
+                <div class="event-title">Возвращение Льва</div>
+                <div class="event-desc">Лев Эль'Джонсон пробуждается, объединяет Тёмных Ангелов.</div>
+            </div>
+            <div class="timeline-event" data-faction="votann">
+                <div class="event-date">М42</div>
+                <div class="event-title">Лиги Воттан</div>
+                <div class="event-desc">Появление Лиг Воттан — потомков колонистов Тёмного века.</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+/* Улучшенные стили для таймлайна */
+.timeline-wrapper {
+    position: relative;
+    margin: 40px 0;
+    padding: 20px 0;
+    overflow-x: auto;
+    overflow-y: visible;
+    white-space: nowrap;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    cursor: grab;
+}
+
+.timeline-wrapper:active {
+    cursor: grabbing;
+}
+
+.timeline-horizontal {
+    display: inline-flex;
+    gap: 30px;
+    padding: 20px 30px;
+}
+
+.timeline-event {
+    position: relative;
+    width: 320px;
+    background: rgba(20, 25, 30, 0.9);
+    border: 2px solid #D4AF37;
+    border-radius: 16px;
+    padding: 20px;
+    backdrop-filter: blur(5px);
+    transition: all 0.3s ease;
+    cursor: pointer;
+    display: inline-block;
+    white-space: normal;
+    vertical-align: top;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+.timeline-event:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 15px 30px rgba(212, 175, 55, 0.3);
+    border-color: #8B0000;
+}
+
+.timeline-event .event-date {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #9A7D0C;
+    margin-bottom: 10px;
+    font-family: 'Cinzel', serif;
+    letter-spacing: 1px;
+}
+
+.timeline-event .event-title {
+    font-size: 1.5rem;
+    color: #D4AF37;
+    margin-bottom: 12px;
+    font-family: 'Cinzel', serif;
+    font-weight: bold;
+}
+
+.timeline-event .event-desc {
+    font-size: 0.9rem;
+    color: #c0c8d0;
+    line-height: 1.5;
+}
+
+/* Полоса прокрутки */
+.timeline-wrapper::-webkit-scrollbar {
+    height: 8px;
+}
+
+.timeline-wrapper::-webkit-scrollbar-track {
+    background: rgba(20, 25, 30, 0.5);
+    border-radius: 4px;
+}
+
+.timeline-wrapper::-webkit-scrollbar-thumb {
+    background: #D4AF37;
+    border-radius: 4px;
+}
+
+.timeline-wrapper::-webkit-scrollbar-thumb:hover {
+    background: #8B0000;
+}
+
+/* Фильтры */
+.timeline-filter {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.filter-btn {
+    padding: 8px 20px;
+    background: rgba(20, 25, 30, 0.7);
+    border: 1px solid #D4AF37;
+    border-radius: 30px;
+    color: #D4AF37;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: 'Cinzel', serif;
+    font-size: 0.85rem;
+    letter-spacing: 1px;
+}
+
+.filter-btn.active, .filter-btn:hover {
+    background: #D4AF37;
+    color: #0A0C0B;
+    border-color: #8B0000;
+}
+</style>
+
+<script>
+// Фильтр таймлайна
+const filterBtns = document.querySelectorAll('.filter-btn');
+const timelineEvents = document.querySelectorAll('.timeline-event');
+
+filterBtns.forEach(btn => {
+    btn.addEventListener('click', function() {
+        filterBtns.forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
+        const filter = this.dataset.filter;
+        
+        timelineEvents.forEach(event => {
+            const factions = event.dataset.faction.split(' ');
+            if (filter === 'all' || factions.includes(filter)) {
+                event.style.display = 'inline-block';
+            } else {
+                event.style.display = 'none';
+            }
+        });
+    });
+});
+
+// Прокрутка таймлайна колесиком мыши
+const timelineWrapper = document.querySelector('.timeline-wrapper');
+if (timelineWrapper) {
+    timelineWrapper.addEventListener('wheel', (e) => {
+        if (e.deltaY !== 0) {
+            e.preventDefault();
+            timelineWrapper.scrollLeft += e.deltaY;
+        }
+    });
+}
+</script>
 
             <!-- Последние обновления -->
             <div>
@@ -1800,7 +2019,7 @@
                  data-faction="Империум"
                  data-coord="Сегментум Солар"
                  data-desc="Священная планета Земля, тронный мир Императора Человечества. Здесь находится Золотой Трон и Императорский Дворец. Сердце Империума и центр Астрономикона."
-                 data-image="https://via.placeholder.com/200x150/2f6f9f/D4AF37?text=Terra">
+                 data-image="https://raw.githubusercontent.com/teemr2007/cho-to/main/terra.webp">
                 <div class="marker-dot"></div>
                 <span class="marker-label">Терра</span>
             </div>
@@ -1810,7 +2029,7 @@
                  data-faction="Империум"
                  data-coord="Сегментум Солар"
                  data-desc="Кузница Империума, мир Адептус Механикус. Здесь производятся титаны, оружие и техника для всей Имперской военной машины."
-                 data-image="https://via.placeholder.com/200x150/2f6f9f/D4AF37?text=Mars">
+                 data-image="https://raw.githubusercontent.com/teemr2007/cho-to/main/mars.webp">
                 <div class="marker-dot"></div>
                 <span class="marker-label">Марс</span>
             </div>
@@ -1820,7 +2039,7 @@
                  data-faction="Империум"
                  data-coord="Сегментум Ультима"
                  data-desc="Родной мир Ультрамаринов, столица Ультрамара. Мир чести и доблести, где был воскрешён Робаут Жиллиман."
-                 data-image="https://via.placeholder.com/200x150/2f6f9f/D4AF37?text=Macragge">
+                 data-image="https://raw.githubusercontent.com/teemr2007/cho-to/main/makragg.webp">
                 <div class="marker-dot"></div>
                 <span class="marker-label">Макрагг</span>
             </div>
@@ -1830,7 +2049,7 @@
                  data-faction="Империум"
                  data-coord="Сегментум Обскурус"
                  data-desc="Планета-крепость, павшая перед силами Хаоса в 13-м Чёрном Крестовом походе. Её гибель привела к образованию Великого Разлома."
-                 data-image="https://via.placeholder.com/200x150/2f6f9f/D4AF37?text=Cadia">
+                 data-image="https://raw.githubusercontent.com/teemr2007/cho-to/main/kadiya.webp">
                 <div class="marker-dot"></div>
                 <span class="marker-label">Кадия</span>
             </div>
@@ -1840,7 +2059,7 @@
                  data-faction="Империум"
                  data-coord="Сегментум Пацификус"
                  data-desc="Священный мир Экклезиархии, центр Имперской веры. Здесь находится Великая Кафедральная церковь."
-                 data-image="https://via.placeholder.com/200x150/2f6f9f/D4AF37?text=Ophelia">
+                 data-image="https://raw.githubusercontent.com/teemr2007/cho-to/main/ofeliya.webp">
                 <div class="marker-dot"></div>
                 <span class="marker-label">Офелия VII</span>
             </div>
@@ -1850,7 +2069,7 @@
                  data-faction="Империум"
                  data-coord="Сегментум Ультима"
                  data-desc="Родной мир Кровавых Ангелов, опустошённый во время вторжения Левиафана, но возрождённый после возвращения примарха Сангвиния."
-                 data-image="https://via.placeholder.com/200x150/2f6f9f/D4AF37?text=Baal">
+                 data-image="https://raw.githubusercontent.com/teemr2007/cho-to/main/baal.webp">
                 <div class="marker-dot"></div>
                 <span class="marker-label">Баал</span>
             </div>
@@ -1860,7 +2079,7 @@
                  data-faction="Империум"
                  data-coord="Сегментум Обскурус"
                  data-desc="Родной мир Ночных Призраков, уничтоженный приказом самого примарха Конрада Кёрза."
-                 data-image="https://via.placeholder.com/200x150/2f6f9f/D4AF37?text=Nostromo">
+                 data-image="https://raw.githubusercontent.com/teemr2007/cho-to/main/nostromo.webp">
                 <div class="marker-dot"></div>
                 <span class="marker-label">Ностромо</span>
             </div>
@@ -1870,7 +2089,7 @@
                  data-faction="Империум"
                  data-coord="Сегментум Обскурус"
                  data-desc="Родной мир Железных Рук, суровый мир с высокими перегрузками, закаливший легион Ферруса Мануса."
-                 data-image="https://via.placeholder.com/200x150/2f6f9f/D4AF37?text=Medusa">
+                 data-image="https://raw.githubusercontent.com/teemr2007/cho-to/main/okouzhasa.webp">
                 <div class="marker-dot"></div>
                 <span class="marker-label">Медуза</span>
             </div>
@@ -1881,7 +2100,7 @@
                  data-faction="Хаос"
                  data-coord="Сегментум Обскурус"
                  data-desc="Огромная варп-дыра в центре галактики, образовавшаяся при рождении Слаанеш. Вход в царство Хаоса, где скрываются Легионы Предателей."
-                 data-image="https://via.placeholder.com/200x150/9f2f2f/D4AF37?text=Eye+of+Terror">
+                 data-image="https://raw.githubusercontent.com/teemr2007/cho-to/main/medusa.webp">
                 <div class="marker-dot"></div>
                 <span class="marker-label">Око Ужаса</span>
             </div>
@@ -1891,7 +2110,7 @@
                  data-faction="Хаос"
                  data-coord="Сегментум Обскурус"
                  data-desc="Демонический мир в Оке Ужаса, где производятся адские машины для армий Хаоса."
-                 data-image="https://via.placeholder.com/200x150/9f2f2f/D4AF37?text=Soulforge">
+                 data-image="https://raw.githubusercontent.com/teemr2007/1234/main/kuznitsadush.webp">
                 <div class="marker-dot"></div>
                 <span class="marker-label">Кузница Душ</span>
             </div>
@@ -1901,7 +2120,7 @@
                  data-faction="Хаос"
                  data-coord="Сегментум Обскурус"
                  data-desc="Крепость-мир Железных Воинов, где Пертурабо правит своими легионами."
-                 data-image="https://via.placeholder.com/200x150/9f2f2f/D4AF37?text=Medrengard">
+                 data-image="https://raw.githubusercontent.com/teemr2007/1234/main/medrengard.webp">
                 <div class="marker-dot"></div>
                 <span class="marker-label">Медренгард</span>
             </div>
@@ -1911,7 +2130,7 @@
                  data-faction="Хаос"
                  data-coord="Сегментум Обскурус"
                  data-desc="Демонический мир Тзинча, где обитают Лорды Изменений и бесконечные лабиринты."
-                 data-image="https://via.placeholder.com/200x150/9f2f2f/D4AF37?text=Sortiarius">
+                 data-image="https://raw.githubusercontent.com/teemr2007/1234/main/sort.webp">
                 <div class="marker-dot"></div>
                 <span class="marker-label">Сортиарий</span>
             </div>
@@ -1922,7 +2141,7 @@
                  data-faction="Эльдары"
                  data-coord="Сегментум Ультима"
                  data-desc="Корабль-мир эльдар, почти уничтоженный флотом-ульем Кракен. Ныне мир-некрополь, где живые сражаются бок о бок с призрачными стражами."
-                 data-image="https://via.placeholder.com/200x150/2f9f7f/D4AF37?text=Iyanden">
+                 data-image="https://raw.githubusercontent.com/teemr2007/1234/main/iyden.webp">
                 <div class="marker-dot"></div>
                 <span class="marker-label">Ийден</span>
             </div>
@@ -1932,7 +2151,7 @@
                  data-faction="Эльдары"
                  data-coord="Сегментум Пацификус"
                  data-desc="Загадочный корабль-мир, известный своими провидцами и странными пророчествами."
-                 data-image="https://via.placeholder.com/200x150/2f9f7f/D4AF37?text=Ulthwe">
+                 data-image="https://raw.githubusercontent.com/teemr2007/1234/main/ylgwe.webp">
                 <div class="marker-dot"></div>
                 <span class="marker-label">Улгве</span>
             </div>
@@ -1942,7 +2161,7 @@
                  data-faction="Эльдары"
                  data-coord="Сегментум Ультима"
                  data-desc="Корабль-мир диких наездников, известный своими авангардными атаками и стремительными рейдами."
-                 data-image="https://via.placeholder.com/200x150/2f9f7f/D4AF37?text=Saim-Hann">
+                 data-image="https://raw.githubusercontent.com/teemr2007/1234/main/saimnhann.webp">
                 <div class="marker-dot"></div>
                 <span class="marker-label">Сайм-Ханн</span>
             </div>
@@ -1952,7 +2171,7 @@
                  data-faction="Эльдары"
                  data-coord="Сегментум Пацификус"
                  data-desc="Корабль-мир воинов, стремящийся восстановить былое величие эльдар силой оружия."
-                 data-image="https://raw.githubusercontent.com/teemr2007/cho-to/main/biel-tan.webp">
+                 data-image="https://raw.githubusercontent.com/teemr2007/1234/main/bieltan.webp">
                 <div class="marker-dot"></div>
                 <span class="marker-label">Бьель-Тан</span>
             </div>
@@ -1963,7 +2182,7 @@
                  data-faction="Орки"
                  data-coord="Сегментум Солар"
                  data-desc="Промышленный мир, подвергшийся нескольким нашествиям орков под предводительством Газгкулла."
-                 data-image="https://via.placeholder.com/200x150/5f9f2f/D4AF37?text=Armageddon">
+                 data-image="https://raw.githubusercontent.com/teemr2007/1234/main/armagedon.webp">
                 <div class="marker-dot"></div>
                 <span class="marker-label">Армагеддон</span>
             </div>
@@ -1973,7 +2192,7 @@
                  data-faction="Орки"
                  data-coord="Сегментум Ультима"
                  data-desc="Огромный комплекс миров, где орки ведут бесконечную войну с тиранидами."
-                 data-image="https://via.placeholder.com/200x150/5f9f2f/D4AF37?text=Octarius">
+                 data-image="https://raw.githubusercontent.com/teemr2007/1234/main/oktarius.webp">
                 <div class="marker-dot"></div>
                 <span class="marker-label">Октариус</span>
             </div>
@@ -1983,7 +2202,7 @@
                  data-faction="Орки"
                  data-coord="Сегментум Ультима"
                  data-desc="Родной мир Газгкулла, где будущий великий вождь получил своё первое видение от Горка и Морка."
-                 data-image="https://via.placeholder.com/200x150/5f9f2f/D4AF37?text=Urk">
+                 data-image="https://raw.githubusercontent.com/teemr2007/1234/main/yurkc.webp">
                 <div class="marker-dot"></div>
                 <span class="marker-label">Урк</span>
             </div>
@@ -1993,7 +2212,7 @@
                  data-faction="Орки"
                  data-coord="Сегментум Ультима"
                  data-desc="Мир-свалка, где орки собирают металлолом для своих гигантских машин."
-                 data-image="https://via.placeholder.com/200x150/5f9f2f/D4AF37?text=Calder">
+                 data-image="https://raw.githubusercontent.com/teemr2007/1234/main/kaldor.webp">
                 <div class="marker-dot"></div>
                 <span class="marker-label">Калдор</span>
             </div>
@@ -2024,7 +2243,7 @@
                  data-faction="Некроны"
                  data-coord="Сегментум Темпестус"
                  data-desc="Мир-гробница династии Мепхрит, известной своим разрушительным оружием."
-                 data-image="https://via.placeholder.com/200x150/6f8faf/D4AF37?text=Gidrafax">
+                 data-image="https://raw.githubusercontent.com/teemr2007/1234/main/gidrafaks.webp">
                 <div class="marker-dot"></div>
                 <span class="marker-label">Гидрафакс</span>
             </div>
@@ -2034,7 +2253,7 @@
                  data-faction="Некроны"
                  data-coord="Сегментум Темпестус"
                  data-desc="Цитадель династии Новиок, ведущей тайные эксперименты по возвращению плоти."
-                 data-image="https://via.placeholder.com/200x150/6f8faf/D4AF37?text=Ankara">
+                 data-image="https://raw.githubusercontent.com/teemr2007/1234/main/ankara.webp">
                 <div class="marker-dot"></div>
                 <span class="marker-label">Анкара</span>
             </div>
@@ -2045,7 +2264,7 @@
                  data-faction="Тираниды"
                  data-coord="Сегментум Ультима"
                  data-desc="Первая планета, уничтоженная тиранидами. Стерта до камня флотом-ульем Бегемот."
-                 data-image="https://via.placeholder.com/200x150/9f2f6f/D4AF37?text=Tyran">
+                 data-image="https://raw.githubusercontent.com/teemr2007/1234/main/tyran.webp">
                 <div class="marker-dot"></div>
                 <span class="marker-label">Тиран</span>
             </div>
@@ -2055,7 +2274,7 @@
                  data-faction="Тираниды"
                  data-coord="Сегментум Пацификус"
                  data-desc="Мир, поглощённый флотом-ульем Горгон, известным своей адаптивностью."
-                 data-image="https://via.placeholder.com/200x150/9f2f6f/D4AF37?text=Gorgon">
+                 data-image="https://raw.githubusercontent.com/teemr2007/1234/main/gorgon.webp">
                 <div class="marker-dot"></div>
                 <span class="marker-label">Горгон</span>
             </div>
@@ -2065,7 +2284,7 @@
                  data-faction="Тираниды"
                  data-coord="Сегментум Ультима"
                  data-desc="Флот-улей, специализирующийся на охоте за демонами и псайкерами."
-                 data-image="https://via.placeholder.com/200x150/9f2f6f/D4AF37?text=Kronos">
+                 data-image="https://raw.githubusercontent.com/teemr2007/1234/main/kronos.webp">
                 <div class="marker-dot"></div>
                 <span class="marker-label">Кронос</span>
             </div>
@@ -2076,7 +2295,7 @@
                  data-faction="Тау"
                  data-coord="Сегментум Ультима"
                  data-desc="Родной мир Империи Тау, центр философии Высшего Блага."
-                 data-image="https://via.placeholder.com/200x150/9f8f2f/D4AF37?text=Tau">
+                 data-image="https://raw.githubusercontent.com/teemr2007/1234/main/tau.webp">
                 <div class="marker-dot"></div>
                 <span class="marker-label">Тау</span>
             </div>
@@ -2086,7 +2305,7 @@
                  data-faction="Тау"
                  data-coord="Сегментум Ультима"
                  data-desc="Мир-кузница Тау, производящий лучшие боевые костюмы."
-                 data-image="https://via.placeholder.com/200x150/9f8f2f/D4AF37?text=Viorla">
+                 data-image="https://raw.githubusercontent.com/teemr2007/1234/main/Viorla.webp">
                 <div class="marker-dot"></div>
                 <span class="marker-label">Виор'ла</span>
             </div>
@@ -2096,7 +2315,7 @@
                  data-faction="Тау"
                  data-coord="Сегментум Ультима"
                  data-desc="Священный мир, где были обнаружены первые артефакты Древних."
-                 data-image="https://via.placeholder.com/200x150/9f8f2f/D4AF37?text=Dalyth">
+                 data-image="https://raw.githubusercontent.com/teemr2007/1234/main/Dalyth.webp">
                 <div class="marker-dot"></div>
                 <span class="marker-label">Да'лит</span>
             </div>
@@ -2107,7 +2326,7 @@
                  data-faction="Лиги Воттан"
                  data-coord="Центр Галактики"
                  data-desc="Таинственная область в центре галактики, где скрываются Лиги Воттан со своими древними технологиями и Воттанами."
-                 data-image="https://via.placeholder.com/200x150/9f6f2f/D4AF37?text=Core">
+                 data-image="https://raw.githubusercontent.com/teemr2007/1234/main/yadro.webp">
                 <div class="marker-dot"></div>
                 <span class="marker-label">Ядро</span>
             </div>
@@ -2117,7 +2336,7 @@
                  data-faction="Лиги Воттан"
                  data-coord="Ядро Галактики"
                  data-desc="Один из крупнейших миров-крепостей Лиг Воттан, центр Тран-Гиперион."
-                 data-image="https://via.placeholder.com/200x150/9f6f2f/D4AF37?text=Galleus">
+                 data-image="https://raw.githubusercontent.com/teemr2007/1234/main/gasseus.webp">
                 <div class="marker-dot"></div>
                 <span class="marker-label">Галлеус</span>
             </div>
@@ -2127,7 +2346,7 @@
                  data-faction="Лиги Воттан"
                  data-coord="Ядро Галактики"
                  data-desc="Мир-архив, где хранятся древнейшие Воттаны и базы знаний."
-                 data-image="https://via.placeholder.com/200x150/9f6f2f/D4AF37?text=Thormon">
+                 data-image="https://raw.githubusercontent.com/teemr2007/1234/main/tormos.webp">
                 <div class="marker-dot"></div>
                 <span class="marker-label">Тормон</span>
             </div>
