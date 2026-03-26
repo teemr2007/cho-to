@@ -1704,7 +1704,8 @@
     </div>
 </div>
 
-           <div id="timeline">
+          <!-- Улучшенный и расширенный таймлайн (40+ событий) -->
+<div id="timeline">
     <h2>Хроники Эпох</h2>
     <div class="timeline-filter">
         <button class="filter-btn active" data-filter="all">Все</button>
@@ -1716,29 +1717,49 @@
         <button class="filter-btn" data-filter="necron">Некроны</button>
         <button class="filter-btn" data-filter="tyranid">Тираниды</button>
         <button class="filter-btn" data-filter="tau">Тау</button>
+        <button class="filter-btn" data-filter="votann">Лиги Воттан</button>
     </div>
     <div class="timeline-wrapper">
         <div class="timeline-horizontal">
-            <!-- Древние -->
-            <div class="timeline-event" data-faction="ancient">
+            <!-- Древние и Война в Небесах -->
+            <div class="timeline-event" data-faction="ancient necron">
                 <div class="event-date">~65 млн лет назад</div>
                 <div class="event-title">Война в Небесах</div>
-                <div class="event-desc">Древние создают эльдар, орков и краутов для борьбы с некронами и К'тан. Падение Древних, Великий Сон некронов.</div>
+                <div class="event-desc">Древние создают эльдар, орков и краутов. Некроны заключают союз с К'тан, становятся бессмертными машинами. Гибель Древних, начало Великого Сна некронов.</div>
+            </div>
+            <div class="timeline-event" data-faction="ancient eldar">
+                <div class="event-date">~60 млн - 25 тыс. лет</div>
+                <div class="event-title">Расцвет эльдар</div>
+                <div class="event-desc">Эльдар создают корабли-миры, Сеть Паутины, систему Путей. Доминирование в галактике.</div>
+            </div>
+            <div class="timeline-event" data-faction="ancient ork">
+                <div class="event-date">~60 млн лет назад</div>
+                <div class="event-title">Создание орков</div>
+                <div class="event-desc">Древние создают орков как идеальное оружие против некронов. Генетическая память и поле WAAAGH! заложены.</div>
+            </div>
+
+            <!-- Падение эльдар и рождение Хаоса -->
+            <div class="timeline-event" data-faction="eldar chaos">
+                <div class="event-date">~М25 - М30</div>
+                <div class="event-title">Рождение Слаанеш</div>
+                <div class="event-desc">Декаданс эльдар достигает пика, рождается Слаанеш. Гибель империи эльдар, образование Ока Ужаса.</div>
             </div>
             <div class="timeline-event" data-faction="eldar">
-                <div class="event-date">~60 млн - 25 тыс. лет</div>
-                <div class="event-title">Империя Тысячи Солнц</div>
-                <div class="event-desc">Эльдар доминируют в галактике, создают корабли-миры, Сеть Паутины, систему Путей.</div>
+                <div class="event-date">~М30</div>
+                <div class="event-title">Создание кораблей-миров</div>
+                <div class="event-desc">Эльдар, избежавшие Падения, уходят на кораблях-мирах (Craftworlds), спасая остатки расы.</div>
             </div>
+            <div class="timeline-event" data-faction="eldar">
+                <div class="event-date">~М30</div>
+                <div class="event-title">Основание Комморры</div>
+                <div class="event-desc">Друкари (тёмные эльдар) укрываются в Сети Паутины, создавая город Комморра.</div>
+            </div>
+
+            <!-- Империум: ранние этапы -->
             <div class="timeline-event" data-faction="imperium">
                 <div class="event-date">М15 - М25</div>
                 <div class="event-title">Тёмный век технологий</div>
-                <div class="event-desc">Золотая эра человечества: создание STC, разумных машин, экспансия по галактике.</div>
-            </div>
-            <div class="timeline-event" data-faction="chaos eldar">
-                <div class="event-date">~М25</div>
-                <div class="event-title">Рождение Слаанеш</div>
-                <div class="event-desc">Гедонизм эльдар приводит к рождению Слаанеш. Гибель империи эльдар, образование Ока Ужаса. Начало Эры Раздора.</div>
+                <div class="event-desc">Создание STC, разумных машин, экспансия человечества по галактике.</div>
             </div>
             <div class="timeline-event" data-faction="imperium">
                 <div class="event-date">М25 - М30</div>
@@ -1750,77 +1771,171 @@
                 <div class="event-title">Великий крестовый поход</div>
                 <div class="event-desc">Император объединяет Терру, создаёт примархов и легионы Астартес. Освобождение миров человечества.</div>
             </div>
-            <div class="timeline-event" data-faction="chaos">
+            <div class="timeline-event" data-faction="imperium">
+                <div class="event-date">005.М31</div>
+                <div class="event-title">Союз с Марсом</div>
+                <div class="event-desc">Адептус Механикус признаёт Императора Омниссией, становясь технологической опорой Империума.</div>
+            </div>
+            <div class="timeline-event" data-faction="imperium chaos">
                 <div class="event-date">005.М31 - 014.М31</div>
                 <div class="event-title">Ересь Хоруса</div>
-                <div class="event-desc">Хорус совращён Хаосом. Резня на Истваане III и V. Осада Терры. Император на Золотом Троне.</div>
+                <div class="event-desc">Хорус предаёт Императора, половина легионов переходит на сторону Хаоса. Истваан III и V, осада Терры. Император на Золотом Троне.</div>
+            </div>
+            <div class="timeline-event" data-faction="imperium">
+                <div class="event-date">014.М31</div>
+                <div class="event-title">Кодекс Астартес</div>
+                <div class="event-desc">Робаут Жиллиман пишет Кодекс, разделяющий легионы на ордена.</div>
             </div>
             <div class="timeline-event" data-faction="imperium">
                 <div class="event-date">М31 - М36</div>
-                <div class="event-title">После Ереси</div>
-                <div class="event-desc">Кодекс Астартес, разделение легионов. Рождение культа Императора. Эра Отступничества, создание Сестёр Битвы.</div>
+                <div class="event-title">Эра Возрождения</div>
+                <div class="event-desc">Рождение культа Императора, становление Экклезиархии. Эра Отступничества, создание Адепта Сороритас.</div>
             </div>
+
+            <!-- Орки: Война Зверя и нашествия -->
             <div class="timeline-event" data-faction="ork">
                 <div class="event-date">~М32</div>
                 <div class="event-title">Война Зверя</div>
-                <div class="event-desc">Орки под предводительством Зверя осаждают Терру. Империум на грани уничтожения.</div>
+                <div class="event-desc">Орки под предводительством Зверя осаждают Терру. Империум на грани уничтожения, орки отброшены ценой огромных потерь.</div>
             </div>
+            <div class="timeline-event" data-faction="ork">
+                <div class="event-date">941.М41</div>
+                <div class="event-title">Первая война за Армагеддон</div>
+                <div class="event-desc">Газгкулл Маг Урук Трака вторгается на Армагеддон, но остановлен космическими десантниками.</div>
+            </div>
+            <div class="timeline-event" data-faction="ork">
+                <div class="event-date">998.М41</div>
+                <div class="event-title">Вторая война за Армагеддон</div>
+                <div class="event-desc">Газгкулл возвращается, захватывает планету. Империум проводит масштабную кампанию по освобождению.</div>
+            </div>
+
+            <!-- Некроны: пробуждение -->
+            <div class="timeline-event" data-faction="necron">
+                <div class="event-date">~М32 - М41</div>
+                <div class="event-title">Постепенное пробуждение</div>
+                <div class="event-desc">Некроны начинают просыпаться, захватывать миры. Династии Сзарек, Мепхрит и другие.</div>
+            </div>
+            <div class="timeline-event" data-faction="necron">
+                <div class="event-date">997.М41</div>
+                <div class="event-title">Иммотек, Повелитель Бурь</div>
+                <div class="event-desc">Фаэрон Иммотек объединяет династию Сзарек, начинает завоевание сегментумов.</div>
+            </div>
+            <div class="timeline-event" data-faction="necron">
+                <div class="event-date">М42</div>
+                <div class="event-title">Возвращение Тирана Сзарека</div>
+                <div class="event-desc">Сзарек возвращается из изгнания, пытается объединить династии против Тиранидов.</div>
+            </div>
+
+            <!-- Тираниды: три великих флота -->
             <div class="timeline-event" data-faction="tyranid">
                 <div class="event-date">745.М41</div>
-                <div class="event-title">Первая война за Тиранид</div>
-                <div class="event-desc">Ульевой флот Бегемот уничтожает мир Тирани. Битва за Макрагг.</div>
+                <div class="event-title">Первое вторжение (Бегемот)</div>
+                <div class="event-desc">Уничтожен мир Тирани. Битва за Макрагг, ультрамарины ценой огромных потерь останавливают флот.</div>
             </div>
             <div class="timeline-event" data-faction="tyranid">
                 <div class="event-date">992.М41</div>
-                <div class="event-title">Вторая война за Тиранид</div>
-                <div class="event-desc">Флот Кракен атакует сотни миров. Уничтожение корабля-мира Ийден.</div>
+                <div class="event-title">Вторжение Кракена</div>
+                <div class="event-desc">Флот-улей Кракен атакует сотни миров. Корабль-мир Ийден почти уничтожен.</div>
             </div>
             <div class="timeline-event" data-faction="tyranid">
                 <div class="event-date">997.М41</div>
-                <div class="event-title">Третья война за Тиранид</div>
-                <div class="event-desc">Флот Левиафан приносит Тень в Варпе. Остановлен у Макрагга.</div>
+                <div class="event-title">Нашествие Левиафана</div>
+                <div class="event-desc">Самый мощный флот атакует с юга, Тень в Варпе парализует связь. Остановлен у Макрагга с помощью Космических Волков.</div>
             </div>
+            <div class="timeline-event" data-faction="tyranid">
+                <div class="event-date">М42</div>
+                <div class="event-title">Флоты-призраки</div>
+                <div class="event-desc">Появляются новые флоты: Горгон, Гидра, Хромированный, Кронос (охотник на демонов).</div>
+            </div>
+
+            <!-- Тау: рождение и экспансия -->
             <div class="timeline-event" data-faction="tau">
                 <div class="event-date">~М38</div>
-                <div class="event-title">Возвышение Тау</div>
-                <div class="event-desc">Появление Эта. Объединение каст. Начало экспансии.</div>
+                <div class="event-title">Пришествие Эта</div>
+                <div class="event-desc">Таинственные Эта объединяют воюющие племена Тау, провозглашая Высшее Благо.</div>
             </div>
-            <div class="timeline-event" data-faction="necron">
-                <div class="event-date">М41 - М42</div>
-                <div class="event-title">Пробуждение некронов</div>
-                <div class="event-desc">Династии некронов пробуждаются по всей галактике. Иммотек, Тразин и другие повелители возвращают свои миры.</div>
+            <div class="timeline-event" data-faction="tau">
+                <div class="event-date">~М39</div>
+                <div class="event-title">Первая экспансия</div>
+                <div class="event-desc">Тау осваивают свою систему, создают гравитационные двигатели, начинают экспансию.</div>
             </div>
-            <div class="timeline-event" data-faction="chaos">
+            <div class="timeline-event" data-faction="tau">
+                <div class="event-date">742.М41</div>
+                <div class="event-title">Вторая экспансия</div>
+                <div class="event-desc">Тау встречают Империум, происходит Дамоклов крестовый поход. Империум отброшен, Тау расширяются.</div>
+            </div>
+            <div class="timeline-event" data-faction="tau">
+                <div class="event-date">999.М41</div>
+                <div class="event-title">Третья экспансия</div>
+                <div class="event-desc">Тау захватывают множество миров, сталкиваются с Тиранидами и Империумом.</div>
+            </div>
+            <div class="timeline-event" data-faction="tau">
+                <div class="event-date">М42</div>
+                <div class="event-title">Четвёртая экспансия</div>
+                <div class="event-desc">Тау проникают в ослабленные Империумом миры, появляются слухи о "испорченном" флоте-призраке.</div>
+            </div>
+
+            <!-- Лиги Воттан -->
+            <div class="timeline-event" data-faction="votann">
+                <div class="event-date">М15 - М25</div>
+                <div class="event-title">Экспедиции к ядру</div>
+                <div class="event-desc">Колонии Тёмного века достигают ядра галактики, создают Воттаны — разумные компьютеры.</div>
+            </div>
+            <div class="timeline-event" data-faction="votann">
+                <div class="event-date">М30 - М41</div>
+                <div class="event-title">Изоляция и эволюция</div>
+                <div class="event-desc">Кинсмены развиваются в изоляции, создают Лиги. Изредка торгуют с Империумом.</div>
+            </div>
+            <div class="timeline-event" data-faction="votann">
+                <div class="event-date">М42</div>
+                <div class="event-title">Возвращение Лиг</div>
+                <div class="event-desc">Лиги Воттан вновь появляются в галактике, их боги-машины стареют и сходят с ума.</div>
+            </div>
+
+            <!-- Современная эра: Великий Разлом и возвращение примархов -->
+            <div class="timeline-event" data-faction="chaos imperium">
                 <div class="event-date">999.М41</div>
                 <div class="event-title">Падение Кадии</div>
-                <div class="event-desc">13-й Чёрный крестовый поход Абаддона. Разрушение Кадии. Образование Великого Разлома.</div>
+                <div class="event-desc">Абаддон уничтожает Кадию, образуется Великий Разлом, разрезающий галактику надвое.</div>
             </div>
             <div class="timeline-event" data-faction="imperium">
                 <div class="event-date">000.М42</div>
                 <div class="event-title">Великий Разлом</div>
-                <div class="event-desc">Галактика расколота надвое. Тысячи миров отрезаны от Империума.</div>
+                <div class="event-desc">Галактика расколота, тысячи миров отрезаны. Начало Эры Разрушения.</div>
             </div>
             <div class="timeline-event" data-faction="imperium">
-                <div class="event-date">001.М42 - наст.</div>
-                <div class="event-title">Возвращение Жиллимана</div>
-                <div class="event-desc">Робаут Жиллиман воскрешён. Начинает Несокрушимый крестовый поход. Создание Примарис.</div>
+                <div class="event-date">001.М42</div>
+                <div class="event-title">Возвращение Робаута Жиллимана</div>
+                <div class="event-desc">Примарх Ультрамаринов воскрешён, становится Воителем, начинает Несокрушимый крестовый поход, создаёт Примарис.</div>
             </div>
             <div class="timeline-event" data-faction="imperium">
                 <div class="event-date">~М42</div>
-                <div class="event-title">Возвращение Льва</div>
-                <div class="event-desc">Лев Эль'Джонсон пробуждается, объединяет Тёмных Ангелов.</div>
+                <div class="event-title">Возвращение Льва Эль'Джонсона</div>
+                <div class="event-desc">Лев, примарх Тёмных Ангелов, пробуждается и объединяет ордена.</div>
             </div>
-            <div class="timeline-event" data-faction="votann">
+            <div class="timeline-event" data-faction="chaos">
                 <div class="event-date">М42</div>
-                <div class="event-title">Лиги Воттан</div>
-                <div class="event-desc">Появление Лиг Воттан — потомков колонистов Тёмного века.</div>
+                <div class="event-title">Чёрный легион и Война Психов</div>
+                <div class="event-desc">Абаддон продолжает кампании, Хаос усиливается в Великом Разломе.</div>
+            </div>
+
+            <!-- Дополнительные важные события -->
+            <div class="timeline-event" data-faction="eldar">
+                <div class="event-date">~М41</div>
+                <div class="event-title">Создание Йннари</div>
+                <div class="event-desc">Эльдар объединяются под знаменем бога смерти Йннида, чтобы победить Слаанеш.</div>
+            </div>
+            <div class="timeline-event" data-faction="tyranid">
+                <div class="event-date">М42</div>
+                <div class="event-title">Тираниды и Великий Разлом</div>
+                <div class="event-desc">Тираниды используют разлом как сигнал, их вторжения становятся ещё более агрессивными.</div>
             </div>
         </div>
     </div>
 </div>
 
 <style>
-/* Улучшенные стили для таймлайна */
+/* Стили для таймлайна (оставляем прежние) */
 .timeline-wrapper {
     position: relative;
     margin: 40px 0;
@@ -1832,17 +1947,14 @@
     -webkit-overflow-scrolling: touch;
     cursor: grab;
 }
-
 .timeline-wrapper:active {
     cursor: grabbing;
 }
-
 .timeline-horizontal {
     display: inline-flex;
     gap: 30px;
     padding: 20px 30px;
 }
-
 .timeline-event {
     position: relative;
     width: 320px;
@@ -1858,22 +1970,18 @@
     vertical-align: top;
     box-shadow: 0 5px 15px rgba(0,0,0,0.3);
 }
-
 .timeline-event:hover {
     transform: translateY(-8px) scale(1.02);
     box-shadow: 0 15px 30px rgba(212, 175, 55, 0.3);
     border-color: #8B0000;
 }
-
 .timeline-event .event-date {
     font-size: 1.1rem;
     font-weight: 700;
     color: #9A7D0C;
     margin-bottom: 10px;
     font-family: 'Cinzel', serif;
-    letter-spacing: 1px;
 }
-
 .timeline-event .event-title {
     font-size: 1.5rem;
     color: #D4AF37;
@@ -1881,33 +1989,25 @@
     font-family: 'Cinzel', serif;
     font-weight: bold;
 }
-
 .timeline-event .event-desc {
     font-size: 0.9rem;
     color: #c0c8d0;
     line-height: 1.5;
 }
-
-/* Полоса прокрутки */
 .timeline-wrapper::-webkit-scrollbar {
     height: 8px;
 }
-
 .timeline-wrapper::-webkit-scrollbar-track {
     background: rgba(20, 25, 30, 0.5);
     border-radius: 4px;
 }
-
 .timeline-wrapper::-webkit-scrollbar-thumb {
     background: #D4AF37;
     border-radius: 4px;
 }
-
 .timeline-wrapper::-webkit-scrollbar-thumb:hover {
     background: #8B0000;
 }
-
-/* Фильтры */
 .timeline-filter {
     display: flex;
     gap: 10px;
@@ -1915,7 +2015,6 @@
     flex-wrap: wrap;
     justify-content: center;
 }
-
 .filter-btn {
     padding: 8px 20px;
     background: rgba(20, 25, 30, 0.7);
@@ -1928,7 +2027,6 @@
     font-size: 0.85rem;
     letter-spacing: 1px;
 }
-
 .filter-btn.active, .filter-btn:hover {
     background: #D4AF37;
     color: #0A0C0B;
@@ -1937,7 +2035,7 @@
 </style>
 
 <script>
-// Фильтр таймлайна
+// Фильтрация таймлайна
 const filterBtns = document.querySelectorAll('.filter-btn');
 const timelineEvents = document.querySelectorAll('.timeline-event');
 
@@ -1958,7 +2056,7 @@ filterBtns.forEach(btn => {
     });
 });
 
-// Прокрутка таймлайна колесиком мыши
+// Горизонтальный скролл колесиком мыши
 const timelineWrapper = document.querySelector('.timeline-wrapper');
 if (timelineWrapper) {
     timelineWrapper.addEventListener('wheel', (e) => {
