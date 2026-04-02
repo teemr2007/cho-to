@@ -5039,7 +5039,7 @@ applyTransform();
     }
 })();
 </script>
-<!-- СТРАНИЦА 12: МУЛЬТИМЕДИА -->
+                 <!-- СТРАНИЦА 12: МУЛЬТИМЕДИА -->
 <div id="page-multimedia" class="page-container">
     <h1>Мультимедиа Warhammer 40,000</h1>
     <p style="color: #a0a8b0; margin-bottom: 30px;">Видео, аудио, 3D-модели и интерактивный контент по вселенной.</p>
@@ -5048,7 +5048,7 @@ applyTransform();
     <h2>Видео</h2>
     <div class="video-grid">
         <div class="video-card">
-            <iframe src="https://yabs.yandex.ru/count/We4ejI_zOoVX2Ldh0PqJ07DbaCkQI-lG8oTWJg2ADqn0R_O1-OD2m0jzFfSxUxRVkVE6Er-_u_M6ErmILgarQiMXpkipbzwtDIWAT4kfqgZq-gnIez6fb8IHjIfKWyGIqWWhq9BI4j9q1qpPfE027OCdYbBPb4O0WTq5WuvZ1s9F2j1s83OkGDk1c9C2j1s81HQWxK2iIG7Q3iG02z1su5LMWBO3hsu1sWwyk0LeE_0YAq3RWTTO0TeElCfolYOGrGXru0sPvNHfloihCWE5UfDivxWeMGDySwcD7WrSLAjK7Wkk5N2mDrEoEEfJpAw8tNXv8X00y4BO-Np3PEDLORFxGC0Du00sS4bqNVteKb9unAjXRoefvA7LiCqHm4jFrPIz4xCj9ZLYfgxhMLtNQtGEV51TZ5gEP74qt3OSXW-arP0Gm5S7NcK1R1tGjTuYS3wUcgYen6GMjYRA1N0W367i0mixwB0APGz7qcJqcojW2kO4ekoWiFKKT9W9PGqxhcB8JHqBPj9YzHWn7QCBK42DbQZ6fXIcMmBIYmDi8rm3cdegcbmLpTt_nXalKtuuoaNoWpyGk__rP4M-rvCL-LpFb_Rt6Zsph_rMM7xsMs5XcfjFaSoorw8nnyobrqzfyitRTLtNQJC5NOY0HLYDqRi8gp5wwycOCD7P9Q4lUp8n53nF_c5qG13zE871EQn4_yMn48dYOg6CEFeTn_BDqfkIGDbwxPzqQr8sn6UzrtsP2xaBLkq-7eyoqE4hWxbIgLGA8H62iMahoW_3xe4k8sc39m8D_1E2yuTHt-Womj8xjj9LdXJB0KXiWZTGWyKP8gz6ojcVYE1LjzwY226iB37bFG00~2?baobab_event_id=mn9wev2ncy" allowfullscreen></iframe>
+            <iframe src="https://rutube.ru/video/0f6ebb64405289731b86aecfb628d857/?r=wd" allowfullscreen></iframe>
             <div class="video-info">
                 <h4>Astartes (Fan Film)</h4>
                 <p>Легендарный фанатский проект, покоривший миллионы зрителей.</p>
@@ -5097,7 +5097,7 @@ applyTransform();
                 <p>Эмбиент для погружения в атмосферу 41-го тысячелетия.</p>
                 <div class="audio-player">
                     <audio controls>
-                        <source src="https://cdn.pixabay.com/download/audio/2022/05/16/audio_7427fc4f6f.mp3" type="audio/mpeg">
+                        <source src="https://raw.githubusercontent.com/teemr2007/cho-to/main/dremlyushchaya-med-70-821582.mp3" type="audio/mpeg">
                     </audio>
                 </div>
             </div>
@@ -5108,7 +5108,7 @@ applyTransform();
                 <p>Краткий обзор величайшего предательства в истории человечества.</p>
                 <div class="audio-player">
                     <audio controls>
-                        <source src="https://cdn.pixabay.com/download/audio/2022/03/17/audio_022868a620.mp3" type="audio/mpeg">
+                        <source src="https://drive.google.com/uc?export=download&id=16LbjRc8tAYVwSHsYqe7PG-tpYFxZJFiz" type="audio/mpeg">
                     </audio>
                 </div>
             </div>
@@ -5166,15 +5166,72 @@ applyTransform();
         </div>
     </footer>
 
-    <!-- МУЗЫКАЛЬНАЯ КНОПКА -->
-    <div class="music-control-modern" id="musicToggle">
-        <i class="fas fa-volume-mute"></i>
-    </div>
+    
+   <!-- МУЗЫКАЛЬНАЯ КНОПКА -->
+<div class="music-control-modern" id="musicToggle">
+    <i class="fas fa-volume-mute"></i>
+</div>
 
-    <audio id="bgMusic" loop preload="auto">
-        <source src="https://cdn.freesound.org/previews/648/648660_11943129-lq.mp3" type="audio/mp3">
-        <source src="https://cdn.freesound.org/previews/672/672251_13635082-lq.mp3" type="audio/mp3">
-    </audio>
+<audio id="bgMusic" loop preload="auto">
+    <source src="https://raw.githubusercontent.com/teemr2007/cho-to/main/Guillaume_David_Warhammer_400_Mechanicus_OST_-_Children_of_the_Omnissiah_66543502.mp3" type="audio/mpeg">
+    Ваш браузер не поддерживает аудиоэлемент.
+</audio>
+   <script>
+    document.addEventListener('DOMContentLoaded', function() {
+    const musicToggle = document.getElementById('musicToggle');
+    const bgMusic = document.getElementById('bgMusic');
+    const icon = musicToggle.querySelector('i');
+
+    // Начальное состояние — музыка выключена
+    let isPlaying = false;
+
+    musicToggle.addEventListener('click', function() {
+        if (!isPlaying) {
+            // Включаем музыку
+            bgMusic.play()
+                .then(() => {
+                    // Успешно началось воспроизведение
+                    icon.className = 'fas fa-volume-up';
+                    isPlaying = true;
+                })
+                .catch(error => {
+                    console.log('Воспроизведение отклонено:', error);
+                    alert('Браузер блокирует автовоспроизведение. Кликните ещё раз, чтобы включить музыку.');
+                });
+        } else {
+            // Выключаем музыку
+            bgMusic.pause();
+            bgMusic.currentTime = 0; // Возвращаем к началу трека
+            icon.className = 'fas fa-volume-mute';
+            isPlaying = false;
+        }
+    });
+});
+</script>
+   <style>
+    .music-control-modern {
+    width: 50px;
+    height: 50px;
+    background: #2c3e50;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.music-control-modern:hover {
+    background: #34495e;
+    transform: scale(1.1);
+}
+
+.music-control-modern i {
+    color: #ecf0f1;
+    font-size: 20px;
+}
+
+   </style>
     <script>// ========== СЛУЧАЙНЫЙ ФАКТ ==========
 const warhammerFacts = [
     { text: "Космический десантник может функционировать до 10 дней без сна благодаря 'каталепсеанскому узлу' — импланту, который позволяет отдыхать частями мозга.", source: "Кодекс: Космодесант" },
