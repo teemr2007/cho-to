@@ -3,6 +3,7 @@ from tkinter import messagebox, ttk
 import json
 import os
 import random
+import math
 from datetime import datetime, timedelta
 
 # Попытка импорта звука (опционально)
@@ -23,7 +24,33 @@ class SoundManager:
         self.enabled = not self.enabled
         return self.enabled
 
-class AdaptiveButton(tk.Button):
+class ParticleEffect:
+    """Класс для создания частиц"""
+    def __init__(self, canvas, x, y, color, count=10):
+        self.canvas = canvas
+        self.particles = []
+        for _ in range(count):
+            angle = random.uniform(0, 2 * math.pi)
+            speed = random.uniform(2, 8)
+            vx = math.cos(angle) * speed
+            vy = math.sin(angle) * speed
+            particle = canvas.create_oval(x-3, y-3, x+3, y+3, fill=color, outline='')
+            self.particles.append([particle, x, y, vx, vy, 30])
+        self.animate()
+    
+    def animate(self):
+        for p in self.particles[:]:
+            p[1] += p[3]
+            p[2] += p[4]
+            p[5] -= 1
+            self.canvas.coords(p[0], p[1]-2, p[2]-2, p[1]+2, p[2]+2)
+            if p[5] <= 0:
+                self.canvas.delete(p[0])
+                self.particles.remove(p)
+        if self.particles:
+            self.canvas.after(30, self.animate)
+
+class AnimatedButton(tk.Button):
     def __init__(self, master, text, command, bg='#FF6B6B', fg='white', **kwargs):
         super().__init__(master, text=text, command=command, bg=bg, fg=fg,
                         relief='raised', font=('Arial', 10, 'bold'))
@@ -31,6 +58,7 @@ class AdaptiveButton(tk.Button):
         self.hover_bg = self._lighten_color(bg)
         self.bind("<Enter>", self.on_enter)
         self.bind("<Leave>", self.on_leave)
+        self.bind("<Button-1>", self.on_click_effect)
         self.configure(width=20, height=2)
     
     def _lighten_color(self, color):
@@ -50,9 +78,13 @@ class AdaptiveButton(tk.Button):
     
     def on_leave(self, e):
         self.config(bg=self.default_bg)
+    
+    def on_click_effect(self, e):
+        self.config(relief='sunken')
+        self.after(100, lambda: self.config(relief='raised'))
 
 class InteractiveCookingGame:
-    """Интерактивная мини-игра приготовления с разными механиками (замедленные анимации)"""
+    """Интерактивная мини-игра приготовления с разными механиками"""
     def __init__(self, parent, action, on_complete):
         self.parent = parent
         self.action = action
@@ -61,191 +93,297 @@ class InteractiveCookingGame:
         self.score = 0
         self.combo = 0
         self.timer_active = True
+        self.timer = None
+        self.combo_timer = None
         
     def create_game(self, container):
-        """Создает игровой интерфейс в зависимости от типа действия"""
         self.container = container
         self.clear_container()
         
-        # Определяем тип мини-игры
+        # Добавляем красивый фон
+        bg_frame = tk.Frame(self.container, bg='#FFF8E7')
+        bg_frame.pack(fill='both', expand=True)
+        
         if "тесто" in self.action.lower() or "замесить" in self.action.lower():
-            self.create_dough_game()
+            self.create_dough_game(bg_frame)
         elif "пасту" in self.action.lower() or "сварить" in self.action.lower():
-            self.create_pasta_game()
+            self.create_pasta_game(bg_frame)
         elif "крем" in self.action.lower() or "взбить" in self.action.lower():
-            self.create_whip_game()
+            self.create_whip_game(bg_frame)
         elif "тушить" in self.action.lower() or "соус" in self.action.lower():
-            self.create_stew_game()
+            self.create_stew_game(bg_frame)
         elif "рис" in self.action.lower():
-            self.create_rice_game()
+            self.create_rice_game(bg_frame)
         elif "нарезать" in self.action.lower():
-            self.create_chopping_game()
+            self.create_chopping_game(bg_frame)
         else:
-            self.create_click_game()
+            self.create_click_game(bg_frame)
     
     def clear_container(self):
         for widget in self.container.winfo_children():
             widget.destroy()
     
-    def create_dough_game(self):
-        """Игра замеса теста - нужно вращать (двигать мышью) - ЗАМЕДЛЕНА"""
-        tk.Label(self.container, text="🥣 ЗАМЕСИТЬ ТЕСТО", 
-                font=('Arial', 16, 'bold'), bg='#FFF8E7', fg='#FF6B6B').pack(pady=10)
+    def create_dough_game(self, parent):
+        """Улучшенная игра замеса теста"""
+        title = tk.Label(parent, text="🥣 ЗАМЕСИТЬ ТЕСТО", 
+                        font=('Arial', 20, 'bold'), bg='#FFF8E7', fg='#FF6B6B')
+        title.pack(pady=10)
         
-        self.dough_canvas = tk.Canvas(self.container, width=300, height=200, bg='#FFE5B4', relief='ridge')
-        self.dough_canvas.pack(pady=20)
+        # Анимированная подсказка
+        self.tip_label = tk.Label(parent, text="✨ Водите мышью по тесту! ✨", 
+                                  font=('Arial', 11), bg='#FFF8E7', fg='#FF9800')
+        self.tip_label.pack()
+        self.animate_tip()
         
-        # Рисуем миску с тестом
-        self.dough_canvas.create_oval(50, 100, 250, 180, fill='#F5DEB3', outline='#8B4513', width=3)
-        self.dough_canvas.create_text(150, 140, text="🥄", font=('Arial', 40))
+        self.dough_canvas = tk.Canvas(parent, width=350, height=250, bg='#FFE5B4', 
+                                      relief='ridge', highlightthickness=2)
+        self.dough_canvas.pack(pady=15)
         
-        self.rotate_count = 0
-        self.rotate_target = 15  # Увеличено с 10 до 15 для большего времени игры
-        self.rotate_label = tk.Label(self.container, text=f"Вращений: 0/{self.rotate_target}", 
-                                     font=('Arial', 12), bg='#FFF8E7')
-        self.rotate_label.pack()
+        # Рисуем красивую миску
+        self.dough_canvas.create_oval(60, 100, 290, 210, fill='#F5DEB3', outline='#8B4513', width=3)
+        self.dough_canvas.create_arc(60, 100, 290, 210, start=0, extent=180, 
+                                      fill='#FFE4B5', outline='')
+        self.dough_text = self.dough_canvas.create_text(175, 155, text="🥄", font=('Arial', 45))
         
-        # Счетчик для замедления (нужно больше движений)
+        # Параметры игры
+        self.time_remaining = 12
         self.last_x, self.last_y = 0, 0
-        self.move_distance = 0
+        self.total_movement = 0
+        self.max_movement = 600
         
-        # Привязываем движение мыши
+        # Прогресс-бары
+        time_frame = tk.Frame(parent, bg='#FFF8E7')
+        time_frame.pack(pady=5)
+        tk.Label(time_frame, text="⏱️ Время:", font=('Arial', 10), bg='#FFF8E7').pack(side='left')
+        self.time_progress = ttk.Progressbar(time_frame, length=250, mode='determinate', maximum=12)
+        self.time_progress.pack(side='left', padx=10)
+        self.time_label = tk.Label(time_frame, text=f"{self.time_remaining} сек", 
+                                   font=('Arial', 10), bg='#FFF8E7')
+        self.time_label.pack(side='left')
+        
+        move_frame = tk.Frame(parent, bg='#FFF8E7')
+        move_frame.pack(pady=5)
+        tk.Label(move_frame, text="🥄 Прогресс:", font=('Arial', 10), bg='#FFF8E7').pack(side='left')
+        self.move_progress = ttk.Progressbar(move_frame, length=250, mode='determinate', maximum=100)
+        self.move_progress.pack(side='left', padx=10)
+        self.move_label = tk.Label(move_frame, text="0%", font=('Arial', 10), bg='#FFF8E7', fg='#4CAF50')
+        self.move_label.pack(side='left')
+        
         self.dough_canvas.bind('<Motion>', self.on_dough_move)
+        self.start_dough_timer()
         
-        instruction = tk.Label(self.container, text="🖱️ Водите мышью по тесту, чтобы замесить!\n(Нужно больше движений)", 
-                              font=('Arial', 10), bg='#FFF8E7', fg='gray')
+        instruction = tk.Label(parent, text="💡 Совет: быстро водите мышью по миске для ускорения!", 
+                              font=('Arial', 9), bg='#FFF8E7', fg='gray')
         instruction.pack(pady=10)
     
+    def animate_tip(self):
+        """Анимация подсказки"""
+        colors = ['#FF9800', '#FF6B6B', '#4CAF50', '#2196F3']
+        for i, color in enumerate(colors):
+            self.parent.after(i * 500, lambda c=color: self.tip_label.config(fg=c))
+        self.parent.after(2000, self.animate_tip)
+    
+    def start_dough_timer(self):
+        if self.timer:
+            try:
+                self.parent.after_cancel(self.timer)
+            except:
+                pass
+        self.timer = self.parent.after(1000, self.update_dough_timer)
+    
+    def update_dough_timer(self):
+        self.time_remaining -= 1
+        self.time_progress['value'] = self.time_remaining
+        self.time_label.config(text=f"{self.time_remaining} сек")
+        
+        if self.total_movement < self.max_movement:
+            self.total_movement = min(self.max_movement, self.total_movement + 8)
+            percent = int(self.total_movement / self.max_movement * 100)
+            self.move_progress['value'] = percent
+            self.move_label.config(text=f"{percent}%")
+        
+        if self.time_remaining > 0:
+            self.timer = self.parent.after(1000, self.update_dough_timer)
+        else:
+            if self.total_movement >= self.max_movement:
+                self.dough_canvas.unbind('<Motion>')
+                self.complete_game()
+            else:
+                if messagebox.askyesno("Время вышло!", "Нужно активнее мешать тесто! Попробовать ещё раз?"):
+                    self.reset_dough_game()
+                else:
+                    self.dough_canvas.unbind('<Motion>')
+    
+    def reset_dough_game(self):
+        self.time_remaining = 12
+        self.total_movement = 0
+        self.last_x, self.last_y = 0, 0
+        self.time_progress['value'] = 12
+        self.time_label.config(text="12 сек")
+        self.move_progress['value'] = 0
+        self.move_label.config(text="0%")
+        self.dough_canvas.bind('<Motion>', self.on_dough_move)
+        self.start_dough_timer()
+    
     def on_dough_move(self, event):
+        if self.time_remaining <= 0:
+            return
+        
         x, y = event.x, event.y
-        # Проверяем, находится ли курсор в области миски
-        if 50 < x < 250 and 100 < y < 180:
-            # Вычисляем расстояние движения для более плавного прогресса
+        if 60 < x < 290 and 100 < y < 210:
             if self.last_x != 0 and self.last_y != 0:
                 dist = ((x - self.last_x) ** 2 + (y - self.last_y) ** 2) ** 0.5
-                self.move_distance += dist
-                
-                # Накопление прогресса от расстояния (замедленно)
-                if self.move_distance >= 30:  # Увеличено с 20 до 30
-                    self.rotate_count += 1
-                    self.move_distance = 0
-                    self.rotate_label.config(text=f"Вращений: {self.rotate_count}/{self.rotate_target}")
-                    self.progress = int(self.rotate_count / self.rotate_target * 100)
+                gain = min(20, int(dist * 2))
+                if self.total_movement < self.max_movement:
+                    self.total_movement = min(self.max_movement, self.total_movement + gain)
+                    percent = int(self.total_movement / self.max_movement * 100)
+                    self.move_progress['value'] = percent
+                    self.move_label.config(text=f"{percent}%")
                     
-                    # Анимация перемешивания
+                    # Анимация
                     self.dough_canvas.delete('spoon')
-                    spoon = self.dough_canvas.create_text(x, y, text="🥄", font=('Arial', 30), tags='spoon')
-                    self.dough_canvas.after(150, lambda: self.dough_canvas.delete('spoon'))
+                    spoon = self.dough_canvas.create_text(x, y, text="🥄", font=('Arial', 35), tags='spoon')
+                    ParticleEffect(self.dough_canvas, x, y, '#FFD700', 3)
+                    self.parent.after(200, lambda: self.dough_canvas.delete(spoon))
             
             self.last_x, self.last_y = x, y
             
-            if self.rotate_count >= self.rotate_target:
+            if self.total_movement >= self.max_movement:
                 self.dough_canvas.unbind('<Motion>')
+                if self.timer:
+                    try:
+                        self.parent.after_cancel(self.timer)
+                    except:
+                        pass
                 self.complete_game()
     
-    def create_pasta_game(self):
-        """Игра варки пасты - нужно поддерживать температуру (замедленный таймер)"""
-        tk.Label(self.container, text="🍝 СВАРИТЬ ПАСТУ", 
-                font=('Arial', 16, 'bold'), bg='#FFF8E7', fg='#FF6B6B').pack(pady=10)
+    def create_pasta_game(self, parent):
+        """Улучшенная игра варки пасты"""
+        tk.Label(parent, text="🍝 СВАРИТЬ ПАСТУ", 
+                font=('Arial', 20, 'bold'), bg='#FFF8E7', fg='#FF6B6B').pack(pady=10)
         
-        # Температура
         self.temp = 0
         self.target_temp = 100
-        self.time_left = 45  # Увеличено с 30 до 45 секунд
+        self.time_left = 50
+        self.pasta_progress = 0
         
-        # Термометр
-        self.temp_canvas = tk.Canvas(self.container, width=200, height=200, bg='white')
+        # Термометр с анимацией
+        self.temp_canvas = tk.Canvas(parent, width=250, height=250, bg='white', relief='ridge')
         self.temp_canvas.pack(pady=10)
         self.update_thermometer()
         
         # Кнопки управления
-        btn_frame = tk.Frame(self.container, bg='#FFF8E7')
+        btn_frame = tk.Frame(parent, bg='#FFF8E7')
         btn_frame.pack(pady=10)
         
-        self.heat_btn = tk.Button(btn_frame, text="🔥 +", command=lambda: self.change_temp(5),  # Уменьшено с 10 до 5
-                                 bg='#F44336', fg='white', font=('Arial', 14), width=5)
-        self.heat_btn.pack(side='left', padx=10)
-        self.cool_btn = tk.Button(btn_frame, text="❄️ -", command=lambda: self.change_temp(-5),  # Уменьшено с 10 до 5
-                                 bg='#2196F3', fg='white', font=('Arial', 14), width=5)
-        self.cool_btn.pack(side='left', padx=10)
+        self.heat_btn = tk.Button(btn_frame, text="🔥 🔥 🔥", command=lambda: self.change_temp(8),
+                                 bg='#F44336', fg='white', font=('Arial', 14), width=8, height=2)
+        self.heat_btn.pack(side='left', padx=15)
+        self.cool_btn = tk.Button(btn_frame, text="❄️ ❄️ ❄️", command=lambda: self.change_temp(-8),
+                                 bg='#2196F3', fg='white', font=('Arial', 14), width=8, height=2)
+        self.cool_btn.pack(side='left', padx=15)
         
-        self.temp_label = tk.Label(self.container, text=f"Температура: {self.temp}°C / {self.target_temp}°C", 
+        self.temp_label = tk.Label(parent, text=f"🌡️ Температура: {self.temp}°C / {self.target_temp}°C", 
                                    font=('Arial', 12), bg='#FFF8E7')
         self.temp_label.pack()
         
-        self.time_label = tk.Label(self.container, text=f"Осталось: {self.time_left} сек", 
+        self.time_label = tk.Label(parent, text=f"⏱️ Осталось: {self.time_left} сек", 
                                    font=('Arial', 12), bg='#FFF8E7')
         self.time_label.pack()
         
-        self.progress_bar = ttk.Progressbar(self.container, length=300, mode='determinate', maximum=100)
+        self.progress_bar = ttk.Progressbar(parent, length=350, mode='determinate', maximum=100)
         self.progress_bar.pack(pady=10)
         
-        self.timer = self.parent.after(1000, self.update_timer)
+        self.timer = self.parent.after(1000, self.update_pasta_timer)
     
     def update_thermometer(self):
         self.temp_canvas.delete('all')
-        # Рисуем термометр
-        self.temp_canvas.create_rectangle(80, 180, 120, 20, fill='#E0E0E0')
-        height = 160 * (self.temp / 100)
-        self.temp_canvas.create_rectangle(80, 180 - height, 120, 180, fill='#F44336')
-        self.temp_canvas.create_oval(70, 180, 130, 210, fill='#F44336')
-        self.temp_canvas.create_text(100, 10, text=f"{self.temp}°C", font=('Arial', 10))
+        # Красивый термометр
+        self.temp_canvas.create_rectangle(100, 200, 150, 30, fill='#E0E0E0', outline='#333', width=2)
+        height = 170 * (self.temp / 100)
+        self.temp_canvas.create_rectangle(100, 200 - height, 150, 200, fill='#F44336', outline='')
+        self.temp_canvas.create_oval(90, 200, 160, 240, fill='#F44336', outline='#333', width=2)
+        
+        # Градусник
+        for i in range(0, 101, 20):
+            y = 200 - 170 * (i / 100)
+            self.temp_canvas.create_line(150, y, 160, y, fill='#333')
+            self.temp_canvas.create_text(165, y, text=f"{i}°", font=('Arial', 8))
+        
+        self.temp_canvas.create_text(125, 15, text=f"{self.temp}°C", font=('Arial', 12, 'bold'), fill='#F44336')
     
     def change_temp(self, delta):
         self.temp = max(0, min(100, self.temp + delta))
         self.update_thermometer()
-        self.temp_label.config(text=f"Температура: {self.temp}°C / {self.target_temp}°C")
+        self.temp_label.config(text=f"🌡️ Температура: {self.temp}°C / {self.target_temp}°C")
         
-        # Проверка идеальной температуры
-        if 90 <= self.temp <= 100:
-            self.progress = min(100, self.progress + 3)  # Медленное накопление
-            self.progress_bar['value'] = self.progress
-            if self.progress >= 100:
+        # Эффект при достижении цели
+        if 85 <= self.temp <= 100:
+            gain = 4 if 90 <= self.temp <= 100 else 2
+            self.pasta_progress = min(100, self.pasta_progress + gain)
+            self.progress_bar['value'] = self.pasta_progress
+            if self.pasta_progress >= 100:
                 self.complete_game()
     
-    def update_timer(self):
+    def update_pasta_timer(self):
         if not self.timer_active:
             return
         self.time_left -= 1
-        self.time_label.config(text=f"Осталось: {self.time_left} сек")
+        self.time_label.config(text=f"⏱️ Осталось: {self.time_left} сек")
         if self.time_left > 0:
-            self.timer = self.parent.after(1000, self.update_timer)
+            self.timer = self.parent.after(1000, self.update_pasta_timer)
         else:
-            # Время вышло - проверяем прогресс
-            if self.progress >= 100:
+            if self.pasta_progress >= 100:
                 self.complete_game()
             else:
-                messagebox.showinfo("Время вышло!", "Нужно быстрее поддерживать температуру!")
+                if messagebox.askyesno("Время вышло!", "Паста не готова! Попробовать ещё раз?"):
+                    self.reset_pasta_game()
     
-    def create_whip_game(self):
-        """Игра взбивания - нужно кликать с определенной скоростью (замедленная)"""
-        tk.Label(self.container, text="🥣 ВЗБИТЬ КРЕМ", 
-                font=('Arial', 16, 'bold'), bg='#FFF8E7', fg='#FF6B6B').pack(pady=10)
+    def reset_pasta_game(self):
+        self.temp = 0
+        self.pasta_progress = 0
+        self.time_left = 50
+        self.progress_bar['value'] = 0
+        self.update_thermometer()
+        self.temp_label.config(text=f"🌡️ Температура: {self.temp}°C / {self.target_temp}°C")
+        self.time_label.config(text=f"⏱️ Осталось: {self.time_left} сек")
+        if self.timer:
+            try:
+                self.parent.after_cancel(self.timer)
+            except:
+                pass
+        self.timer = self.parent.after(1000, self.update_pasta_timer)
+    
+    def create_whip_game(self, parent):
+        """Улучшенная игра взбивания"""
+        tk.Label(parent, text="🥣 ВЗБИТЬ КРЕМ", 
+                font=('Arial', 20, 'bold'), bg='#FFF8E7', fg='#FF6B6B').pack(pady=10)
         
         self.whip_count = 0
-        self.whip_target = 25  # Увеличено с 20 до 25
+        self.whip_target = 30
         
         # Анимированная миска
-        self.whip_canvas = tk.Canvas(self.container, width=250, height=200, bg='#FFE5B4')
+        self.whip_canvas = tk.Canvas(parent, width=300, height=220, bg='#FFE5B4', relief='ridge')
         self.whip_canvas.pack(pady=10)
-        self.whip_canvas.create_oval(50, 80, 200, 160, fill='#F5DEB3')
-        self.whip_text = self.whip_canvas.create_text(125, 120, text="🥄", font=('Arial', 50))
+        self.whip_canvas.create_oval(60, 70, 240, 180, fill='#F5DEB3', outline='#8B4513', width=2)
+        self.whip_text = self.whip_canvas.create_text(150, 125, text="🥄", font=('Arial', 50))
         
-        self.whip_btn = tk.Button(self.container, text="👋 ВЗБИВАЙ!", command=self.whip_action,
-                                  bg='#FF6B6B', fg='white', font=('Arial', 14), width=20, height=2)
+        # Анимированная кнопка
+        self.whip_btn = tk.Button(parent, text="👋 ВЗБИВАЙ! 👋", command=self.whip_action,
+                                  bg='#FF6B6B', fg='white', font=('Arial', 16, 'bold'), 
+                                  width=20, height=2, relief='raised')
         self.whip_btn.pack(pady=10)
         
-        self.whip_label = tk.Label(self.container, text=f"Взбиваний: 0/{self.whip_target}", 
+        self.whip_label = tk.Label(parent, text=f"📊 Взбиваний: 0/{self.whip_target}", 
                                    font=('Arial', 12), bg='#FFF8E7')
         self.whip_label.pack()
         
-        self.combo_label = tk.Label(self.container, text="", font=('Arial', 10), bg='#FFF8E7', fg='gold')
+        self.combo_label = tk.Label(parent, text="", font=('Arial', 12, 'bold'), bg='#FFF8E7', fg='#FFD700')
         self.combo_label.pack()
         
-        self.whip_progress = ttk.Progressbar(self.container, length=300, mode='determinate', maximum=100)
+        self.whip_progress = ttk.Progressbar(parent, length=350, mode='determinate', maximum=100)
         self.whip_progress.pack(pady=10)
         
-        # Таймер для сброса комбо
         self.combo_timer = None
     
     def whip_action(self):
@@ -253,25 +391,28 @@ class InteractiveCookingGame:
         self.combo += 1
         
         # Анимация взбивания
-        self.whip_canvas.coords(self.whip_text, 125 + random.randint(-10, 10), 
-                                120 + random.randint(-10, 10))
-        self.whip_canvas.after(100, lambda: self.whip_canvas.coords(self.whip_text, 125, 120))
+        for _ in range(3):
+            self.whip_canvas.coords(self.whip_text, 150 + random.randint(-15, 15), 
+                                    125 + random.randint(-15, 15))
+        self.whip_canvas.after(100, lambda: self.whip_canvas.coords(self.whip_text, 150, 125))
         
-        self.whip_label.config(text=f"Взбиваний: {self.whip_count}/{self.whip_target}")
-        self.whip_progress['value'] = int(self.whip_count / self.whip_target * 100)
+        percent = int(self.whip_count / self.whip_target * 100)
+        self.whip_label.config(text=f"📊 Взбиваний: {self.whip_count}/{self.whip_target}")
+        self.whip_progress['value'] = percent
+        
+        # Эффект частиц
+        ParticleEffect(self.whip_canvas, 150, 125, '#FFD700', 5)
         
         if self.combo >= 3:
-            self.combo_label.config(text=f"🔥 КОМБО x{self.combo}! 🔥")
-            # Бонусный прогресс за комбо (каждые 3 клика +1)
-            if self.combo % 3 == 0:
-                self.whip_count += 1
-                self.whip_label.config(text=f"Взбиваний: {self.whip_count}/{self.whip_target}")
+            self.combo_label.config(text=f"🔥 КОМБО x{self.combo}! +1 🔥")
+            if self.combo % 3 == 0 and self.whip_count < self.whip_target:
+                self.whip_count = min(self.whip_target, self.whip_count + 1)
+                self.whip_label.config(text=f"📊 Взбиваний: {self.whip_count}/{self.whip_target}")
                 self.whip_progress['value'] = int(self.whip_count / self.whip_target * 100)
         
-        # Сброс таймера комбо
         if self.combo_timer:
             self.parent.after_cancel(self.combo_timer)
-        self.combo_timer = self.parent.after(2000, self.reset_combo)  # 2 секунды на комбо
+        self.combo_timer = self.parent.after(2000, self.reset_combo)
         
         if self.whip_count >= self.whip_target:
             self.complete_game()
@@ -280,129 +421,134 @@ class InteractiveCookingGame:
         self.combo = 0
         self.combo_label.config(text="")
     
-    def create_stew_game(self):
-        """Игра тушения - нужно переворачивать ингредиенты (замедленная)"""
-        tk.Label(self.container, text="🍲 ТУШИТЬ СОУС", 
-                font=('Arial', 16, 'bold'), bg='#FFF8E7', fg='#FF6B6B').pack(pady=10)
+    def create_stew_game(self, parent):
+        """Улучшенная игра тушения"""
+        tk.Label(parent, text="🍲 ТУШИТЬ СОУС", 
+                font=('Arial', 20, 'bold'), bg='#FFF8E7', fg='#FF6B6B').pack(pady=10)
         
-        self.ingredients = ["🧅 Лук", "🥕 Морковь", "🍅 Томат", "🧄 Чеснок", "🌿 Травы", "🧂 Специи"]
+        self.ingredients = ["🧅 Лук", "🥕 Морковь", "🍅 Томат", "🧄 Чеснок", "🌿 Травы", "🧂 Специи", "🍄 Грибы"]
         self.stewed = []
         
-        self.stew_frame = tk.Frame(self.container, bg='#FFF8E7')
+        self.stew_frame = tk.Frame(parent, bg='#FFF8E7')
         self.stew_frame.pack(pady=10)
         
-        self.stew_progress = ttk.Progressbar(self.container, length=300, mode='determinate', 
+        self.stew_progress = ttk.Progressbar(parent, length=350, mode='determinate', 
                                             maximum=len(self.ingredients))
         self.stew_progress.pack(pady=10)
         
         self.ingredient_buttons = []
-        for ing in self.ingredients:
+        for i, ing in enumerate(self.ingredients):
             btn = tk.Button(self.stew_frame, text=f"🔪 {ing}", command=lambda i=ing: self.stew_ingredient(i),
                            bg='#FFE5B4', font=('Arial', 11), width=18, height=2)
-            btn.pack(pady=5)
+            btn.grid(row=i//3, column=i%3, padx=10, pady=5)
             self.ingredient_buttons.append(btn)
         
-        self.stew_label = tk.Label(self.container, text=f"Потушить: 0/{len(self.ingredients)}", 
+        self.stew_label = tk.Label(parent, text=f"📊 Потушить: 0/{len(self.ingredients)}", 
                                    font=('Arial', 12), bg='#FFF8E7')
         self.stew_label.pack()
+        
+        self.cauldron = tk.Canvas(parent, width=200, height=100, bg='#FFF8E7', highlightthickness=0)
+        self.cauldron.pack(pady=10)
+        self.cauldron.create_oval(50, 40, 150, 80, fill='#8B4513')
+        self.cauldron.create_text(100, 60, text="🍲", font=('Arial', 30))
     
     def stew_ingredient(self, ingredient):
         if ingredient not in self.stewed:
             self.stewed.append(ingredient)
-            self.stew_label.config(text=f"Потушить: {len(self.stewed)}/{len(self.ingredients)}")
+            self.stew_label.config(text=f"📊 Потушить: {len(self.stewed)}/{len(self.ingredients)}")
             self.stew_progress['value'] = len(self.stewed)
             
-            # Анимация - кнопка меняется с задержкой
             for btn in self.ingredient_buttons:
                 if ingredient in btn['text']:
                     btn.config(text=f"✅ {ingredient}", bg='#4CAF50', state='disabled')
-                    self.parent.after(500, lambda: None)  # Пауза для ощущения прогресса
+                    ParticleEffect(self.cauldron, 100, 60, '#FF9800', 5)
             
             if len(self.stewed) >= len(self.ingredients):
                 self.complete_game()
     
-    def create_rice_game(self):
-        """Игра приготовления риса - нужно промывать (замедленная)"""
-        tk.Label(self.container, text="🍚 ПРИГОТОВИТЬ РИС", 
-                font=('Arial', 16, 'bold'), bg='#FFF8E7', fg='#FF6B6B').pack(pady=10)
+    def create_rice_game(self, parent):
+        """Улучшенная игра приготовления риса"""
+        tk.Label(parent, text="🍚 ПРИГОТОВИТЬ РИС", 
+                font=('Arial', 20, 'bold'), bg='#FFF8E7', fg='#FF6B6B').pack(pady=10)
         
         self.water_count = 0
-        self.water_target = 7  # Увеличено с 5 до 7
+        self.water_target = 8
         
-        self.rice_canvas = tk.Canvas(self.container, width=300, height=180, bg='#FFE5B4')
+        self.rice_canvas = tk.Canvas(parent, width=350, height=200, bg='#FFE5B4', relief='ridge')
         self.rice_canvas.pack(pady=10)
         
-        # Рисуем кастрюлю с рисом
-        self.rice_canvas.create_rectangle(80, 40, 220, 140, fill='#F5DEB3', outline='#8B4513', width=2)
-        self.rice_canvas.create_text(150, 90, text="🍚", font=('Arial', 40))
+        # Красивая кастрюля
+        self.rice_canvas.create_rectangle(90, 40, 260, 160, fill='#C0C0C0', outline='#808080', width=3)
+        self.rice_canvas.create_oval(90, 40, 260, 70, fill='#A0A0A0', outline='#808080', width=2)
+        self.rice_canvas.create_text(175, 100, text="🍚", font=('Arial', 45))
+        self.water_level = self.rice_canvas.create_rectangle(92, 160, 258, 160, fill='#87CEEB', tags='water')
         
-        # Вода (будет подниматься)
-        self.water_level = self.rice_canvas.create_rectangle(80, 140, 220, 140, fill='#87CEEB', tags='water')
-        
-        self.water_btn = tk.Button(self.container, text="💧 ПРОМЫТЬ", command=self.wash_rice,
-                                   bg='#4CAF50', fg='white', font=('Arial', 14), width=20, height=2)
+        self.water_btn = tk.Button(parent, text="💧 ПРОМЫТЬ РИС 💧", command=self.wash_rice,
+                                   bg='#4CAF50', fg='white', font=('Arial', 14, 'bold'), width=25, height=2)
         self.water_btn.pack(pady=10)
         
-        self.water_label = tk.Label(self.container, text=f"Промывок: 0/{self.water_target}", 
+        self.water_label = tk.Label(parent, text=f"💧 Промывок: 0/{self.water_target}", 
                                     font=('Arial', 12), bg='#FFF8E7')
         self.water_label.pack()
         
-        self.rice_progress = ttk.Progressbar(self.container, length=300, mode='determinate', 
+        self.rice_progress = ttk.Progressbar(parent, length=350, mode='determinate', 
                                             maximum=self.water_target)
         self.rice_progress.pack(pady=10)
     
     def wash_rice(self):
         self.water_count += 1
-        self.water_label.config(text=f"Промывок: {self.water_count}/{self.water_target}")
+        self.water_label.config(text=f"💧 Промывок: {self.water_count}/{self.water_target}")
         self.rice_progress['value'] = self.water_count
         
-        # Анимация воды (поднимается)
-        water_y = 140 - (self.water_count * 12)  # Медленнее поднимается
-        if water_y < 60:
-            water_y = 60
-        self.rice_canvas.coords(self.water_level, 80, water_y, 220, 140)
+        water_y = 160 - (self.water_count * 14)
+        if water_y < 50:
+            water_y = 50
+        self.rice_canvas.coords(self.water_level, 92, water_y, 258, 160)
         
-        # Анимация промывания
-        self.water_btn.config(text="💦 ПРОМЫВАЮ...", bg='#2196F3')
-        self.parent.after(300, lambda: self.water_btn.config(text="💧 ПРОМЫТЬ", bg='#4CAF50'))
+        # Анимация
+        self.water_btn.config(text="💦 ПРОМЫВАЮ... 💦", bg='#2196F3')
+        ParticleEffect(self.rice_canvas, 175, 100, '#87CEEB', 10)
+        self.parent.after(400, lambda: self.water_btn.config(text="💧 ПРОМЫТЬ РИС 💧", bg='#4CAF50'))
         
         if self.water_count >= self.water_target:
             self.complete_game()
     
-    def create_chopping_game(self):
-        """Игра нарезки - нужно кликать по движущимся объектам (замедленная)"""
-        tk.Label(self.container, text="🔪 НАРЕЗАТЬ ИНГРЕДИЕНТЫ", 
-                font=('Arial', 16, 'bold'), bg='#FFF8E7', fg='#FF6B6B').pack(pady=10)
+    def create_chopping_game(self, parent):
+        """Улучшенная игра нарезки"""
+        tk.Label(parent, text="🔪 НАРЕЗАТЬ ИНГРЕДИЕНТЫ", 
+                font=('Arial', 20, 'bold'), bg='#FFF8E7', fg='#FF6B6B').pack(pady=10)
         
         self.chop_count = 0
-        self.chop_target = 12  # Увеличено с 10 до 12
+        self.chop_target = 15
         
-        self.chop_canvas = tk.Canvas(self.container, width=450, height=250, bg='#FFE5B4')
+        self.chop_canvas = tk.Canvas(parent, width=500, height=280, bg='#FFE5B4', relief='ridge')
         self.chop_canvas.pack(pady=10)
         
-        # Создаем движущиеся ингредиенты
+        # Разделочная доска
+        self.chop_canvas.create_rectangle(20, 20, 480, 260, fill='#DEB887', outline='#8B4513', width=3)
+        
         self.veggies = []
-        veg_names = ["🥕", "🍅", "🧅", "🥒", "🌶️", "🧄"]
-        for i in range(4):  # Увеличено с 3 до 4 ингредиентов
+        veg_names = ["🥕 Морковь", "🍅 Помидор", "🧅 Лук", "🥒 Огурец", "🌶️ Перец", "🧄 Чеснок"]
+        for i in range(5):
             veg = {
                 'id': self.chop_canvas.create_text(
-                    random.randint(50, 400), random.randint(40, 210),
-                    text=random.choice(veg_names), font=('Arial', 32), tags='veg'
+                    random.randint(60, 440), random.randint(50, 230),
+                    text=random.choice(veg_names), font=('Arial', 28), tags='veg'
                 ),
-                'x': random.randint(50, 400),
-                'y': random.randint(40, 210),
-                'dx': random.choice([-1, 1]) * random.randint(2, 4),  # Медленнее движение
-                'dy': random.choice([-1, 1]) * random.randint(2, 4)
+                'x': random.randint(60, 440),
+                'y': random.randint(50, 230),
+                'dx': random.choice([-1, 1]) * random.randint(2, 5),
+                'dy': random.choice([-1, 1]) * random.randint(2, 5)
             }
             self.veggies.append(veg)
         
         self.chop_canvas.bind('<Button-1>', self.on_chop)
         
-        self.chop_label = tk.Label(self.container, text=f"Нарезано: 0/{self.chop_target}", 
+        self.chop_label = tk.Label(parent, text=f"🔪 Нарезано: 0/{self.chop_target}", 
                                    font=('Arial', 12), bg='#FFF8E7')
         self.chop_label.pack()
         
-        self.chop_progress = ttk.Progressbar(self.container, length=300, mode='determinate', 
+        self.chop_progress = ttk.Progressbar(parent, length=350, mode='determinate', 
                                             maximum=self.chop_target)
         self.chop_progress.pack(pady=10)
         
@@ -412,55 +558,46 @@ class InteractiveCookingGame:
         if self.chop_count >= self.chop_target:
             return
         for veg in self.veggies:
-            # Двигаем каждый ингредиент
             veg['x'] += veg['dx']
             veg['y'] += veg['dy']
             
-            # Отскок от границ
-            if veg['x'] < 30 or veg['x'] > 420:
+            if veg['x'] < 50 or veg['x'] > 450:
                 veg['dx'] = -veg['dx']
-                veg['x'] = max(30, min(420, veg['x']))
-            if veg['y'] < 30 or veg['y'] > 220:
+                veg['x'] = max(50, min(450, veg['x']))
+            if veg['y'] < 40 or veg['y'] > 240:
                 veg['dy'] = -veg['dy']
-                veg['y'] = max(30, min(220, veg['y']))
+                veg['y'] = max(40, min(240, veg['y']))
             
             self.chop_canvas.coords(veg['id'], veg['x'], veg['y'])
         
-        # Замедленная анимация (50 FPS вместо 30)
         if self.chop_count < self.chop_target:
-            self.parent.after(60, self.move_veggies)  # Увеличено с 30 до 60 мс
+            self.parent.after(50, self.move_veggies)
     
     def on_chop(self, event):
-        items = self.chop_canvas.find_withtag('veg')
-        for veg in self.veggies:
+        for veg in self.veggies[:]:
             coords = self.chop_canvas.coords(veg['id'])
-            # Проверка попадания (увеличен радиус)
-            if (coords[0] - 30 < event.x < coords[0] + 30 and 
-                coords[1] - 30 < event.y < coords[1] + 30):
-                # Анимация нарезки
+            if (coords[0] - 35 < event.x < coords[0] + 35 and 
+                coords[1] - 35 < event.y < coords[1] + 35):
                 self.chop_canvas.delete(veg['id'])
                 self.veggies.remove(veg)
                 self.chop_count += 1
-                self.chop_label.config(text=f"Нарезано: {self.chop_count}/{self.chop_target}")
+                self.chop_label.config(text=f"🔪 Нарезано: {self.chop_count}/{self.chop_target}")
                 self.chop_progress['value'] = self.chop_count
                 
-                # Визуальный эффект
-                chop_effect = self.chop_canvas.create_text(event.x, event.y, text="⚡", 
-                                                          font=('Arial', 20), fill='gold')
-                self.parent.after(200, lambda: self.chop_canvas.delete(chop_effect))
+                # Эффект нарезки
+                ParticleEffect(self.chop_canvas, event.x, event.y, '#FFD700', 8)
                 
-                # Создаем новый ингредиент
                 if self.chop_count < self.chop_target:
-                    veg_names = ["🥕", "🍅", "🧅", "🥒", "🌶️", "🧄"]
+                    veg_names = ["🥕 Морковь", "🍅 Помидор", "🧅 Лук", "🥒 Огурец", "🌶️ Перец", "🧄 Чеснок"]
                     new_veg = {
                         'id': self.chop_canvas.create_text(
-                            random.randint(50, 400), random.randint(40, 210),
-                            text=random.choice(veg_names), font=('Arial', 32), tags='veg'
+                            random.randint(60, 440), random.randint(50, 230),
+                            text=random.choice(veg_names), font=('Arial', 28), tags='veg'
                         ),
-                        'x': random.randint(50, 400),
-                        'y': random.randint(40, 210),
-                        'dx': random.choice([-1, 1]) * random.randint(2, 4),
-                        'dy': random.choice([-1, 1]) * random.randint(2, 4)
+                        'x': random.randint(60, 440),
+                        'y': random.randint(50, 230),
+                        'dx': random.choice([-1, 1]) * random.randint(2, 5),
+                        'dy': random.choice([-1, 1]) * random.randint(2, 5)
                     }
                     self.veggies.append(new_veg)
                 
@@ -468,32 +605,32 @@ class InteractiveCookingGame:
                     self.complete_game()
                 break
     
-    def create_click_game(self):
-        """Обычная игра с кликами (замедленная)"""
-        tk.Label(self.container, text=f"🔥 {self.action.upper()} 🔥", 
-                font=('Arial', 18, 'bold'), bg='#FFF8E7', fg='#FF6B6B').pack(pady=30)
+    def create_click_game(self, parent):
+        """Обычная игра с кликами"""
+        tk.Label(parent, text=f"🔥 {self.action.upper()} 🔥", 
+                font=('Arial', 20, 'bold'), bg='#FFF8E7', fg='#FF6B6B').pack(pady=30)
         
         self.click_count = 0
-        self.click_target = 20  # Увеличено с 15 до 20
+        self.click_target = 25
         
-        self.click_btn = tk.Button(self.container, text="🌀 НАЖМИ ДЛЯ ГОТОВКИ", command=self.click_action,
-                                   bg='#FF6B6B', fg='white', font=('Arial', 14), width=25, height=3)
+        self.click_btn = tk.Button(parent, text="🌀 НАЖМИ ДЛЯ ГОТОВКИ 🌀", command=self.click_action,
+                                   bg='#FF6B6B', fg='white', font=('Arial', 16, 'bold'), 
+                                   width=25, height=3, relief='raised')
         self.click_btn.pack(pady=20)
         
-        self.click_label = tk.Label(self.container, text=f"Нажатий: 0/{self.click_target}", 
+        self.click_label = tk.Label(parent, text=f"📊 Нажатий: 0/{self.click_target}", 
                                     font=('Arial', 12), bg='#FFF8E7')
         self.click_label.pack()
         
-        self.click_progress = ttk.Progressbar(self.container, length=300, mode='determinate', 
+        self.click_progress = ttk.Progressbar(parent, length=350, mode='determinate', 
                                              maximum=self.click_target)
         self.click_progress.pack(pady=10)
     
     def click_action(self):
         self.click_count += 1
-        self.click_label.config(text=f"Нажатий: {self.click_count}/{self.click_target}")
+        self.click_label.config(text=f"📊 Нажатий: {self.click_count}/{self.click_target}")
         self.click_progress['value'] = self.click_count
         
-        # Анимация кнопки
         self.click_btn.config(relief='sunken')
         self.parent.after(100, lambda: self.click_btn.config(relief='raised'))
         
@@ -501,374 +638,50 @@ class InteractiveCookingGame:
             self.complete_game()
     
     def complete_game(self):
-        """Завершение игры"""
         self.timer_active = False
-        if hasattr(self, 'timer'):
+        if hasattr(self, 'timer') and self.timer:
             try:
                 self.parent.after_cancel(self.timer)
             except:
                 pass
-        if hasattr(self, 'combo_timer'):
+        if hasattr(self, 'combo_timer') and self.combo_timer:
             try:
                 self.parent.after_cancel(self.combo_timer)
             except:
                 pass
         
-        # Показываем сообщение о завершении
-        messagebox.showinfo("Готово!", "Отлично! Блюдо приготовлено идеально! ✨")
-        self.on_complete()
-    """Интерактивная мини-игра приготовления с разными механиками"""
-    def __init__(self, parent, action, on_complete):
-        self.parent = parent
-        self.action = action
-        self.on_complete = on_complete
-        self.progress = 0
-        self.score = 0
-        self.combo = 0
+        # Показываем красивую анимацию завершения
+        success_frame = tk.Toplevel(self.parent)
+        success_frame.title("Готово!")
+        success_frame.geometry("300x200")
+        success_frame.configure(bg='#FFF8E7')
+        success_frame.transient(self.parent)
         
-    def create_game(self, container):
-        """Создает игровой интерфейс в зависимости от типа действия"""
-        self.container = container
-        self.clear_container()
-        
-        # Определяем тип мини-игры
-        if "тесто" in self.action.lower() or "замесить" in self.action.lower():
-            self.create_dough_game()
-        elif "пасту" in self.action.lower() or "сварить" in self.action.lower():
-            self.create_pasta_game()
-        elif "крем" in self.action.lower() or "взбить" in self.action.lower():
-            self.create_whip_game()
-        elif "тушить" in self.action.lower() or "соус" in self.action.lower():
-            self.create_stew_game()
-        elif "рис" in self.action.lower():
-            self.create_rice_game()
-        elif "нарезать" in self.action.lower():
-            self.create_chopping_game()
-        else:
-            self.create_click_game()
-    
-    def clear_container(self):
-        for widget in self.container.winfo_children():
-            widget.destroy()
-    
-    def create_dough_game(self):
-        """Игра замеса теста - нужно вращать (двигать мышью)"""
-        tk.Label(self.container, text="🥣 ЗАМЕСИТЬ ТЕСТО", 
-                font=('Arial', 16, 'bold'), bg='#FFF8E7', fg='#FF6B6B').pack(pady=10)
-        
-        self.dough_canvas = tk.Canvas(self.container, width=300, height=200, bg='#FFE5B4', relief='ridge')
-        self.dough_canvas.pack(pady=20)
-        
-        # Рисуем миску с тестом
-        self.dough_canvas.create_oval(50, 100, 250, 180, fill='#F5DEB3', outline='#8B4513', width=3)
-        self.dough_canvas.create_text(150, 140, text="🥄", font=('Arial', 40))
-        
-        self.rotate_count = 0
-        self.rotate_label = tk.Label(self.container, text=f"Вращений: 0/10", 
-                                     font=('Arial', 12), bg='#FFF8E7')
-        self.rotate_label.pack()
-        
-        # Привязываем движение мыши
-        self.dough_canvas.bind('<Motion>', self.on_dough_move)
-        
-        instruction = tk.Label(self.container, text="🖱️ Водите мышью по тесту, чтобы замесить!", 
-                              font=('Arial', 10), bg='#FFF8E7', fg='gray')
-        instruction.pack(pady=10)
-    
-    def on_dough_move(self, event):
-        x, y = event.x, event.y
-        # Проверяем, находится ли курсор в области миски
-        if 50 < x < 250 and 100 < y < 180:
-            self.rotate_count += 1
-            self.rotate_label.config(text=f"Вращений: {self.rotate_count}/10")
-            self.progress = min(100, self.rotate_count * 10)
-            
-            # Анимация перемешивания
-            self.dough_canvas.delete('spoon')
-            self.dough_canvas.create_text(x, y, text="🥄", font=('Arial', 30), tags='spoon')
-            
-            if self.rotate_count >= 10:
-                self.dough_canvas.unbind('<Motion>')
-                self.on_complete()
-    
-    def create_pasta_game(self):
-        """Игра варки пасты - нужно поддерживать температуру"""
-        tk.Label(self.container, text="🍝 СВАРИТЬ ПАСТУ", 
-                font=('Arial', 16, 'bold'), bg='#FFF8E7', fg='#FF6B6B').pack(pady=10)
-        
-        # Температура
-        self.temp = 0
-        self.target_temp = 100
-        self.time_left = 30
-        
-        # Термометр
-        self.temp_canvas = tk.Canvas(self.container, width=200, height=200, bg='white')
-        self.temp_canvas.pack(pady=10)
-        self.update_thermometer()
-        
-        # Кнопки управления
-        btn_frame = tk.Frame(self.container, bg='#FFF8E7')
-        btn_frame.pack(pady=10)
-        
-        tk.Button(btn_frame, text="🔥 +", command=lambda: self.change_temp(10),
-                 bg='#F44336', fg='white', font=('Arial', 14), width=5).pack(side='left', padx=10)
-        tk.Button(btn_frame, text="❄️ -", command=lambda: self.change_temp(-10),
-                 bg='#2196F3', fg='white', font=('Arial', 14), width=5).pack(side='left', padx=10)
-        
-        self.temp_label = tk.Label(self.container, text=f"Температура: {self.temp}°C / {self.target_temp}°C", 
-                                   font=('Arial', 12), bg='#FFF8E7')
-        self.temp_label.pack()
-        
-        self.time_label = tk.Label(self.container, text=f"Осталось: {self.time_left} сек", 
-                                   font=('Arial', 12), bg='#FFF8E7')
-        self.time_label.pack()
-        
-        self.timer = self.parent.after(1000, self.update_timer)
-    
-    def update_thermometer(self):
-        self.temp_canvas.delete('all')
-        # Рисуем термометр
-        self.temp_canvas.create_rectangle(80, 180, 120, 20, fill='#E0E0E0')
-        height = 160 * (self.temp / 100)
-        self.temp_canvas.create_rectangle(80, 180 - height, 120, 180, fill='#F44336')
-        self.temp_canvas.create_oval(70, 180, 130, 210, fill='#F44336')
-        self.temp_canvas.create_text(100, 10, text=f"{self.temp}°C", font=('Arial', 10))
-    
-    def change_temp(self, delta):
-        self.temp = max(0, min(100, self.temp + delta))
-        self.update_thermometer()
-        self.temp_label.config(text=f"Температура: {self.temp}°C / {self.target_temp}°C")
-        
-        # Проверка идеальной температуры
-        if 90 <= self.temp <= 100:
-            self.progress += 5
-            if self.progress >= 100:
-                self.complete_game()
-    
-    def update_timer(self):
-        self.time_left -= 1
-        self.time_label.config(text=f"Осталось: {self.time_left} сек")
-        if self.time_left > 0:
-            self.timer = self.parent.after(1000, self.update_timer)
-        else:
-            self.complete_game()
-    
-    def create_whip_game(self):
-        """Игра взбивания - нужно кликать с определенной скоростью"""
-        tk.Label(self.container, text="🥣 ВЗБИТЬ КРЕМ", 
-                font=('Arial', 16, 'bold'), bg='#FFF8E7', fg='#FF6B6B').pack(pady=10)
-        
-        self.whip_count = 0
-        self.whip_target = 20
-        
-        # Анимированная миска
-        self.whip_canvas = tk.Canvas(self.container, width=250, height=200, bg='#FFE5B4')
-        self.whip_canvas.pack(pady=10)
-        self.whip_canvas.create_oval(50, 80, 200, 160, fill='#F5DEB3')
-        self.whip_text = self.whip_canvas.create_text(125, 120, text="🥄", font=('Arial', 50))
-        
-        self.whip_btn = tk.Button(self.container, text="👋 ВЗБИВАЙ!", command=self.whip_action,
-                                  bg='#FF6B6B', fg='white', font=('Arial', 14), width=20, height=2)
-        self.whip_btn.pack(pady=10)
-        
-        self.whip_label = tk.Label(self.container, text=f"Взбиваний: 0/{self.whip_target}", 
-                                   font=('Arial', 12), bg='#FFF8E7')
-        self.whip_label.pack()
-        
-        self.combo_label = tk.Label(self.container, text="", font=('Arial', 10), bg='#FFF8E7', fg='gold')
-        self.combo_label.pack()
-    
-    def whip_action(self):
-        self.whip_count += 1
-        self.combo += 1
-        
-        # Анимация взбивания
-        self.whip_canvas.coords(self.whip_text, 125 + random.randint(-10, 10), 
-                                120 + random.randint(-10, 10))
-        self.whip_canvas.after(50, lambda: self.whip_canvas.coords(self.whip_text, 125, 120))
-        
-        self.whip_label.config(text=f"Взбиваний: {self.whip_count}/{self.whip_target}")
-        self.progress = int(self.whip_count / self.whip_target * 100)
-        
-        if self.combo >= 3:
-            self.combo_label.config(text=f"🔥 КОМБО x{self.combo}! 🔥")
-            # Бонусный прогресс за комбо
-            self.whip_count += 1
-            self.whip_label.config(text=f"Взбиваний: {self.whip_count}/{self.whip_target}")
-        
-        if self.whip_count >= self.whip_target:
-            self.complete_game()
-    
-    def create_stew_game(self):
-        """Игра тушения - нужно переворачивать ингредиенты"""
-        tk.Label(self.container, text="🍲 ТУШИТЬ СОУС", 
-                font=('Arial', 16, 'bold'), bg='#FFF8E7', fg='#FF6B6B').pack(pady=10)
-        
-        self.ingredients = ["🧅 Лук", "🥕 Морковь", "🍅 Томат", "🧄 Чеснок", "🌿 Травы"]
-        self.stewed = []
-        
-        self.stew_frame = tk.Frame(self.container, bg='#FFF8E7')
-        self.stew_frame.pack(pady=10)
-        
-        self.ingredient_buttons = []
-        for ing in self.ingredients:
-            btn = tk.Button(self.stew_frame, text=f"🔪 {ing}", command=lambda i=ing: self.stew_ingredient(i),
-                           bg='#FFE5B4', font=('Arial', 11), width=15)
-            btn.pack(pady=5)
-            self.ingredient_buttons.append(btn)
-        
-        self.stew_label = tk.Label(self.container, text=f"Потушить: 0/{len(self.ingredients)}", 
-                                   font=('Arial', 12), bg='#FFF8E7')
-        self.stew_label.pack()
-    
-    def stew_ingredient(self, ingredient):
-        if ingredient not in self.stewed:
-            self.stewed.append(ingredient)
-            self.stew_label.config(text=f"Потушить: {len(self.stewed)}/{len(self.ingredients)}")
-            self.progress = int(len(self.stewed) / len(self.ingredients) * 100)
-            
-            # Обновляем кнопку
-            for btn in self.ingredient_buttons:
-                if ingredient in btn['text']:
-                    btn.config(text=f"✅ {ingredient}", bg='#4CAF50', state='disabled')
-            
-            if len(self.stewed) >= len(self.ingredients):
-                self.complete_game()
-    
-    def create_rice_game(self):
-        """Игра приготовления риса - нужно промывать"""
-        tk.Label(self.container, text="🍚 ПРИГОТОВИТЬ РИС", 
-                font=('Arial', 16, 'bold'), bg='#FFF8E7', fg='#FF6B6B').pack(pady=10)
-        
-        self.water_count = 0
-        self.rice_canvas = tk.Canvas(self.container, width=300, height=150, bg='#FFE5B4')
-        self.rice_canvas.pack(pady=10)
-        self.rice_canvas.create_oval(80, 50, 220, 130, fill='#F5DEB3')
-        self.water_level = self.rice_canvas.create_rectangle(80, 130, 220, 130, fill='#87CEEB')
-        
-        self.water_btn = tk.Button(self.container, text="💧 ПРОМЫТЬ", command=self.wash_rice,
-                                   bg='#4CAF50', fg='white', font=('Arial', 14), width=20, height=2)
-        self.water_btn.pack(pady=10)
-        
-        self.water_label = tk.Label(self.container, text="Промывок: 0/5", 
-                                    font=('Arial', 12), bg='#FFF8E7')
-        self.water_label.pack()
-    
-    def wash_rice(self):
-        self.water_count += 1
-        self.water_label.config(text=f"Промывок: {self.water_count}/5")
-        self.progress = self.water_count * 20
-        
-        # Анимация воды
-        water_y = 130 - (self.water_count * 10)
-        self.rice_canvas.coords(self.water_level, 80, water_y, 220, 130)
-        
-        if self.water_count >= 5:
-            self.complete_game()
-    
-    def create_chopping_game(self):
-        """Игра нарезки - нужно кликать по движущимся объектам"""
-        tk.Label(self.container, text="🔪 НАРЕЗАТЬ ИНГРЕДИЕНТЫ", 
-                font=('Arial', 16, 'bold'), bg='#FFF8E7', fg='#FF6B6B').pack(pady=10)
-        
-        self.chop_count = 0
-        self.chop_target = 10
-        
-        self.chop_canvas = tk.Canvas(self.container, width=400, height=200, bg='#FFE5B4')
-        self.chop_canvas.pack(pady=10)
-        
-        # Создаем движущиеся ингредиенты
-        self.veggies = []
-        for i in range(3):
-            veg = self.chop_canvas.create_rectangle(
-                random.randint(50, 350), random.randint(30, 170),
-                random.randint(60, 380), random.randint(40, 180),
-                fill='#F4A460', tags='veg'
-            )
-            self.veggies.append(veg)
-        
-        self.chop_canvas.bind('<Button-1>', self.on_chop)
-        
-        self.chop_label = tk.Label(self.container, text=f"Нарезано: 0/{self.chop_target}", 
-                                   font=('Arial', 12), bg='#FFF8E7')
-        self.chop_label.pack()
-        
-        self.move_veggies()
-    
-    def move_veggies(self):
-        for veg in self.veggies:
-            coords = self.chop_canvas.coords(veg)
-            dx = random.randint(-10, 10)
-            dy = random.randint(-10, 10)
-            new_coords = [coords[0] + dx, coords[1] + dy, coords[2] + dx, coords[3] + dy]
-            if 0 < new_coords[0] < 400 and 0 < new_coords[1] < 200:
-                self.chop_canvas.coords(veg, new_coords)
-        if self.chop_count < self.chop_target:
-            self.parent.after(500, self.move_veggies)
-    
-    def on_chop(self, event):
-        items = self.chop_canvas.find_withtag('veg')
-        for veg in items:
-            coords = self.chop_canvas.coords(veg)
-            if coords[0] < event.x < coords[2] and coords[1] < event.y < coords[3]:
-                self.chop_canvas.delete(veg)
-                self.veggies.remove(veg)
-                self.chop_count += 1
-                self.chop_label.config(text=f"Нарезано: {self.chop_count}/{self.chop_target}")
-                self.progress = int(self.chop_count / self.chop_target * 100)
-                
-                # Создаем новый ингредиент
-                if self.chop_count < self.chop_target:
-                    new_veg = self.chop_canvas.create_rectangle(
-                        random.randint(50, 350), random.randint(30, 170),
-                        random.randint(60, 380), random.randint(40, 180),
-                        fill='#F4A460', tags='veg'
-                    )
-                    self.veggies.append(new_veg)
-                
-                if self.chop_count >= self.chop_target:
-                    self.complete_game()
-                break
-    
-    def create_click_game(self):
-        """Обычная игра с кликами (как запасной вариант)"""
-        tk.Label(self.container, text=f"🔥 {self.action.upper()} 🔥", 
+        tk.Label(success_frame, text="✨ ИДЕАЛЬНО! ✨", 
                 font=('Arial', 18, 'bold'), bg='#FFF8E7', fg='#FF6B6B').pack(pady=30)
+        tk.Label(success_frame, text="Блюдо приготовлено идеально!", 
+                font=('Arial', 12), bg='#FFF8E7').pack()
+        tk.Button(success_frame, text="Отлично!", command=success_frame.destroy,
+                 bg='#4CAF50', fg='white', font=('Arial', 12)).pack(pady=20)
+        self.parent.after(2000, success_frame.destroy)
         
-        self.click_count = 0
-        self.click_target = 15
-        
-        self.click_btn = tk.Button(self.container, text="🌀 НАЖМИ ДЛЯ ГОТОВКИ", command=self.click_action,
-                                   bg='#FF6B6B', fg='white', font=('Arial', 14), width=25, height=3)
-        self.click_btn.pack(pady=20)
-        
-        self.click_label = tk.Label(self.container, text=f"Нажатий: 0/{self.click_target}", 
-                                    font=('Arial', 12), bg='#FFF8E7')
-        self.click_label.pack()
-    
-    def click_action(self):
-        self.click_count += 1
-        self.click_label.config(text=f"Нажатий: {self.click_count}/{self.click_target}")
-        self.progress = int(self.click_count / self.click_target * 100)
-        
-        if self.click_count >= self.click_target:
-            self.complete_game()
-    
-    def complete_game(self):
-        """Завершение игры"""
-        self.timer_active = False
-        if hasattr(self, 'timer'):
-            self.parent.after_cancel(self.timer)
         self.on_complete()
 
+# Основной класс приложения (продолжение следует из-за ограничения длины)
 class CulinaryAdventuresApp:
     def __init__(self, root):
         self.root = root
-        self.root.title("🍳 Кулинарные приключения")
-        self.root.geometry("900x750")
-        self.root.configure(bg='#FFF8E7')
-        self.root.minsize(700, 600)
+        self.root.title("🍳 Кулинарные приключения - Полная версия")
+        self.root.geometry("950x800")
+        self.root.configure(bg='#2C3E50')
+        self.root.minsize(800, 700)
         self.root.resizable(True, True)
+        
+        # Устанавливаем красивую иконку (если есть)
+        try:
+            self.root.iconbitmap('chef.ico')
+        except:
+            pass
         
         self.sound_manager = SoundManager()
         self.save_file = "culinary_save.json"
@@ -880,6 +693,10 @@ class CulinaryAdventuresApp:
         self.found_items = []
         self.cook_progress = 0
         
+        # Анимационные переменные
+        self.particles = []
+        self.animation_id = None
+        
         self.check_daily_bonus()
         self.setup_main_menu()
     
@@ -888,13 +705,15 @@ class CulinaryAdventuresApp:
             "player_name": "Шеф-стажер",
             "player_level": 1,
             "player_exp": 0,
-            "player_coins": 100,
+            "player_coins": 200,
             "player_stars": 0,
             "unlocked_locations": ["Италия"],
             "unlocked_recipes": {"Италия": []},
             "completed_recipes": [],
             "achievements": {},
-            "last_daily": None
+            "last_daily": None,
+            "total_score": 0,
+            "games_played": 0
         }
         
         if os.path.exists(self.save_file):
@@ -915,8 +734,10 @@ class CulinaryAdventuresApp:
         self.completed_recipes = default_data["completed_recipes"]
         self.achievements = default_data["achievements"]
         self.last_daily_bonus = default_data["last_daily"]
+        self.total_score = default_data.get("total_score", 0)
+        self.games_played = default_data.get("games_played", 0)
         
-        all_countries = ["Италия", "Япония", "Мексика", "Франция", "Таиланд", "Индия", "Корея", "Греция", "Марокко"]
+        all_countries = ["Италия", "Япония", "Мексика", "Франция", "Таиланд", "Индия", "Корея", "Греция", "Марокко", "Турция", "Испания"]
         for loc in all_countries:
             if loc not in self.unlocked_recipes:
                 self.unlocked_recipes[loc] = []
@@ -932,7 +753,9 @@ class CulinaryAdventuresApp:
             "unlocked_recipes": self.unlocked_recipes,
             "completed_recipes": self.completed_recipes,
             "achievements": self.achievements,
-            "last_daily": self.last_daily_bonus
+            "last_daily": self.last_daily_bonus,
+            "total_score": self.total_score,
+            "games_played": self.games_played
         }
         with open(self.save_file, 'w', encoding='utf-8') as f:
             json.dump(save_data, f, ensure_ascii=False, indent=2)
@@ -941,41 +764,100 @@ class CulinaryAdventuresApp:
         today = datetime.now().strftime("%Y-%m-%d")
         if self.last_daily_bonus != today:
             self.last_daily_bonus = today
-            self.player_coins += 50
+            bonus = random.randint(50, 150)
+            self.player_coins += bonus
             self.save_game()
+            self.show_flying_coins_animation(bonus)
+    
+    def show_flying_coins_animation(self, amount):
+        """Показать анимацию летящих монет"""
+        notif = tk.Toplevel(self.root)
+        notif.title("🎁 Ежедневный бонус!")
+        notif.geometry("350x150")
+        notif.configure(bg='#FFF8E7')
+        notif.transient(self.root)
+        notif.attributes('-topmost', True)
+        
+        tk.Label(notif, text="🎉 ЕЖЕДНЕВНЫЙ БОНУС! 🎉", 
+                font=('Arial', 14, 'bold'), bg='#FFF8E7', fg='#FFD700').pack(pady=15)
+        tk.Label(notif, text=f"Вы получили {amount} 🪙 монет!", 
+                font=('Arial', 12), bg='#FFF8E7').pack()
+        tk.Label(notif, text="Заходите завтра снова!", 
+                font=('Arial', 10), bg='#FFF8E7', fg='gray').pack()
+        tk.Button(notif, text="Отлично!", command=notif.destroy,
+                 bg='#4CAF50', fg='white', font=('Arial', 10)).pack(pady=10)
+        self.root.after(3000, notif.destroy)
     
     def add_exp(self, amount):
         self.player_exp += amount
+        self.total_score += amount
+        level_up = False
         while self.player_exp >= 100:
             self.player_level += 1
             self.player_exp -= 100
+            level_up = True
+        if level_up:
             self.show_level_up()
         self.save_game()
     
     def show_level_up(self):
         level_up = tk.Toplevel(self.root)
-        level_up.title("Уровень повышен!")
-        level_up.geometry("300x200")
+        level_up.title("🎉 Уровень повышен! 🎉")
+        level_up.geometry("350x250")
         level_up.configure(bg='#FFF8E7')
         level_up.transient(self.root)
         level_up.grab_set()
         
-        tk.Label(level_up, text="🎉 УРОВЕНЬ ПОВЫШЕН! 🎉", 
-                font=('Arial', 14, 'bold'), bg='#FFF8E7', fg='#FF6B6B').pack(pady=20)
-        tk.Label(level_up, text=f"Теперь вы {self.player_level} уровень!", 
-                font=('Arial', 12), bg='#FFF8E7').pack(pady=10)
+        # Анимированный фон
+        canvas = tk.Canvas(level_up, width=350, height=250, bg='#FFF8E7', highlightthickness=0)
+        canvas.pack()
+        
+        canvas.create_text(175, 60, text="🎉 УРОВЕНЬ ПОВЫШЕН! 🎉", 
+                          font=('Arial', 14, 'bold'), fill='#FF6B6B')
+        canvas.create_text(175, 110, text=f"Теперь вы {self.player_level} уровень!", 
+                          font=('Arial', 12), fill='#333')
+        canvas.create_text(175, 150, text=f"+50 🪙 монет за достижение!", 
+                          font=('Arial', 11), fill='#FFD700')
+        
+        # Добавляем звёздочки
+        for _ in range(20):
+            x = random.randint(20, 330)
+            y = random.randint(20, 230)
+            canvas.create_text(x, y, text="⭐", font=('Arial', random.randint(8, 16)), 
+                              fill='#FFD700', tags='star')
+        
+        def animate_stars():
+            for item in canvas.find_withtag('star'):
+                canvas.move(item, 0, -1)
+            level_up.after(50, animate_stars)
+        
+        animate_stars()
+        
         tk.Button(level_up, text="Отлично!", command=level_up.destroy,
-                 bg='#FF6B6B', fg='white', font=('Arial', 12)).pack(pady=20)
-        self.root.after(3000, level_up.destroy)
+                 bg='#FF6B6B', fg='white', font=('Arial', 12)).place(x=125, y=190)
+        
+        self.player_coins += 50
+        self.save_game()
+        self.root.after(4000, level_up.destroy)
     
     def check_achievements(self):
         achievements_data = {
-            "first_recipe": {"name": "👨‍🍳 Первый шаг", "desc": "Приготовьте первое блюдо", "condition": len(self.completed_recipes) >= 1, "reward": 50},
-            "traveler": {"name": "🌍 Путешественник", "desc": "Откройте 5 локаций", "condition": len(self.unlocked_locations) >= 5, "reward": 100},
-            "star_chef": {"name": "⭐ Звездный повар", "desc": "Соберите 30 звезд", "condition": self.player_stars >= 30, "reward": 150},
-            "collector": {"name": "📚 Коллекционер", "desc": "Откройте 15 рецептов", "condition": len(self.completed_recipes) >= 15, "reward": 200},
-            "master": {"name": "👑 Мастер-шеф", "desc": "Достигните 10 уровня", "condition": self.player_level >= 10, "reward": 500},
-            "millionaire": {"name": "💰 Миллионер", "desc": "Соберите 1000 монет", "condition": self.player_coins >= 1000, "reward": 300}
+            "first_recipe": {"name": "👨‍🍳 Первый шаг", "desc": "Приготовьте первое блюдо", 
+                            "condition": len(self.completed_recipes) >= 1, "reward": 50},
+            "traveler": {"name": "🌍 Путешественник", "desc": "Откройте 5 локаций", 
+                        "condition": len(self.unlocked_locations) >= 5, "reward": 100},
+            "star_chef": {"name": "⭐ Звездный повар", "desc": "Соберите 30 звезд", 
+                         "condition": self.player_stars >= 30, "reward": 150},
+            "collector": {"name": "📚 Коллекционер", "desc": "Откройте 15 рецептов", 
+                         "condition": len(self.completed_recipes) >= 15, "reward": 200},
+            "master": {"name": "👑 Мастер-шеф", "desc": "Достигните 10 уровня", 
+                      "condition": self.player_level >= 10, "reward": 500},
+            "millionaire": {"name": "💰 Миллионер", "desc": "Соберите 1000 монет", 
+                           "condition": self.player_coins >= 1000, "reward": 300},
+            "perfect_chef": {"name": "🌟 Идеальный повар", "desc": "Получите 50 звёзд", 
+                            "condition": self.player_stars >= 50, "reward": 500},
+            "world_traveler": {"name": "🌏 Мировой шеф", "desc": "Откройте все локации", 
+                              "condition": len(self.unlocked_locations) >= 11, "reward": 1000}
         }
         
         new_achievements = []
@@ -991,58 +873,75 @@ class CulinaryAdventuresApp:
     
     def show_achievement_notification(self, achievements):
         notif = tk.Toplevel(self.root)
-        notif.title("Достижение получено!")
-        notif.geometry("350x150")
+        notif.title("🏆 Достижение получено! 🏆")
+        notif.geometry("400x200")
         notif.configure(bg='#FFF8E7')
         notif.attributes('-topmost', True)
         
         tk.Label(notif, text="🏆 НОВОЕ ДОСТИЖЕНИЕ! 🏆", 
-                font=('Arial', 12, 'bold'), bg='#FFF8E7', fg='#FFD700').pack(pady=10)
+                font=('Arial', 14, 'bold'), bg='#FFF8E7', fg='#FFD700').pack(pady=15)
+        
+        frame = tk.Frame(notif, bg='#FFF8E7')
+        frame.pack()
         for name, reward in achievements:
-            tk.Label(notif, text=f"{name} (+{reward} 🪙)", 
-                    font=('Arial', 10), bg='#FFF8E7').pack()
-        self.root.after(3000, notif.destroy)
+            tk.Label(frame, text=f"✓ {name} (+{reward} 🪙)", 
+                    font=('Arial', 11), bg='#FFF8E7', fg='#4CAF50').pack(anchor='w', padx=20)
+        
+        tk.Button(notif, text="Отлично!", command=notif.destroy,
+                 bg='#FF6B6B', fg='white', font=('Arial', 11)).pack(pady=15)
+        self.root.after(4000, notif.destroy)
     
     def setup_main_menu(self):
         """Главное меню - карта мира"""
         self.clear_window()
         self.check_achievements()
         
-        # Верхняя панель
-        header = tk.Frame(self.root, bg='#FF6B6B', height=120)
+        # Верхняя панель с градиентом
+        header = tk.Frame(self.root, bg='#FF6B6B', height=130)
         header.pack(fill='x')
         header.pack_propagate(False)
         
         title = tk.Label(header, text="🍳 Кулинарные приключения", 
-                        font=('Arial', 18, 'bold'), bg='#FF6B6B', fg='white')
+                        font=('Arial', 20, 'bold'), bg='#FF6B6B', fg='white')
         title.pack(pady=10)
         
         resources = tk.Frame(header, bg='#FF6B6B')
         resources.pack(pady=5)
-        tk.Label(resources, text=f"👨‍🍳 {self.player_name}", 
-                font=('Arial', 11), bg='#FF6B6B', fg='white').pack(side='left', padx=15)
-        tk.Label(resources, text=f"⭐ {self.player_stars}", 
-                font=('Arial', 11), bg='#FF6B6B', fg='white').pack(side='left', padx=15)
-        tk.Label(resources, text=f"🪙 {self.player_coins}", 
-                font=('Arial', 11), bg='#FF6B6B', fg='white').pack(side='left', padx=15)
         
+        # Красивые рамки для ресурсов
+        name_frame = tk.Frame(resources, bg='white', relief='ridge', bd=2)
+        name_frame.pack(side='left', padx=10)
+        tk.Label(name_frame, text=f"👨‍🍳 {self.player_name}", 
+                font=('Arial', 11, 'bold'), bg='white', fg='#FF6B6B').pack(padx=10, pady=3)
+        
+        stars_frame = tk.Frame(resources, bg='white', relief='ridge', bd=2)
+        stars_frame.pack(side='left', padx=10)
+        tk.Label(stars_frame, text=f"⭐ {self.player_stars}", 
+                font=('Arial', 11, 'bold'), bg='white', fg='#FFD700').pack(padx=10, pady=3)
+        
+        coins_frame = tk.Frame(resources, bg='white', relief='ridge', bd=2)
+        coins_frame.pack(side='left', padx=10)
+        tk.Label(coins_frame, text=f"🪙 {self.player_coins}", 
+                font=('Arial', 11, 'bold'), bg='white', fg='#FF9800').pack(padx=10, pady=3)
+        
+        # Прогресс уровня
         level_frame = tk.Frame(header, bg='#FF6B6B')
-        level_frame.pack(pady=5)
-        tk.Label(level_frame, text=f"Ур. {self.player_level}", 
-                font=('Arial', 10), bg='#FF6B6B', fg='white').pack(side='left')
-        progress = ttk.Progressbar(level_frame, length=250, mode='determinate', 
+        level_frame.pack(pady=8)
+        tk.Label(level_frame, text=f"Уровень {self.player_level}", 
+                font=('Arial', 10, 'bold'), bg='#FF6B6B', fg='white').pack(side='left')
+        progress = ttk.Progressbar(level_frame, length=300, mode='determinate', 
                                    maximum=100, value=self.player_exp)
         progress.pack(side='left', padx=10)
-        tk.Label(level_frame, text=f"{self.player_exp}/100", 
+        tk.Label(level_frame, text=f"{self.player_exp}/100 опыта", 
                 font=('Arial', 9), bg='#FF6B6B', fg='white').pack(side='left')
         
         # Карта мира с прокруткой
-        map_frame = tk.Frame(self.root, bg='#FFF8E7')
-        map_frame.pack(fill='both', expand=True, padx=20, pady=10)
+        map_frame = tk.Frame(self.root, bg='#2C3E50')
+        map_frame.pack(fill='both', expand=True, padx=15, pady=10)
         
-        canvas = tk.Canvas(map_frame, bg='#FFF8E7', highlightthickness=0)
+        canvas = tk.Canvas(map_frame, bg='#2C3E50', highlightthickness=0)
         scrollbar = ttk.Scrollbar(map_frame, orient='vertical', command=canvas.yview)
-        scrollable = tk.Frame(canvas, bg='#FFF8E7')
+        scrollable = tk.Frame(canvas, bg='#2C3E50')
         
         scrollable.bind('<Configure>', lambda e: canvas.configure(scrollregion=canvas.bbox('all')))
         canvas.create_window((0, 0), window=scrollable, anchor='nw')
@@ -1050,6 +949,7 @@ class CulinaryAdventuresApp:
         canvas.pack(side='left', fill='both', expand=True)
         scrollbar.pack(side='right', fill='y')
         
+        # Локации (11 стран)
         locations = [
             ("🇮🇹 Италия", "Италия", self.is_location_unlocked("Италия"), '#4CAF50'),
             ("🇯🇵 Япония", "Япония", self.is_location_unlocked("Япония"), '#FF9800'),
@@ -1059,33 +959,38 @@ class CulinaryAdventuresApp:
             ("🇮🇳 Индия", "Индия", self.is_location_unlocked("Индия"), '#FF5722'),
             ("🇰🇷 Корея", "Корея", self.is_location_unlocked("Корея"), '#E91E63'),
             ("🇬🇷 Греция", "Греция", self.is_location_unlocked("Греция"), '#00BCD4'),
-            ("🇲🇦 Марокко", "Марокко", self.is_location_unlocked("Марокко"), '#FFC107')
+            ("🇲🇦 Марокко", "Марокко", self.is_location_unlocked("Марокко"), '#FFC107'),
+            ("🇹🇷 Турция", "Турция", self.is_location_unlocked("Турция"), '#795548'),
+            ("🇪🇸 Испания", "Испания", self.is_location_unlocked("Испания"), '#FF4081')
         ]
         
         for i, (name, loc_id, unlocked, color) in enumerate(locations):
             row, col = divmod(i, 3)
-            btn_frame = tk.Frame(scrollable, bg='#FFF8E7')
+            btn_frame = tk.Frame(scrollable, bg='#2C3E50')
             btn_frame.grid(row=row, column=col, padx=15, pady=15, sticky='nsew')
             
             if unlocked:
                 progress_text = f"⭐ {self.get_location_progress(loc_id)}%"
-                btn = AdaptiveButton(btn_frame, f"{name}\n{progress_text}", 
+                btn = AnimatedButton(btn_frame, f"{name}\n{progress_text}", 
                                     command=lambda l=loc_id: self.open_location(l),
                                     bg=color, fg='white')
                 btn.pack(expand=True, fill='both')
             else:
                 btn = tk.Button(btn_frame, text=f"{name}\n🔒", 
-                              state='disabled', bg='#CCCCCC', fg='#666666',
+                              state='disabled', bg='#666666', fg='#CCCCCC',
                               font=('Arial', 11, 'bold'), width=20, height=3)
                 btn.pack(expand=True, fill='both')
-                tk.Label(btn_frame, text="Выполните квесты", 
-                        font=('Arial', 8), bg='#FFF8E7', fg='gray').pack()
+                req = 3 * (i - len([l for l in self.unlocked_locations if l != "Италия"]))
+                tk.Label(btn_frame, text=f"Выполните {req} квестов", 
+                        font=('Arial', 8), bg='#2C3E50', fg='#AAAAAA').pack()
         
-        for i in range(3):
+        for i in range(4):
             scrollable.grid_rowconfigure(i, weight=1)
+        for i in range(3):
             scrollable.grid_columnconfigure(i, weight=1)
         
-        menu_frame = tk.Frame(self.root, bg='#FF6B6B', height=55)
+        # Нижнее меню
+        menu_frame = tk.Frame(self.root, bg='#FF6B6B', height=60)
         menu_frame.pack(side='bottom', fill='x')
         menu_frame.pack_propagate(False)
         
@@ -1094,14 +999,50 @@ class CulinaryAdventuresApp:
             ("👤 Профиль", self.open_profile),
             ("🏆 Достижения", self.open_achievements),
             ("🎁 Бонус", self.claim_daily_bonus),
-            ("⚙️ Настройки", self.open_settings)
+            ("⚙️ Настройки", self.open_settings),
+            ("📊 Статистика", self.show_stats)
         ]
         
         for text, command in menu_buttons:
             btn = tk.Button(menu_frame, text=text, command=command,
-                          bg='#FF6B6B', fg='white', font=('Arial', 10), 
+                          bg='#FF6B6B', fg='white', font=('Arial', 9, 'bold'), 
                           relief='flat', activebackground='#FF8787')
             btn.pack(side='left', expand=True, fill='x')
+    
+    def show_stats(self):
+        """Показать статистику игры"""
+        stats_win = tk.Toplevel(self.root)
+        stats_win.title("📊 Статистика игры")
+        stats_win.geometry("400x400")
+        stats_win.configure(bg='#FFF8E7')
+        stats_win.transient(self.root)
+        
+        tk.Label(stats_win, text="📊 СТАТИСТИКА ИГРОКА", 
+                font=('Arial', 16, 'bold'), bg='#FFF8E7', fg='#FF6B6B').pack(pady=15)
+        
+        frame = tk.Frame(stats_win, bg='#FFE5B4', relief='ridge', bd=2)
+        frame.pack(padx=20, pady=10, fill='both', expand=True)
+        
+        stats = [
+            ("👨‍🍳 Имя повара:", self.player_name),
+            ("🏆 Уровень:", str(self.player_level)),
+            ("⭐ Всего звезд:", str(self.player_stars)),
+            ("🪙 Монет:", str(self.player_coins)),
+            ("🍳 Рецептов приготовлено:", str(len(self.completed_recipes))),
+            ("🌍 Локаций открыто:", f"{len(self.unlocked_locations)}/11"),
+            ("📚 Рецептов в коллекции:", f"{len(self.completed_recipes)}/33"),
+            ("🏅 Общий счёт:", str(self.total_score)),
+            ("🎮 Сыграно игр:", str(self.games_played or 0))
+        ]
+        
+        for label, value in stats:
+            row = tk.Frame(frame, bg='#FFE5B4')
+            row.pack(fill='x', padx=15, pady=5)
+            tk.Label(row, text=label, font=('Arial', 11), bg='#FFE5B4').pack(side='left')
+            tk.Label(row, text=value, font=('Arial', 11, 'bold'), bg='#FFE5B4', fg='#FF6B6B').pack(side='right')
+        
+        tk.Button(stats_win, text="Закрыть", command=stats_win.destroy,
+                 bg='#FF6B6B', fg='white', font=('Arial', 11), width=15).pack(pady=15)
     
     def get_location_progress(self, location):
         recipes = self.get_recipes_for_location(location)
@@ -1120,7 +1061,9 @@ class CulinaryAdventuresApp:
             "Индия": ["Карри", "Самоса", "Наан"],
             "Корея": ["Кимчи", "Бибимбап", "Корейский барбекю"],
             "Греция": ["Мусака", "Греческий салат", "Сувлаки"],
-            "Марокко": ["Тажин", "Кускус", "Харира"]
+            "Марокко": ["Тажин", "Кускус", "Харира"],
+            "Турция": ["Кебаб", "Баклава", "Долма"],
+            "Испания": ["Паэлья", "Гаспачо", "Чуррос"]
         }
         return recipes.get(location, ["Скоро появится..."])
     
@@ -1130,36 +1073,50 @@ class CulinaryAdventuresApp:
     def claim_daily_bonus(self):
         today = datetime.now().strftime("%Y-%m-%d")
         if self.last_daily_bonus != today:
-            bonus = random.randint(50, 100)
+            bonus = random.randint(50, 150)
             self.player_coins += bonus
             self.last_daily_bonus = today
             self.save_game()
-            messagebox.showinfo("Ежедневный бонус!", f"Вы получили {bonus} 🪙 монет!")
+            self.show_flying_coins_animation(bonus)
+            self.setup_main_menu()
         else:
-            messagebox.showinfo("Бонус уже получен", "Вы уже получили сегодняшний бонус.")
+            messagebox.showinfo("🎁 Бонус уже получен", "Вы уже получили сегодняшний бонус!\nВозвращайтесь завтра!")
     
     def open_settings(self):
         settings_win = tk.Toplevel(self.root)
-        settings_win.title("Настройки")
-        settings_win.geometry("300x250")
+        settings_win.title("⚙️ Настройки")
+        settings_win.geometry("350x350")
         settings_win.configure(bg='#FFF8E7')
         settings_win.transient(self.root)
         
         tk.Label(settings_win, text="⚙️ НАСТРОЙКИ", 
-                font=('Arial', 14, 'bold'), bg='#FFF8E7').pack(pady=20)
+                font=('Arial', 16, 'bold'), bg='#FFF8E7', fg='#FF6B6B').pack(pady=15)
         
+        # Звук
+        sound_frame = tk.Frame(settings_win, bg='#FFE5B4', relief='ridge', bd=1)
+        sound_frame.pack(fill='x', padx=20, pady=10)
+        tk.Label(sound_frame, text="🔊 Звуковые эффекты:", font=('Arial', 11), bg='#FFE5B4').pack(side='left', padx=15, pady=10)
         sound_var = tk.BooleanVar(value=self.sound_manager.enabled)
-        tk.Checkbutton(settings_win, text="Включить звуковые эффекты", 
-                       variable=sound_var, bg='#FFF8E7',
-                       command=lambda: self.sound_manager.toggle()).pack(pady=5)
-        tk.Button(settings_win, text="🗑️ Сбросить прогресс", 
+        tk.Checkbutton(sound_frame, variable=sound_var, command=self.sound_manager.toggle,
+                      bg='#FFE5B4').pack(side='right', padx=15)
+        
+        # Информация о версии
+        info_frame = tk.Frame(settings_win, bg='#FFE5B4', relief='ridge', bd=1)
+        info_frame.pack(fill='x', padx=20, pady=10)
+        tk.Label(info_frame, text="📌 Версия игры: Alfa 0.1.2", font=('Arial', 10), bg='#FFE5B4').pack(pady=5)
+        tk.Label(info_frame, text="👨‍💻 Разработчик: TMR Interteiman & BZR Studio", font=('Arial', 10), bg='#FFE5B4').pack(pady=5)
+        
+        # Сброс прогресса
+        tk.Button(settings_win, text="🗑️ СБРОСИТЬ ВЕСЬ ПРОГРЕСС 🗑️", 
                  command=self.reset_progress,
-                 bg='#F44336', fg='white', font=('Arial', 10)).pack(pady=20)
+                 bg='#F44336', fg='white', font=('Arial', 11, 'bold')).pack(pady=15)
+        
         tk.Button(settings_win, text="Закрыть", command=settings_win.destroy,
-                 bg='#FF6B6B', fg='white', font=('Arial', 10)).pack(pady=10)
+                 bg='#FF6B6B', fg='white', font=('Arial', 11), width=15).pack(pady=10)
     
     def reset_progress(self):
-        if messagebox.askyesno("Сброс прогресса", "Вы уверены? Весь прогресс будет потерян!"):
+        if messagebox.askyesno("⚠️ СБРОС ПРОГРЕССА ⚠️", 
+                              "Вы уверены? Весь ваш прогресс будет потерян навсегда!\nЭто действие нельзя отменить!"):
             if os.path.exists(self.save_file):
                 os.remove(self.save_file)
             self.root.destroy()
@@ -1176,7 +1133,7 @@ class CulinaryAdventuresApp:
         header.pack_propagate(False)
         tk.Button(header, text="← Назад", command=self.setup_main_menu,
                  bg='#FF6B6B', fg='white', font=('Arial', 12), relief='flat').pack(side='left', padx=10)
-        tk.Label(header, text=f"📍 {location}", font=('Arial', 18, 'bold'),
+        tk.Label(header, text=f"📍 {location}", font=('Arial', 20, 'bold'),
                 bg='#FF6B6B', fg='white').pack(side='left', padx=20)
         
         canvas = tk.Canvas(self.root, bg='#FFF8E7', highlightthickness=0)
@@ -1190,19 +1147,19 @@ class CulinaryAdventuresApp:
         scrollbar.pack(side="right", fill="y")
         
         culture_text = self.get_culture_info(location)
-        culture_box = tk.Text(scrollable, height=4, wrap='word', bg='#FFE5B4', 
-                              font=('Arial', 10), relief='solid', borderwidth=1)
+        culture_box = tk.Text(scrollable, height=5, wrap='word', bg='#FFE5B4', 
+                              font=('Arial', 11), relief='solid', borderwidth=2)
         culture_box.insert('1.0', culture_text)
         culture_box.config(state='disabled')
         culture_box.pack(fill='x', pady=10, padx=10)
         
         tk.Label(scrollable, text="📖 РЕЦЕПТЫ-КВЕСТЫ", 
-                font=('Arial', 14, 'bold'), bg='#FFF8E7', fg='#FF6B6B').pack(pady=10)
+                font=('Arial', 16, 'bold'), bg='#FFF8E7', fg='#FF6B6B').pack(pady=10)
         
         recipes = self.get_recipes_for_location(location)
         for i, recipe in enumerate(recipes):
-            recipe_frame = tk.Frame(scrollable, bg='#FFE5B4', relief='ridge', borderwidth=1)
-            recipe_frame.pack(fill='x', pady=5, padx=10)
+            recipe_frame = tk.Frame(scrollable, bg='#FFE5B4', relief='ridge', borderwidth=2)
+            recipe_frame.pack(fill='x', pady=8, padx=10)
             
             is_completed = recipe in self.completed_recipes
             is_unlocked = recipe in self.unlocked_recipes.get(location, [])
@@ -1214,41 +1171,47 @@ class CulinaryAdventuresApp:
             
             if is_completed:
                 status = "✅"
+                status_text = "Выполнено!"
+                status_color = '#4CAF50'
             elif is_unlocked:
                 status = "🔓"
+                status_text = "Доступен!"
+                status_color = '#FF9800'
             else:
                 status = "🔒"
+                status_text = "Заблокирован"
+                status_color = '#999'
             
             tk.Label(recipe_frame, text=f"{status} {recipe}", 
-                    font=('Arial', 11), bg='#FFE5B4').pack(side='left', padx=10, pady=10)
+                    font=('Arial', 12, 'bold'), bg='#FFE5B4').pack(side='left', padx=15, pady=12)
             
             if is_unlocked and not is_completed:
-                btn = tk.Button(recipe_frame, text="▶ Начать", 
+                btn = tk.Button(recipe_frame, text="▶ НАЧАТЬ КВЕСТ ▶", 
                                command=lambda r=recipe: self.start_quest(r),
-                               bg='#4CAF50', fg='white', font=('Arial', 10), width=12)
+                               bg='#4CAF50', fg='white', font=('Arial', 10, 'bold'), width=15)
                 btn.pack(side='right', padx=10)
             elif is_completed:
-                tk.Label(recipe_frame, text="Выполнено!", 
-                        font=('Arial', 10), bg='#FFE5B4', fg='green').pack(side='right', padx=10)
+                tk.Label(recipe_frame, text=status_text, font=('Arial', 11, 'bold'),
+                        bg='#FFE5B4', fg=status_color).pack(side='right', padx=15)
             else:
-                prev_recipe = recipes[i-1] if i > 0 else None
-                hint = f"Выполните: {prev_recipe}" if prev_recipe else "Выполните предыдущий"
-                tk.Label(recipe_frame, text=hint, 
-                        font=('Arial', 8), bg='#FFE5B4', fg='gray').pack(side='right', padx=10)
+                tk.Label(recipe_frame, text=f"Выполните: {recipes[i-1]}", 
+                        font=('Arial', 9), bg='#FFE5B4', fg='#999').pack(side='right', padx=10)
     
     def get_culture_info(self, location):
         cultures = {
-            "Италия": "🍕 Итальянская кухня — это страсть к простым и качественным продуктам. Паста, пицца, оливковое масло и сыры — основа средиземноморской диеты!",
-            "Япония": "🍣 Японская кухня — это искусство минимализма. Свежие продукты, точность приготовления и эстетика подачи.",
-            "Мексика": "🌮 Мексиканская кухня — это фейерверк вкусов! Острые перцы чили, кукурузные лепешки, авокадо и кактусы.",
-            "Франция": "🥖 Французская кухня — это элегантность и изысканность. Соусы, выпечка, сыры и вина.",
-            "Таиланд": "🍜 Тайская кухня — это баланс четырех вкусов: острого, кислого, сладкого и соленого.",
-            "Индия": "🍛 Индийская кухня — это царство специй. Карри, тандури, самоса и сотни вегетарианских блюд.",
-            "Корея": "🥢 Корейская кухня славится остротой и ферментацией. Кимчи, барбекю и бибимбап.",
-            "Греция": "🇬🇷 Греческая кухня — это оливковое масло, свежие овощи, сыр фета и морепродукты.",
-            "Марокко": "🇲🇦 Марокканская кухня — это сочетание арабских, берберских и средиземноморских традиций."
+            "Италия": "🍕 Итальянская кухня — это страсть к простым и качественным продуктам. Паста, пицца, оливковое масло и сыры — основа средиземноморской диеты! 🇮🇹",
+            "Япония": "🍣 Японская кухня — это искусство минимализма. Свежие продукты, точность приготовления и эстетика подачи. Умами — пятый вкус, открытый японцами! 🇯🇵",
+            "Мексика": "🌮 Мексиканская кухня — это фейерверк вкусов! Острые перцы чили, кукурузные лепешки, авокадо и кактусы. Каждый регион имеет свои уникальные блюда! 🇲🇽",
+            "Франция": "🥖 Французская кухня — это элегантность и изысканность. Соусы, выпечка, сыры и вина. Именно здесь родилось понятие высокой кухни! 🇫🇷",
+            "Таиланд": "🍜 Тайская кухня — это баланс четырех вкусов: острого, кислого, сладкого и соленого. Травы и специи создают неповторимые ароматы! 🇹🇭",
+            "Индия": "🍛 Индийская кухня — это царство специй. Карри, тандури, самоса и сотни вегетарианских блюд. Каждое блюдо — это история! 🇮🇳",
+            "Корея": "🥢 Корейская кухня славится остротой и ферментацией. Кимчи, барбекю и бибимбап — визитные карточки страны! 🇰🇷",
+            "Греция": "🇬🇷 Греческая кухня — это оливковое масло, свежие овощи, сыр фета и морепродукты. Средиземноморское долголетие начинается здесь! 🇬🇷",
+            "Марокко": "🇲🇦 Марокканская кухня — это сочетание арабских, берберских и средиземноморских традиций. Тажин, кускус и ароматные специи! 🇲🇦",
+            "Турция": "🇹🇷 Турецкая кухня — это кебабы, баклава и сладости. Османские традиции и средиземноморские нотки создают уникальный вкус! 🇹🇷",
+            "Испания": "🇪🇸 Испанская кухня — это паэлья, тапас и хамон. Страстная и яркая, как фламенко! 🇪🇸"
         }
-        return cultures.get(location, "Откройте эту локацию, чтобы узнать о ее кулинарных традициях!")
+        return cultures.get(location, "Откройте эту локацию, чтобы узнать о ее кулинарных традициях! 🌍")
     
     def start_quest(self, recipe):
         self.current_recipe = recipe
@@ -1263,15 +1226,17 @@ class CulinaryAdventuresApp:
         intro_frame.pack(fill='both', expand=True)
         
         tk.Label(intro_frame, text=f"🍳 {self.current_recipe}", 
-                font=('Arial', 22, 'bold'), bg='#FFF8E7', fg='#FF6B6B').pack(pady=60)
+                font=('Arial', 26, 'bold'), bg='#FFF8E7', fg='#FF6B6B').pack(pady=70)
         tk.Label(intro_frame, text="Приготовьте это блюдо, пройдя все этапы!", 
-                font=('Arial', 12), bg='#FFF8E7').pack(pady=10)
+                font=('Arial', 13), bg='#FFF8E7').pack(pady=10)
+        tk.Label(intro_frame, text="Вас ждут: поиск ингредиентов, интерактивное приготовление и викторина!", 
+                font=('Arial', 11), bg='#FFF8E7', fg='gray').pack()
         
-        btn = AdaptiveButton(intro_frame, "Начать квест!", self.next_step,
+        btn = AnimatedButton(intro_frame, "🚀 НАЧАТЬ КВЕСТ 🚀", self.next_step,
                             bg='#4CAF50', fg='white')
-        btn.pack(pady=30)
+        btn.pack(pady=40)
         
-        back_btn = AdaptiveButton(intro_frame, "Назад", 
+        back_btn = AnimatedButton(intro_frame, "Назад", 
                                   lambda: self.open_location(self.current_location),
                                   bg='#FF6B6B', fg='white')
         back_btn.pack()
@@ -1292,34 +1257,34 @@ class CulinaryAdventuresApp:
     def get_recipe_steps(self, recipe):
         steps = {
             "Пицца Маргарита": [
-                {"type": "find", "items": ["Томаты", "Моцарелла", "Базилик"]},
+                {"type": "find", "items": ["🍅 Томаты", "🧀 Моцарелла", "🌿 Базилик"]},
                 {"type": "cook", "action": "замесить тесто"},
                 {"type": "quiz", "question": "Какой соус используется для пиццы Маргарита?", 
                  "options": ["Томатный", "Сливочный", "Песто"], "correct": 0}
             ],
             "Паста Карбонара": [
-                {"type": "find", "items": ["Спагетти", "Панчетта", "Яйца", "Пармезан"]},
+                {"type": "find", "items": ["🍝 Спагетти", "🥓 Панчетта", "🥚 Яйца", "🧀 Пармезан"]},
                 {"type": "cook", "action": "сварить пасту"},
                 {"type": "quiz", "question": "Что НЕ добавляют в классическую Карбонару?", 
                  "options": ["Сливки", "Панчетта", "Яйца", "Пармезан"], "correct": 0}
             ],
             "Тирамису": [
-                {"type": "find", "items": ["Маскарпоне", "Кофе", "Печенье", "Какао"]},
+                {"type": "find", "items": ["🧀 Маскарпоне", "☕ Кофе", "🍪 Печенье", "🍫 Какао"]},
                 {"type": "cook", "action": "взбить крем"},
-                {"type": "quiz", "question": "Какой алкоголь добавляют в тирамису?", 
-                 "options": ["Марсала", "Ром", "Коньяк"], "correct": 0}
+                {"type": "quiz", "question": "Какой алкоголь добавляют в классический тирамису?", 
+                 "options": ["Марсала", "Ром", "Амаретто"], "correct": 0}
             ],
             "Суши Калифорния": [
-                {"type": "find", "items": ["Рис", "Нори", "Авокадо", "Краб"]},
+                {"type": "find", "items": ["🍚 Рис", "🌿 Нори", "🥑 Авокадо", "🦀 Краб"]},
                 {"type": "cook", "action": "приготовить рис"},
                 {"type": "quiz", "question": "Что делает суши Калифорния особенным?", 
-                 "options": ["Рис снаружи", "Авокадо внутри", "Кунжут"], "correct": 0}
+                 "options": ["Рис снаружи", "Авокадо внутри", "Кунжут сверху"], "correct": 0}
             ]
         }
         return steps.get(recipe, [
-            {"type": "find", "items": ["Ингредиент 1", "Ингредиент 2"]},
+            {"type": "find", "items": ["Ингредиент 1", "Ингредиент 2", "Ингредиент 3"]},
             {"type": "cook", "action": "приготовить"},
-            {"type": "quiz", "question": "Пример вопроса?", "options": ["Вариант 1", "Вариант 2"], "correct": 0}
+            {"type": "quiz", "question": "Пример вопроса?", "options": ["Вариант 1", "Вариант 2", "Вариант 3"], "correct": 0}
         ])
     
     def show_find_game(self, items):
@@ -1329,21 +1294,21 @@ class CulinaryAdventuresApp:
         header.pack(fill='x')
         header.pack_propagate(False)
         tk.Button(header, text="← Назад", command=lambda: self.open_location(self.current_location),
-                 bg='#FF6B6B', fg='white', font=('Arial', 11), relief='flat').pack(side='left', padx=10)
-        tk.Label(header, text="🔍 Поиск ингредиентов", font=('Arial', 14),
+                 bg='#FF6B6B', fg='white', font=('Arial', 12), relief='flat').pack(side='left', padx=10)
+        tk.Label(header, text="🔍 Поиск ингредиентов", font=('Arial', 16, 'bold'),
                  bg='#FF6B6B', fg='white').pack(side='left', padx=10)
         
         content = tk.Frame(self.root, bg='#FFF8E7')
         content.pack(fill='both', expand=True, padx=30, pady=20)
         
-        tk.Label(content, text="🔍 НАЙДИ ИНГРЕДИЕНТЫ", 
-                font=('Arial', 16, 'bold'), bg='#FFF8E7', fg='#FF6B6B').pack(pady=10)
+        tk.Label(content, text="🔍 НАЙДИ ВСЕ ИНГРЕДИЕНТЫ", 
+                font=('Arial', 18, 'bold'), bg='#FFF8E7', fg='#FF6B6B').pack(pady=10)
         
-        self.progress_label = tk.Label(content, text=f"Найдено: {len(self.found_items)}/{len(items)}", 
-                                       font=('Arial', 12), bg='#FFF8E7')
+        self.progress_label = tk.Label(content, text=f"📦 Найдено: {len(self.found_items)}/{len(items)}", 
+                                       font=('Arial', 13), bg='#FFF8E7')
         self.progress_label.pack()
         
-        progress_bar = ttk.Progressbar(content, length=350, mode='determinate', 
+        progress_bar = ttk.Progressbar(content, length=400, mode='determinate', 
                                        maximum=len(items), value=len(self.found_items))
         progress_bar.pack(pady=10)
         
@@ -1355,21 +1320,24 @@ class CulinaryAdventuresApp:
             col = i % 2
             if item in self.found_items:
                 btn = tk.Button(items_frame, text=f"✅ {item}", bg='#4CAF50', fg='white',
-                              font=('Arial', 11), width=18, height=2, state='disabled')
+                              font=('Arial', 12), width=20, height=2, state='disabled')
             else:
                 btn = tk.Button(items_frame, text=f"🔍 {item}", 
                                command=lambda i=item, pb=progress_bar, its=items: self.find_item(i, pb, its),
-                               bg='#FFE5B4', font=('Arial', 11), width=18, height=2)
-            btn.grid(row=row, column=col, padx=15, pady=8)
+                               bg='#FFE5B4', font=('Arial', 12), width=20, height=2)
+            btn.grid(row=row, column=col, padx=20, pady=10)
+        
+        tk.Label(content, text="💡 Нажимайте на ингредиенты, чтобы найти их!", 
+                font=('Arial', 10), bg='#FFF8E7', fg='gray').pack(pady=10)
     
     def find_item(self, item, progress_bar, items):
         if item not in self.found_items:
             self.found_items.append(item)
-            self.progress_label.config(text=f"Найдено: {len(self.found_items)}/{len(items)}")
+            self.progress_label.config(text=f"📦 Найдено: {len(self.found_items)}/{len(items)}")
             progress_bar['value'] = len(self.found_items)
-            messagebox.showinfo("Успех!", f"Вы нашли {item}! 🎉")
+            messagebox.showinfo("🎉 Успех!", f"Вы нашли {item}! 🎉")
             if len(self.found_items) == len(items):
-                messagebox.showinfo("Отлично!", "Все ингредиенты найдены!")
+                messagebox.showinfo("✨ Отлично!", "Все ингредиенты найдены! Переходим к следующему этапу! ✨")
                 self.current_step += 1
                 self.next_step()
     
@@ -1381,19 +1349,17 @@ class CulinaryAdventuresApp:
         header.pack(fill='x')
         header.pack_propagate(False)
         tk.Button(header, text="← Назад", command=lambda: self.open_location(self.current_location),
-                 bg='#FF6B6B', fg='white', font=('Arial', 11), relief='flat').pack(side='left', padx=10)
-        tk.Label(header, text="🔥 Приготовление", font=('Arial', 14),
+                 bg='#FF6B6B', fg='white', font=('Arial', 12), relief='flat').pack(side='left', padx=10)
+        tk.Label(header, text="🔥 Приготовление", font=('Arial', 16, 'bold'),
                  bg='#FF6B6B', fg='white').pack(side='left', padx=10)
         
         content = tk.Frame(self.root, bg='#FFF8E7')
         content.pack(fill='both', expand=True, padx=30, pady=20)
         
-        # Создаем интерактивную игру
         self.cooking_game = InteractiveCookingGame(self.root, action, self.on_cooking_complete)
         self.cooking_game.create_game(content)
     
     def on_cooking_complete(self):
-        """Вызывается после завершения мини-игры"""
         self.current_step += 1
         self.next_step()
     
@@ -1404,31 +1370,34 @@ class CulinaryAdventuresApp:
         header.pack(fill='x')
         header.pack_propagate(False)
         tk.Button(header, text="← Назад", command=lambda: self.open_location(self.current_location),
-                 bg='#FF6B6B', fg='white', font=('Arial', 11), relief='flat').pack(side='left', padx=10)
-        tk.Label(header, text="📝 Викторина", font=('Arial', 14),
+                 bg='#FF6B6B', fg='white', font=('Arial', 12), relief='flat').pack(side='left', padx=10)
+        tk.Label(header, text="📝 Кулинарная викторина", font=('Arial', 16, 'bold'),
                  bg='#FF6B6B', fg='white').pack(side='left', padx=10)
         
         content = tk.Frame(self.root, bg='#FFF8E7')
-        content.pack(fill='both', expand=True, padx=30, pady=30)
+        content.pack(fill='both', expand=True, padx=40, pady=30)
         
         tk.Label(content, text="📝 КУЛИНАРНАЯ ВИКТОРИНА", 
-                font=('Arial', 16, 'bold'), bg='#FFF8E7', fg='#FF6B6B').pack(pady=20)
+                font=('Arial', 20, 'bold'), bg='#FFF8E7', fg='#FF6B6B').pack(pady=20)
         
-        tk.Label(content, text=question, font=('Arial', 12), 
-                bg='#FFF8E7', wraplength=500, justify='center').pack(pady=20)
+        tk.Label(content, text=question, font=('Arial', 13), 
+                bg='#FFF8E7', wraplength=600, justify='center').pack(pady=25)
         
         for i, option in enumerate(options):
             btn = tk.Button(content, text=option, command=lambda idx=i: self.answer_quiz(idx, correct_index),
-                          bg='#FFE5B4', font=('Arial', 11), width=30, height=2)
+                          bg='#FFE5B4', font=('Arial', 12), width=35, height=2)
             btn.pack(pady=8)
+        
+        tk.Label(content, text="💡 Подсказка: вспомните классический рецепт!", 
+                font=('Arial', 10), bg='#FFF8E7', fg='gray').pack(pady=15)
     
     def answer_quiz(self, selected, correct):
         if selected == correct:
-            messagebox.showinfo("Правильно! 🎉", "Отличные кулинарные знания!")
+            messagebox.showinfo("✅ Правильно! 🎉", "Отличные кулинарные знания! Продолжаем! ✅")
             self.current_step += 1
             self.next_step()
         else:
-            messagebox.showerror("Ошибка!", "Попробуйте еще раз!")
+            messagebox.showerror("❌ Ошибка! ❌", "Попробуйте еще раз! Внимательно прочитайте вопрос.")
     
     def complete_quest(self):
         location = None
@@ -1439,9 +1408,11 @@ class CulinaryAdventuresApp:
         
         if location and self.current_recipe not in self.completed_recipes:
             self.completed_recipes.append(self.current_recipe)
-            reward_exp = 50
-            reward_stars = 3
-            reward_coins = random.randint(30, 70)
+            self.games_played += 1
+            
+            reward_exp = 60
+            reward_stars = 4
+            reward_coins = random.randint(40, 90)
             
             self.add_exp(reward_exp)
             self.player_stars += reward_stars
@@ -1456,7 +1427,7 @@ class CulinaryAdventuresApp:
                         self.unlocked_recipes[location].append(next_recipe)
             
             total_completed = len(self.completed_recipes)
-            all_locations = ["Италия", "Япония", "Мексика", "Франция", "Таиланд", "Индия", "Корея", "Греция", "Марокко"]
+            all_locations = ["Италия", "Япония", "Мексика", "Франция", "Таиланд", "Индия", "Корея", "Греция", "Марокко", "Турция", "Испания"]
             expected_unlocked = 1 + (total_completed // 3)
             if expected_unlocked > len(all_locations):
                 expected_unlocked = len(all_locations)
@@ -1466,7 +1437,8 @@ class CulinaryAdventuresApp:
                     new_loc = all_locations[i]
                     if new_loc not in self.unlocked_locations:
                         self.unlocked_locations.append(new_loc)
-                        messagebox.showinfo("🌍 Новая локация открыта!", f"Вы открыли {new_loc}!")
+                        messagebox.showinfo("🌍 НОВАЯ ЛОКАЦИЯ ОТКРЫТА! 🌍", 
+                                          f"Поздравляем! Вы открыли {new_loc}!\nПродолжайте кулинарное путешествие!")
             
             self.save_game()
             self.check_achievements()
@@ -1478,49 +1450,50 @@ class CulinaryAdventuresApp:
         result_frame = tk.Frame(self.root, bg='#FFF8E7')
         result_frame.pack(fill='both', expand=True)
         
-        tk.Label(result_frame, text="🎉✨🎊", font=('Arial', 28), 
-                bg='#FFF8E7').pack(pady=30)
+        tk.Label(result_frame, text="🎉✨🌟 ПОЗДРАВЛЯЕМ! 🌟✨🎉", font=('Arial', 22, 'bold'), 
+                bg='#FFF8E7', fg='#FF6B6B').pack(pady=30)
         tk.Label(result_frame, text="КВЕСТ ВЫПОЛНЕН!", 
-                font=('Arial', 20, 'bold'), bg='#FFF8E7', fg='#FF6B6B').pack(pady=10)
+                font=('Arial', 24, 'bold'), bg='#FFF8E7', fg='#4CAF50').pack(pady=5)
         tk.Label(result_frame, text=f"🍳 {self.current_recipe}", 
-                font=('Arial', 16), bg='#FFF8E7').pack(pady=5)
+                font=('Arial', 18), bg='#FFF8E7').pack(pady=10)
         
-        rewards_frame = tk.Frame(result_frame, bg='#FFE5B4', relief='ridge', borderwidth=2)
-        rewards_frame.pack(pady=20, padx=50, fill='x')
+        rewards_frame = tk.Frame(result_frame, bg='#FFE5B4', relief='ridge', borderwidth=3)
+        rewards_frame.pack(pady=25, padx=60, fill='x')
         
         tk.Label(rewards_frame, text="🏆 ПОЛУЧЕНЫ НАГРАДЫ:", 
-                font=('Arial', 12, 'bold'), bg='#FFE5B4').pack(pady=5)
+                font=('Arial', 14, 'bold'), bg='#FFE5B4').pack(pady=10)
         tk.Label(rewards_frame, text=f"✨ +{exp} опыта", 
-                font=('Arial', 11), bg='#FFE5B4').pack()
+                font=('Arial', 12), bg='#FFE5B4', fg='#2196F3').pack()
         tk.Label(rewards_frame, text=f"⭐ +{stars} звезд", 
-                font=('Arial', 11), bg='#FFE5B4').pack()
+                font=('Arial', 12), bg='#FFE5B4', fg='#FFD700').pack()
         tk.Label(rewards_frame, text=f"🪙 +{coins} монет", 
-                font=('Arial', 11), bg='#FFE5B4').pack()
+                font=('Arial', 12), bg='#FFE5B4', fg='#FF9800').pack()
         
         recipe_text = self.get_real_recipe(self.current_recipe)
-        recipe_box = tk.Text(result_frame, height=6, wrap='word', bg='#FFE5B4', 
-                            font=('Arial', 10), relief='solid', borderwidth=1)
+        recipe_box = tk.Text(result_frame, height=7, wrap='word', bg='#FFE5B4', 
+                            font=('Arial', 11), relief='solid', borderwidth=2)
         recipe_box.insert('1.0', recipe_text)
         recipe_box.config(state='disabled')
-        recipe_box.pack(pady=20, padx=30, fill='x')
+        recipe_box.pack(pady=20, padx=40, fill='x')
         
         btn_frame = tk.Frame(result_frame, bg='#FFF8E7')
-        btn_frame.pack(pady=15)
+        btn_frame.pack(pady=20)
         
-        tk.Button(btn_frame, text="📚 В коллекцию", command=self.open_collection,
-                 bg='#4CAF50', fg='white', font=('Arial', 11), width=15, height=1).pack(side='left', padx=10)
-        tk.Button(btn_frame, text="🗺️ На карту", command=self.setup_main_menu,
-                 bg='#FF6B6B', fg='white', font=('Arial', 11), width=15, height=1).pack(side='left', padx=10)
-        tk.Button(btn_frame, text="🍳 Следующий квест", 
+        tk.Button(btn_frame, text="📚 В КОЛЛЕКЦИЮ", command=self.open_collection,
+                 bg='#4CAF50', fg='white', font=('Arial', 12, 'bold'), width=16).pack(side='left', padx=10)
+        tk.Button(btn_frame, text="🗺️ НА КАРТУ", command=self.setup_main_menu,
+                 bg='#FF6B6B', fg='white', font=('Arial', 12, 'bold'), width=16).pack(side='left', padx=10)
+        tk.Button(btn_frame, text="🍳 СЛЕДУЮЩИЙ КВЕСТ", 
                  command=lambda: self.open_location(self.current_location),
-                 bg='#FF9800', fg='white', font=('Arial', 11), width=15, height=1).pack(side='left', padx=10)
+                 bg='#FF9800', fg='white', font=('Arial', 12, 'bold'), width=18).pack(side='left', padx=10)
     
     def get_real_recipe(self, recipe):
         recipes = {
-            "Пицца Маргарита": "🍕 ИНГРЕДИЕНТЫ:\n• Тесто для пиццы 250г\n• Томатный соус 100г\n• Моцарелла 200г\n• Свежий базилик\n\nПРИГОТОВЛЕНИЕ:\n1. Раскатать тесто\n2. Намазать томатным соусом\n3. Выложить моцареллу\n4. Запекать 10-12 мин при 250°C\n5. Украсить базиликом",
-            "Паста Карбонара": "🍝 ИНГРЕДИЕНТЫ:\n• Спагетти 200г\n• Панчетта/бекон 100г\n• Яйца 2 шт\n• Пармезан 50г\n\nПРИГОТОВЛЕНИЕ:\n1. Обжарить панчетту\n2. Сварить спагетти al dente\n3. Смешать яйца с сыром\n4. Соединить все, добавив перец",
+            "Пицца Маргарита": "🍕 ИНГРЕДИЕНТЫ:\n• Тесто для пиццы 250г\n• Томатный соус 100г\n• Моцарелла 200г\n• Свежий базилик\n• Оливковое масло\n\nПРИГОТОВЛЕНИЕ:\n1. Раскатать тесто\n2. Намазать томатным соусом\n3. Выложить моцареллу\n4. Запекать 10-12 мин при 250°C\n5. Украсить базиликом и сбрызнуть маслом",
+            "Паста Карбонара": "🍝 ИНГРЕДИЕНТЫ:\n• Спагетти 200г\n• Панчетта/бекон 100г\n• Яйца 2 шт\n• Пармезан 50г\n• Черный перец\n\nПРИГОТОВЛЕНИЕ:\n1. Обжарить панчетту\n2. Сварить спагетти al dente\n3. Смешать яйца с сыром\n4. Соединить все, добавив перец\n5. Подавать горячим!",
+            "Тирамису": "🍰 ИНГРЕДИЕНТЫ:\n• Маскарпоне 250г\n• Яйца 3 шт\n• Сахар 100г\n• Кофе 200мл\n• Печенье Савоярди 200г\n• Какао\n\nПРИГОТОВЛЕНИЕ:\n1. Отделить желтки от белков\n2. Взбить желтки с сахаром, добавить маскарпоне\n3. Взбить белки, аккуратно смешать\n4. Обмакнуть печенье в кофе, выложить слоями с кремом\n5. Посыпать какао, охладить 4 часа"
         }
-        return recipes.get(recipe, "Приготовьте это блюдо дома, следуя классическому рецепту!")
+        return recipes.get(recipe, "Приготовьте это блюдо дома, следуя классическому рецепту! 👨‍🍳")
     
     def open_collection(self):
         self.clear_window()
@@ -1530,7 +1503,7 @@ class CulinaryAdventuresApp:
         header.pack_propagate(False)
         tk.Button(header, text="← Назад", command=self.setup_main_menu,
                  bg='#FF6B6B', fg='white', font=('Arial', 12), relief='flat').pack(side='left', padx=10)
-        tk.Label(header, text="📚 МОЯ КОЛЛЕКЦИЯ", font=('Arial', 18, 'bold'),
+        tk.Label(header, text="📚 МОЯ КОЛЛЕКЦИЯ", font=('Arial', 20, 'bold'),
                 bg='#FF6B6B', fg='white').pack(side='left', padx=20)
         
         canvas = tk.Canvas(self.root, bg='#FFF8E7', highlightthickness=0)
@@ -1543,43 +1516,55 @@ class CulinaryAdventuresApp:
         canvas.pack(side='left', fill='both', expand=True)
         scrollbar.pack(side='right', fill='y')
         
+        # Статистика
+        stats_frame = tk.Frame(scrollable, bg='#FFE5B4', relief='ridge', bd=2)
+        stats_frame.pack(fill='x', padx=20, pady=10)
+        tk.Label(stats_frame, text=f"🏆 Всего приготовлено: {len(self.completed_recipes)} рецептов", 
+                font=('Arial', 12, 'bold'), bg='#FFE5B4').pack(pady=5)
+        tk.Label(stats_frame, text=f"⭐ Всего звезд: {self.player_stars}", 
+                font=('Arial', 11), bg='#FFE5B4').pack(pady=3)
+        
         recipes_shown = False
-        all_locations = ["Италия", "Япония", "Мексика", "Франция", "Таиланд", "Индия", "Корея", "Греция", "Марокко"]
+        all_locations = ["Италия", "Япония", "Мексика", "Франция", "Таиланд", "Индия", "Корея", "Греция", "Марокко", "Турция", "Испания"]
         for location in all_locations:
             recipes_in_loc = [r for r in self.completed_recipes 
                             if r in self.get_recipes_for_location(location)]
             if recipes_in_loc:
                 recipes_shown = True
                 location_frame = tk.LabelFrame(scrollable, text=f"📍 {location}", 
-                                              bg='#FFF8E7', font=('Arial', 12, 'bold'))
-                location_frame.pack(fill='x', padx=10, pady=5)
+                                              bg='#FFF8E7', font=('Arial', 13, 'bold'))
+                location_frame.pack(fill='x', padx=15, pady=8)
                 for recipe in recipes_in_loc:
                     recipe_frame = tk.Frame(location_frame, bg='#FFE5B4')
-                    recipe_frame.pack(fill='x', padx=5, pady=3)
+                    recipe_frame.pack(fill='x', padx=8, pady=4)
                     tk.Label(recipe_frame, text=f"🍽️ {recipe}", 
-                            font=('Arial', 10), bg='#FFE5B4').pack(side='left', padx=10, pady=5)
-                    tk.Button(recipe_frame, text="📖 Рецепт", 
+                            font=('Arial', 11), bg='#FFE5B4').pack(side='left', padx=15, pady=8)
+                    tk.Button(recipe_frame, text="📖 Смотреть рецепт", 
                              command=lambda r=recipe: self.show_recipe_detail(r),
                              bg='#FF6B6B', fg='white', font=('Arial', 9)).pack(side='right', padx=10)
         
         if not recipes_shown:
-            tk.Label(scrollable, text="Пока нет открытых рецептов.\nПройдите квесты!", 
-                    font=('Arial', 12), bg='#FFF8E7', justify='center').pack(pady=50)
+            tk.Label(scrollable, text="😢 Пока нет открытых рецептов.\nПройдите квесты, чтобы пополнить коллекцию! 😢", 
+                    font=('Arial', 13), bg='#FFF8E7', justify='center').pack(pady=60)
     
     def show_recipe_detail(self, recipe):
         detail_win = tk.Toplevel(self.root)
-        detail_win.title(f"Рецепт: {recipe}")
-        detail_win.geometry("450x550")
+        detail_win.title(f"📖 Рецепт: {recipe}")
+        detail_win.geometry("500x600")
         detail_win.configure(bg='#FFF8E7')
+        detail_win.transient(self.root)
+        
         tk.Label(detail_win, text=f"📖 {recipe}", 
-                font=('Arial', 14, 'bold'), bg='#FFF8E7').pack(pady=10)
+                font=('Arial', 16, 'bold'), bg='#FFF8E7', fg='#FF6B6B').pack(pady=15)
+        
         recipe_text = self.get_real_recipe(recipe)
-        text_box = tk.Text(detail_win, wrap='word', bg='#FFE5B4', font=('Arial', 11))
+        text_box = tk.Text(detail_win, wrap='word', bg='#FFE5B4', font=('Arial', 12))
         text_box.insert('1.0', recipe_text)
         text_box.config(state='disabled')
-        text_box.pack(fill='both', expand=True, padx=20, pady=10)
+        text_box.pack(fill='both', expand=True, padx=25, pady=15)
+        
         tk.Button(detail_win, text="Закрыть", command=detail_win.destroy,
-                 bg='#FF6B6B', fg='white', font=('Arial', 11)).pack(pady=10)
+                 bg='#FF6B6B', fg='white', font=('Arial', 12), width=15).pack(pady=15)
     
     def open_profile(self):
         self.clear_window()
@@ -1589,61 +1574,69 @@ class CulinaryAdventuresApp:
         header.pack_propagate(False)
         tk.Button(header, text="← Назад", command=self.setup_main_menu,
                  bg='#FF6B6B', fg='white', font=('Arial', 12), relief='flat').pack(side='left', padx=10)
-        tk.Label(header, text="👤 МОЙ ПРОФИЛЬ", font=('Arial', 18, 'bold'),
+        tk.Label(header, text="👤 МОЙ ПРОФИЛЬ", font=('Arial', 20, 'bold'),
                 bg='#FF6B6B', fg='white').pack(side='left', padx=20)
         
         content = tk.Frame(self.root, bg='#FFF8E7')
-        content.pack(fill='both', expand=True, padx=30, pady=20)
+        content.pack(fill='both', expand=True, padx=40, pady=25)
         
-        avatar_frame = tk.Frame(content, bg='#FFE5B4', relief='ridge', borderwidth=2)
-        avatar_frame.pack(pady=15, fill='x')
-        tk.Label(avatar_frame, text="👨‍🍳", font=('Arial', 52), bg='#FFE5B4').pack(pady=10)
-        tk.Label(avatar_frame, text=self.player_name, font=('Arial', 16, 'bold'),
+        avatar_frame = tk.Frame(content, bg='#FFE5B4', relief='ridge', borderwidth=3)
+        avatar_frame.pack(pady=20, fill='x')
+        tk.Label(avatar_frame, text="👨‍🍳", font=('Arial', 64), bg='#FFE5B4').pack(pady=15)
+        tk.Label(avatar_frame, text=self.player_name, font=('Arial', 20, 'bold'),
                 bg='#FFE5B4').pack()
         
         stats_frame = tk.Frame(content, bg='#FFF8E7')
-        stats_frame.pack(pady=20, fill='x')
+        stats_frame.pack(pady=25, fill='x')
         
-        level_frame = tk.Frame(stats_frame, bg='#FFE5B4', relief='ridge', borderwidth=1)
-        level_frame.pack(fill='x', pady=5)
+        # Уровень
+        level_frame = tk.Frame(stats_frame, bg='#FFE5B4', relief='ridge', borderwidth=2)
+        level_frame.pack(fill='x', pady=8)
         tk.Label(level_frame, text=f"Уровень {self.player_level}", 
-                font=('Arial', 12, 'bold'), bg='#FFE5B4').pack(pady=5)
-        progress = ttk.Progressbar(level_frame, length=300, mode='determinate',
+                font=('Arial', 14, 'bold'), bg='#FFE5B4').pack(pady=8)
+        progress = ttk.Progressbar(level_frame, length=350, mode='determinate',
                                   maximum=100, value=self.player_exp)
         progress.pack(pady=5)
         tk.Label(level_frame, text=f"{self.player_exp}/100 опыта", 
-                font=('Arial', 10), bg='#FFE5B4').pack(pady=5)
+                font=('Arial', 11), bg='#FFE5B4').pack(pady=5)
         
-        resources_frame = tk.Frame(stats_frame, bg='#FFE5B4', relief='ridge', borderwidth=1)
-        resources_frame.pack(fill='x', pady=5)
+        # Ресурсы
+        resources_frame = tk.Frame(stats_frame, bg='#FFE5B4', relief='ridge', borderwidth=2)
+        resources_frame.pack(fill='x', pady=8)
+        tk.Label(resources_frame, text="📊 РЕСУРСЫ", font=('Arial', 12, 'bold'), bg='#FFE5B4').pack(pady=5)
         tk.Label(resources_frame, text=f"⭐ Звезд: {self.player_stars}", 
-                font=('Arial', 11), bg='#FFE5B4').pack(pady=3)
+                font=('Arial', 12), bg='#FFE5B4').pack(pady=3)
         tk.Label(resources_frame, text=f"🪙 Монет: {self.player_coins}", 
-                font=('Arial', 11), bg='#FFE5B4').pack(pady=3)
+                font=('Arial', 12), bg='#FFE5B4').pack(pady=3)
         
-        progress_frame = tk.Frame(stats_frame, bg='#FFE5B4', relief='ridge', borderwidth=1)
-        progress_frame.pack(fill='x', pady=5)
+        # Прогресс
+        progress_frame = tk.Frame(stats_frame, bg='#FFE5B4', relief='ridge', borderwidth=2)
+        progress_frame.pack(fill='x', pady=8)
+        tk.Label(progress_frame, text="📈 ПРОГРЕСС", font=('Arial', 12, 'bold'), bg='#FFE5B4').pack(pady=5)
         total_recipes = len(self.completed_recipes)
-        tk.Label(progress_frame, text=f"📊 ПРОГРЕСС", 
-                font=('Arial', 11, 'bold'), bg='#FFE5B4').pack(pady=3)
-        tk.Label(progress_frame, text=f"Рецептов: {total_recipes}/27", 
-                font=('Arial', 10), bg='#FFE5B4').pack()
-        tk.Label(progress_frame, text=f"Локаций: {len(self.unlocked_locations)}/9", 
-                font=('Arial', 10), bg='#FFE5B4').pack()
+        tk.Label(progress_frame, text=f"🍳 Рецептов: {total_recipes}/33", 
+                font=('Arial', 11), bg='#FFE5B4').pack()
+        tk.Label(progress_frame, text=f"🌍 Локаций: {len(self.unlocked_locations)}/11", 
+                font=('Arial', 11), bg='#FFE5B4').pack()
         
-        tk.Button(content, text="✏️ Редактировать профиль", command=self.edit_profile,
-                 bg='#FF6B6B', fg='white', font=('Arial', 11), width=20, height=1).pack(pady=15)
+        tk.Button(content, text="✏️ РЕДАКТИРОВАТЬ ПРОФИЛЬ", command=self.edit_profile,
+                 bg='#FF6B6B', fg='white', font=('Arial', 12, 'bold'), width=25, height=1).pack(pady=20)
     
     def edit_profile(self):
         edit_win = tk.Toplevel(self.root)
-        edit_win.title("Редактирование профиля")
-        edit_win.geometry("350x200")
+        edit_win.title("✏️ Редактирование профиля")
+        edit_win.geometry("400x250")
         edit_win.configure(bg='#FFF8E7')
-        tk.Label(edit_win, text="Имя повара:", 
-                font=('Arial', 11), bg='#FFF8E7').pack(pady=15)
-        name_entry = tk.Entry(edit_win, font=('Arial', 12), width=25)
+        edit_win.transient(self.root)
+        
+        tk.Label(edit_win, text="✏️ ИЗМЕНИТЬ ИМЯ", 
+                font=('Arial', 14, 'bold'), bg='#FFF8E7', fg='#FF6B6B').pack(pady=15)
+        tk.Label(edit_win, text="Введите новое имя повара:", 
+                font=('Arial', 11), bg='#FFF8E7').pack()
+        name_entry = tk.Entry(edit_win, font=('Arial', 14), width=25)
         name_entry.insert(0, self.player_name)
-        name_entry.pack(pady=5)
+        name_entry.pack(pady=10)
+        
         def save_name():
             new_name = name_entry.get().strip()
             if new_name:
@@ -1651,8 +1644,12 @@ class CulinaryAdventuresApp:
                 self.save_game()
                 edit_win.destroy()
                 self.open_profile()
-        tk.Button(edit_win, text="Сохранить", command=save_name,
-                 bg='#4CAF50', fg='white', font=('Arial', 11), width=15).pack(pady=20)
+                messagebox.showinfo("✅ Успех!", f"Имя изменено на {new_name}!")
+        
+        tk.Button(edit_win, text="💾 СОХРАНИТЬ", command=save_name,
+                 bg='#4CAF50', fg='white', font=('Arial', 12, 'bold'), width=20).pack(pady=15)
+        tk.Button(edit_win, text="Отмена", command=edit_win.destroy,
+                 bg='#999', fg='white', font=('Arial', 11)).pack()
     
     def open_achievements(self):
         self.clear_window()
@@ -1662,11 +1659,11 @@ class CulinaryAdventuresApp:
         header.pack_propagate(False)
         tk.Button(header, text="← Назад", command=self.setup_main_menu,
                  bg='#FF6B6B', fg='white', font=('Arial', 12), relief='flat').pack(side='left', padx=10)
-        tk.Label(header, text="🏆 ДОСТИЖЕНИЯ", font=('Arial', 18, 'bold'),
+        tk.Label(header, text="🏆 ДОСТИЖЕНИЯ", font=('Arial', 20, 'bold'),
                 bg='#FF6B6B', fg='white').pack(side='left', padx=20)
         
         content = tk.Frame(self.root, bg='#FFF8E7')
-        content.pack(fill='both', expand=True, padx=30, pady=20)
+        content.pack(fill='both', expand=True, padx=40, pady=20)
         
         achievements = [
             ("👨‍🍳 Первый шаг", "Приготовьте первое блюдо", len(self.completed_recipes) >= 1, 50),
@@ -1674,21 +1671,37 @@ class CulinaryAdventuresApp:
             ("⭐ Звездный повар", "Соберите 30 звезд", self.player_stars >= 30, 150),
             ("📚 Коллекционер", "Откройте 15 рецептов", len(self.completed_recipes) >= 15, 200),
             ("👑 Мастер-шеф", "Достигните 10 уровня", self.player_level >= 10, 500),
-            ("💰 Миллионер", "Соберите 1000 монет", self.player_coins >= 1000, 300)
+            ("💰 Миллионер", "Соберите 1000 монет", self.player_coins >= 1000, 300),
+            ("🌟 Идеальный повар", "Получите 50 звёзд", self.player_stars >= 50, 500),
+            ("🌏 Мировой шеф", "Откройте все локации", len(self.unlocked_locations) >= 11, 1000)
         ]
         
+        canvas = tk.Canvas(content, bg='#FFF8E7', highlightthickness=0)
+        scrollbar = ttk.Scrollbar(content, orient='vertical', command=canvas.yview)
+        scrollable = tk.Frame(canvas, bg='#FFF8E7')
+        
+        scrollable.bind('<Configure>', lambda e: canvas.configure(scrollregion=canvas.bbox('all')))
+        canvas.create_window((0, 0), window=scrollable, anchor='nw')
+        canvas.configure(yscrollcommand=scrollbar.set)
+        canvas.pack(side='left', fill='both', expand=True)
+        scrollbar.pack(side='right', fill='y')
+        
         for name, desc, unlocked, reward in achievements:
-            frame = tk.Frame(content, bg='#FFE5B4' if unlocked else '#E0E0E0', 
-                           relief='ridge', borderwidth=1)
-            frame.pack(fill='x', pady=5)
+            frame = tk.Frame(scrollable, bg='#FFE5B4' if unlocked else '#E0E0E0', 
+                           relief='ridge', borderwidth=2)
+            frame.pack(fill='x', pady=8, padx=10)
             status = "✅" if unlocked else "🔒"
-            tk.Label(frame, text=f"{status} {name}", font=('Arial', 11, 'bold'),
-                    bg='#FFE5B4' if unlocked else '#E0E0E0').pack(anchor='w', padx=10, pady=5)
-            tk.Label(frame, text=desc, font=('Arial', 9), 
+            tk.Label(frame, text=f"{status} {name}", font=('Arial', 13, 'bold'),
+                    bg='#FFE5B4' if unlocked else '#E0E0E0').pack(anchor='w', padx=15, pady=8)
+            tk.Label(frame, text=desc, font=('Arial', 10), 
                     bg='#FFE5B4' if unlocked else '#E0E0E0', fg='gray').pack(anchor='w', padx=30)
             if unlocked:
-                tk.Label(frame, text=f"🏆 +{reward} монет", font=('Arial', 8),
-                        bg='#FFE5B4', fg='gold').pack(anchor='w', padx=30, pady=(0, 5))
+                tk.Label(frame, text=f"🏆 Награда: +{reward} монет", font=('Arial', 10),
+                        bg='#FFE5B4', fg='#FFD700').pack(anchor='w', padx=30, pady=(0, 5))
+        
+        total_reward = sum(reward for name, desc, unlocked, reward in achievements if unlocked)
+        tk.Label(content, text=f"💰 Всего получено за достижения: {total_reward} монет", 
+                font=('Arial', 12, 'bold'), bg='#FFF8E7', fg='#FF6B6B').pack(pady=15)
     
     def clear_window(self):
         for widget in self.root.winfo_children():
