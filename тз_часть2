@@ -1938,7 +1938,7 @@ audio::-webkit-media-controls-time-remaining-display {
                         <i class="fas fa-flag"></i>
                         <h3>Фракции за 5 минут</h3>
                         <p>Империум, Хаос, Эльдары, Орки и другие силы галактики.</p>
-                        <a href="#" class="btn-outline" style="margin-top: 20px;" onclick="switchToPage('page2'); return false;">Смотреть</a>
+                        <a href="#" class="btn-outline" style="margin-top: 20px;" onclick="document.getElementById('fraction').scrollIntoView({behavior: 'smooth'}); return false;">Смотреть</a>
                     </div>
                     <div class="card">
                         <i class="fas fa-clock"></i>
@@ -1950,7 +1950,8 @@ audio::-webkit-media-controls-time-remaining-display {
             </div>
 
       <!-- ========== КОЛЕСО ФРАКЦИЙ ========== -->
-<div class="faction-wheel-modern">
+       
+<div id="fraction" class="faction-wheel-modern">
     <div class="center-faction-modern">
         <div id="faction-name" style="font-size: 1.2rem; font-weight: 700;">Империум</div>
         <div id="faction-desc" style="font-size: 0.8rem; color: #a0a8b0;">Защитники человечества</div>
@@ -2949,6 +2950,341 @@ if (timelineWrapper) {
     height: 16px;
     border-radius: 50%;
     box-shadow: 0 0 10px currentColor;
+}
+/* ===== СТИЛИ ДЛЯ МУЛЬТИМЕДИА РАЗДЕЛА ===== */
+.section-header {
+    text-align: center;
+    margin-bottom: 50px;
+}
+.glitch-title {
+    font-size: 3.5rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    color: #e8d5b5;
+    text-shadow: 4px 4px 0 #1a0a00, 0 0 20px rgba(200, 150, 50, 0.5);
+    margin-bottom: 10px;
+}
+.section-subtitle {
+    color: #8a7b6b;
+    font-size: 1.2rem;
+    letter-spacing: 2px;
+}
+.section-subtitle i {
+    color: #b99b6b;
+    margin: 0 5px;
+}
+
+/* Секции */
+.media-section {
+    margin-bottom: 60px;
+}
+.section-title-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 30px;
+}
+.section-title-wrapper h2 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #d4c4a8;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    white-space: nowrap;
+}
+.section-title-wrapper h2 i {
+    color: #b99b6b;
+    margin-right: 10px;
+}
+.title-decoration {
+    height: 2px;
+    background: linear-gradient(90deg, #b99b6b, transparent);
+    flex-grow: 1;
+}
+
+/* Видео карточки */
+.video-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 25px;
+}
+.video-card-enhanced {
+    position: relative;
+    background: #1a1410;
+    border-radius: 16px;
+    overflow: hidden;
+    border: 1px solid #3a2a1a;
+    transition: all 0.3s ease;
+}
+.video-card-enhanced:hover {
+    transform: translateY(-5px);
+    border-color: #b99b6b;
+    box-shadow: 0 15px 30px rgba(0,0,0,0.7), 0 0 15px rgba(180, 130, 50, 0.3);
+}
+.video-wrapper {
+    position: relative;
+    padding-bottom: 56.25%;
+    height: 0;
+}
+.video-wrapper iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+}
+.video-info-enhanced {
+    padding: 20px;
+    background: linear-gradient(to top, #0d0a08, #1a1410);
+}
+.video-badge {
+    display: inline-block;
+    background: #b99b6b;
+    color: #0d0a08;
+    font-size: 0.7rem;
+    font-weight: bold;
+    padding: 3px 10px;
+    border-radius: 4px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+}
+.video-info-enhanced h4 {
+    color: #e8d5b5;
+    font-size: 1.4rem;
+    margin-bottom: 5px;
+}
+.video-info-enhanced p {
+    color: #8a7b6b;
+    font-size: 0.9rem;
+}
+
+/* Аудио карточки */
+.audio-grid-enhanced {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 25px;
+}
+.audio-card-enhanced {
+    background: #1a1410;
+    border-radius: 16px;
+    padding: 25px;
+    border: 1px solid #3a2a1a;
+    display: flex;
+    flex-direction: column;
+    transition: all 0.3s ease;
+}
+.audio-card-enhanced:hover {
+    border-color: #b99b6b;
+    background: #201810;
+}
+.audio-icon-wrapper {
+    width: 50px;
+    height: 50px;
+    background: #2a1e14;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+    border: 1px solid #b99b6b;
+}
+.audio-icon-wrapper i {
+    font-size: 24px;
+    color: #b99b6b;
+}
+.audio-content h4 {
+    color: #e8d5b5;
+    font-size: 1.3rem;
+    margin-bottom: 5px;
+}
+.audio-desc {
+    color: #8a7b6b;
+    font-size: 0.9rem;
+    margin-bottom: 20px;
+    min-height: 40px;
+}
+.audio-player-styled audio {
+    width: 100%;
+    height: 40px;
+    border-radius: 20px;
+    background: #2a1e14;
+    filter: sepia(0.3) brightness(0.9);
+}
+.drive-audio-wrapper {
+    background: #2a1e14;
+    border-radius: 8px;
+    padding: 5px;
+    margin-bottom: 10px;
+}
+.download-link {
+    color: #8a7b6b;
+    font-size: 0.8rem;
+    text-decoration: none;
+    display: inline-block;
+    transition: color 0.2s;
+}
+.download-link:hover {
+    color: #b99b6b;
+}
+
+/* Факты и цитаты */
+.knowledge-section {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    margin: 50px 0;
+}
+.fact-card-enhanced, .quote-card-enhanced {
+    background: #1a1410;
+    border-radius: 20px;
+    border: 1px solid #3a2a1a;
+    padding: 30px;
+    transition: all 0.3s;
+}
+.card-inner {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+.card-icon {
+    font-size: 40px;
+    color: #b99b6b;
+    margin-bottom: 20px;
+}
+.card-label {
+    color: #b99b6b;
+    font-size: 0.8rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 15px;
+    display: block;
+}
+.fact-text, .quote-text {
+    color: #e8d5b5;
+    font-size: 1.2rem;
+    line-height: 1.5;
+    margin-bottom: 10px;
+    flex-grow: 1;
+}
+.fact-source, .quote-author {
+    color: #8a7b6b;
+    font-style: italic;
+    margin-bottom: 20px;
+}
+.refresh-btn {
+    background: transparent;
+    border: 1px solid #3a2a1a;
+    color: #b99b6b;
+    padding: 10px 15px;
+    border-radius: 30px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    align-self: flex-start;
+}
+.refresh-btn:hover {
+    background: #b99b6b;
+    color: #0d0a08;
+}
+
+/* 3D Модель */
+.model-container-enhanced {
+    background: #0d0a08;
+    border-radius: 24px;
+    border: 1px solid #3a2a1a;
+    overflow: hidden;
+    padding: 20px;
+}
+.model-frame {
+    position: relative;
+    padding-bottom: 56.25%;
+    height: 0;
+    border-radius: 16px;
+    overflow: hidden;
+    border: 1px solid #b99b6b;
+}
+.model-iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+.model-watermark {
+    position: absolute;
+    bottom: 10px;
+    right: 20px;
+    color: rgba(255,255,255,0.3);
+    font-size: 0.8rem;
+    z-index: 10;
+    pointer-events: none;
+}
+.model-toolbar {
+    display: flex;
+    gap: 15px;
+    margin-top: 20px;
+}
+.toolbar-btn {
+    background: #1a1410;
+    border: 1px solid #3a2a1a;
+    color: #e8d5b5;
+    padding: 10px 20px;
+    border-radius: 30px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+.toolbar-btn.primary {
+    background: #b99b6b;
+    color: #0d0a08;
+    border-color: #b99b6b;
+}
+.toolbar-btn:hover {
+    background: #2a1e14;
+}
+
+/* Статистика */
+.stats-section-enhanced {
+    margin-top: 60px;
+    background: #1a1410;
+    border-radius: 24px;
+    padding: 40px;
+    border: 1px solid #3a2a1a;
+}
+.stats-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+.stats-header h2 {
+    color: #e8d5b5;
+    font-size: 2rem;
+    margin-bottom: 10px;
+}
+.stats-header p {
+    color: #8a7b6b;
+}
+.stats-grid-enhanced {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 30px;
+}
+.stats-footnote {
+    text-align: center;
+    color: #8a7b6b;
+    margin-top: 40px;
+    font-size: 0.9rem;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .video-grid { grid-template-columns: 1fr; }
+    .audio-grid-enhanced { grid-template-columns: 1fr; }
+    .knowledge-section { grid-template-columns: 1fr; }
+    .stats-grid-enhanced { grid-template-columns: 1fr; }
+    .glitch-title { font-size: 2.5rem; }
 }
 </style>
 
@@ -4761,9 +5097,14 @@ applyTransform();
 
 <script>
 (function() {
-    // Расширенный список книг (45+ книг)
+    'use strict';
+    
+    // ============================================================
+    // БИБЛИОТЕКА WARHAMMER 40,000
+    // ============================================================
+    
     const books = [
-        // Ересь Хоруса (первые 10 томов + известные)
+        // Ересь Хоруса
         { title: "Возвышение Хоруса", author: "Дэн Абнетт", isbn: "9781844165357", series: "Horus Heresy", year: 2006, coverUrl: "https://avatars.mds.yandex.net/i?id=102ff2c423b8964b5c9886414c2f3995d1dcebf0-5222263-images-thumbs&n=13" },
         { title: "Лживые боги", author: "Грэм Макнилл", isbn: "9781844165364", series: "Horus Heresy", year: 2006, coverUrl: "https://avatars.mds.yandex.net/i?id=f7621866030ab75566072a49a8a9454868157b5b-4754140-images-thumbs&n=13" },
         { title: "Галактика в огне", author: "Бен Каунтер", isbn: "9781844165371", series: "Horus Heresy", year: 2006, coverUrl: "https://avatars.mds.yandex.net/i?id=c3a54aa54d358543dcffd940898bf5c90b979f13-5233211-images-thumbs&n=13" },
@@ -4771,7 +5112,6 @@ applyTransform();
         { title: "Фулгрим", author: "Грэм Макнилл", isbn: "9781844165395", series: "Horus Heresy", year: 2007, coverUrl: "https://avatars.mds.yandex.net/i?id=00241db46efc7e7b31fe859a8ffbea95cb83e115-5616376-images-thumbs&n=13" },
         { title: "Погребённый клинок", author: "Майк Ли", isbn: "9781844165401", series: "Horus Heresy", year: 2007, coverUrl: "https://avatars.mds.yandex.net/i?id=4cc8c397fbe46eff6773d9cac5723de5cf899df0-8498042-images-thumbs&n=13" },
         { title: "Легион", author: "Дэн Абнетт", isbn: "9781844165418", series: "Horus Heresy", year: 2008, coverUrl: "https://avatars.mds.yandex.net/i?id=44bd8b45cb2bc93f09e91fa54ffc860b9912f9de-12912265-images-thumbs&n=13" },
-       
         { title: "Механикум", author: "Грэм Макнилл", isbn: "9781844165432", series: "Horus Heresy", year: 2008, coverUrl: "https://avatars.mds.yandex.net/i?id=458e4f4b5cde861457abab58f8eb3bb8a6f4b68f-9834975-images-thumbs&n=13" },
         { title: "Падение ангелов", author: "Майк Ли", isbn: "9781844165449", series: "Horus Heresy", year: 2009, coverUrl: "https://avatars.mds.yandex.net/i?id=f15290dbc5989e1198b2db86fc4ed764-7012723-images-thumbs&n=13" },
         { title: "Тысяча сынов", author: "Грэм Макнилл", isbn: "9781844165456", series: "Horus Heresy", year: 2009, coverUrl: "https://avatars.mds.yandex.net/i?id=95b38351cc9b699c276f085213a589ee8caf4e3c-9065885-images-thumbs&n=13" },
@@ -4783,7 +5123,7 @@ applyTransform();
         { title: "Война Хаоса", author: "Гай Хейли", isbn: "9781784964775", series: "Indomitus", year: 2018, coverUrl: "https://avatars.mds.yandex.net/i?id=25213f0118aa67c44d38bc6b8297af39c52759c7-10240278-images-thumbs&n=13" },
         { title: "Индомитус", author: "Гэв Торп", isbn: "9781784964782", series: "Indomitus", year: 2019, coverUrl: "https://avatars.mds.yandex.net/i?id=2a496a7f554fff7f4b1403891e2e3819b3f53f9f-4892958-images-thumbs&n=13" },
         
-        // Призраки Гаунта (первые тома)
+        // Призраки Гаунта
         { title: "Первый и единственный", author: "Дэн Абнетт", isbn: "9781844161144", series: "Gaunt", year: 1999, coverUrl: "https://avatars.mds.yandex.net/i?id=68147fd9b9680a261d0a53c884914f973c430278-5233722-images-thumbs&n=13" },
         { title: "Основатель", author: "Дэн Абнетт", isbn: "9781844161151", series: "Gaunt", year: 2000, coverUrl: "https://avatars.mds.yandex.net/i?id=079a0062c7bf0e47d7881c31ce2716caa9e89e87-5288402-images-thumbs&n=13" },
         { title: "Некрополь", author: "Дэн Абнетт", isbn: "9781844161168", series: "Gaunt", year: 2001, coverUrl: "https://avatars.mds.yandex.net/i?id=663335136a26e7363c13c2b6980babac07904f5b-6622507-images-thumbs&n=13" },
@@ -4799,26 +5139,16 @@ applyTransform();
         { title: "Кровавые ангелы: Дойч", author: "Джеймс Сваллоу", isbn: "9781844161755", series: "Space Marines", year: 2004, coverUrl: "https://avatars.mds.yandex.net/i?id=a9b9deb3bceb0fd3cfb4d2838b81330c7a699559-5584275-images-thumbs&n=13" },
         { title: "Космические волки: Вожак", author: "Уильям Кинг", isbn: "9781844161762", series: "Space Marines", year: 2005, coverUrl: "https://avatars.mds.yandex.net/i?id=ef3eed209c505b54e63a8d779f6b6a4e14e92446-5869856-images-thumbs&n=13" },
         
-        // Орки
+        // Прочие
         { title: "Месть Гоббо", author: "Майк Брукс", isbn: "9781784961231", series: "Other", year: 2018, coverUrl: "https://avatars.mds.yandex.net/i?id=25e48b00326245774aea206982aa173b3a41865d-2995743-images-thumbs&n=13" },
-        { title: "омнибус «Яррик»", author: "Дэвид Аннандейл", isbn: "9781784961248", series: "Other", year: 2019, coverUrl: "https://avatars.mds.yandex.net/i?id=3343b8107432676d97581a849478e50ede514410-10113106-images-thumbs&n=13&n=13&w=230&h=290" },
-        
-        // Некроны
+        { title: "Омнибус «Яррик»", author: "Дэвид Аннандейл", isbn: "9781784961248", series: "Other", year: 2019, coverUrl: "https://avatars.mds.yandex.net/i?id=3343b8107432676d97581a849478e50ede514410-10113106-images-thumbs&n=13" },
         { title: "Бесконечный и Божественный", author: "Роберт Раф", isbn: "9781784961232", series: "Other", year: 2020, coverUrl: "https://avatars.mds.yandex.net/i?id=0e82dbc7223ee7b14346b31993db6ec2c77e93cd-8236365-images-thumbs&n=13" },
         { title: "Война в музее", author: "Роберт Раф", isbn: "9781784961249", series: "Other", year: 2021, coverUrl: "https://avatars.mds.yandex.net/i?id=eaa27f39a18251e24209540b020d7dd46fa8f448-5555978-images-thumbs&n=13" },
-        
-        // Тираниды
         { title: "Левиафан", author: "Дариус Хинкс", isbn: "9781784961256", series: "Other", year: 2017, coverUrl: "https://avatars.mds.yandex.net/i?id=340e7f7e496b3616834f7b3d70e50629c8a2f910-10597937-images-thumbs&n=13" },
         { title: "Опустошение Ваала", author: "Гай Хейли", isbn: "9781784961263", series: "Other", year: 2018, coverUrl: "https://avatars.mds.yandex.net/i?id=d0e53326c466aa0c24c3e262396cbb94f399813d-8497822-images-thumbs&n=13" },
-        
-        // Тау
         { title: "Фарсайт: Клинок истины", author: "Фил Келли", isbn: "9781784961270", series: "Other", year: 2016, coverUrl: "https://avatars.mds.yandex.net/i?id=73d961abe73f2e34489d6344553f86682ab81a1f-16972600-images-thumbs&n=13" },
         { title: "Каста огня", author: "Петер Фехервар", isbn: "9781784961287", series: "Other", year: 2018, coverUrl: "https://avatars.mds.yandex.net/i?id=57bf817487bc418710b0eaa22aab6b550382c686-10113106-images-thumbs&n=13" },
-        
-        // Лиги Воттан
         { title: "Кодекс: Лига Воттан", author: "Games Workshop", isbn: "9781784961294", series: "Other", year: 2022, coverUrl: "https://avatars.mds.yandex.net/i?id=0982a583ce58abdec1b60fb7122987fa10f31d8c-10350577-images-thumbs&n=13" },
-        
-        // Другие
         { title: "Забытая империя", author: "Дэн Абнетт", isbn: "9781849707446", series: "Other", year: 2014, coverUrl: "https://avatars.mds.yandex.net/i?id=7cf230b04f72f44b09b79bde83e0e25bf0a120c9-5220281-images-thumbs&n=13" },
         { title: "Книга Ультрамара", author: "Грэм Макнилл", isbn: "9781849707453", series: "Other", year: 2015, coverUrl: "https://avatars.mds.yandex.net/i?id=13b7b6e548888e1f3c780ef5a46365c7d398ff0a-8496825-images-thumbs&n=13" },
         { title: "Титан", author: "Дэн Абнетт", isbn: "9781849707460", series: "Other", year: 2004, coverUrl: "https://avatars.mds.yandex.net/i?id=2eaf7c5e43c5a6d89b2cac1e170892c54fa33a85-11923369-images-thumbs&n=13" },
@@ -4827,30 +5157,112 @@ applyTransform();
         { title: "Священный боевой", author: "Крис Райт", isbn: "9781849707491", series: "Other", year: 2010, coverUrl: "https://avatars.mds.yandex.net/i?id=4882bd4b7728940a40953456c6672326b1e35fb6-5865989-images-thumbs&n=13" }
     ];
 
+    // DOM элементы
     const bookGrid = document.getElementById('bookGrid');
     const searchInput = document.getElementById('librarySearch');
     const seriesFilter = document.getElementById('seriesFilter');
-
-   function renderBooks(filteredBooks) {
-    bookGrid.innerHTML = filteredBooks.map(book => `
-        <div class="book-card" data-title="${book.title.toLowerCase()}">
-            <div class="book-cover">
-                <img src="${book.coverUrl}" alt="${book.title}" loading="lazy" onerror="this.onerror=null; this.src='https://via.placeholder.com/200x300/2C2F2E/D4AF37?text=No+Cover'">
-            </div>
-            <div class="book-title">${book.title}</div>
-            <div class="book-author">${book.author}</div>
-            <a href="${book.shopUrl}" target="_blank" rel="noopener" class="book-link">Читать</a>
-        </div>
-    `).join('');
-}
-
-    function getCoverUrl(book) {
-        if (book.isbn) {
-            return `https://covers.openlibrary.org/b/isbn/${book.isbn}-L.jpg`;
+    
+    // Стили для модального окна (добавляются динамически)
+    const modalStyles = `
+        .search-choice-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(8px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            animation: modalFadeIn 0.2s ease;
         }
-        return `https://via.placeholder.com/200x300/2C2F2E/D4AF37?text=${encodeURIComponent(book.title)}`;
-    }
+        .search-choice-content {
+            background: linear-gradient(145deg, #1a1410 0%, #0d0a08 100%);
+            border: 2px solid #b99b6b;
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 450px;
+            width: 90%;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.9), 0 0 30px rgba(185, 155, 107, 0.2);
+        }
+        .search-choice-content h3 {
+            color: #e8d5b5;
+            text-align: center;
+            margin-bottom: 25px;
+            font-size: 1.3rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        .search-choice-content h3 i {
+            color: #b99b6b;
+        }
+        .search-options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+        .search-option {
+            background: #2a1e14;
+            border: 1px solid #3a2a1a;
+            color: #e8d5b5;
+            padding: 14px 20px;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: left;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .search-option i {
+            width: 24px;
+            color: #b99b6b;
+        }
+        .search-option:hover {
+            background: #3a2a1a;
+            border-color: #b99b6b;
+            transform: translateX(5px);
+        }
+        .close-modal-btn {
+            width: 100%;
+            background: transparent;
+            border: 1px solid #5a3a2a;
+            color: #8a7b6b;
+            padding: 12px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        .close-modal-btn:hover {
+            background: #2a1e14;
+            color: #e8d5b5;
+            border-color: #b99b6b;
+        }
+        @keyframes modalFadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+    `;
 
+    // Добавляем стили в документ
+    const styleSheet = document.createElement('style');
+    styleSheet.textContent = modalStyles;
+    document.head.appendChild(styleSheet);
+
+    // Получение названия серии на русском
     function getSeriesName(series) {
         const names = {
             'Horus Heresy': 'Ересь Хоруса',
@@ -4863,21 +5275,210 @@ applyTransform();
         return names[series] || series;
     }
 
+    // Рендер карточек книг
+    function renderBooks(booksArray) {
+        if (!bookGrid) return;
+        
+        if (booksArray.length === 0) {
+            bookGrid.innerHTML = `
+                <div style="grid-column: 1/-1; text-align: center; padding: 60px 20px; color: #8a7b6b;">
+                    <i class="fas fa-book-dead" style="font-size: 48px; margin-bottom: 20px; color: #b99b6b;"></i>
+                    <h3 style="color: #e8d5b5; margin-bottom: 10px;">Книги не найдены</h3>
+                    <p>Попробуйте изменить параметры поиска или фильтр серии.</p>
+                </div>
+            `;
+            return;
+        }
+        
+        bookGrid.innerHTML = booksArray.map((book, index) => {
+            const coverUrl = book.coverUrl || `https://via.placeholder.com/200x300/1a1410/b99b6b?text=${encodeURIComponent(book.title.substring(0, 10))}`;
+            const seriesDisplay = getSeriesName(book.series);
+            
+            return `
+                <div class="book-card" style="animation: cardAppear 0.3s ease forwards; animation-delay: ${index * 0.03}s; opacity: 0;">
+                    <div class="book-cover-wrapper">
+                        <img src="${coverUrl}" alt="${book.title}" class="book-cover" loading="lazy" 
+                             onerror="this.src='https://via.placeholder.com/200x300/1a1410/b99b6b?text=No+Cover'">
+                        <div class="book-series-badge">${seriesDisplay}</div>
+                    </div>
+                    <div class="book-info">
+                        <h3 class="book-title">${book.title}</h3>
+                        <p class="book-author">${book.author}</p>
+                        <div class="book-meta">
+                            <span class="book-year"><i class="far fa-calendar-alt"></i> ${book.year || '—'}</span>
+                            <span class="book-isbn"><i class="fas fa-barcode"></i> ${book.isbn || '—'}</span>
+                        </div>
+                        <div class="book-actions">
+                            <button class="book-btn read-btn" onclick="window.readBookModal('${book.title.replace(/'/g, "\\'")}', '${book.author.replace(/'/g, "\\'")}')">
+                                <i class="fas fa-external-link-alt"></i> Читать
+                            </button>
+                            <button class="book-btn details-btn" onclick="window.showBookInfo('${book.title.replace(/'/g, "\\'")}', '${book.author.replace(/'/g, "\\'")}', '${seriesDisplay}', ${book.year || 0}, '${book.isbn || ''}')">
+                                <i class="fas fa-info-circle"></i> Подробнее
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }).join('');
+        
+        // Добавляем стиль анимации, если его ещё нет
+        if (!document.getElementById('book-card-animation')) {
+            const animStyle = document.createElement('style');
+            animStyle.id = 'book-card-animation';
+            animStyle.textContent = `
+                @keyframes cardAppear {
+                    from { opacity: 0; transform: translateY(20px); }
+                    to { opacity: 1; transform: translateY(0); }
+                }
+            `;
+            document.head.appendChild(animStyle);
+        }
+    }
+
+    // Фильтрация книг
     function filterBooks() {
-        const query = searchInput.value.toLowerCase();
-        const series = seriesFilter.value;
+        const query = searchInput ? searchInput.value.toLowerCase() : '';
+        const series = seriesFilter ? seriesFilter.value : 'all';
+        
         const filtered = books.filter(book => {
             const matchesTitle = book.title.toLowerCase().includes(query);
+            const matchesAuthor = book.author.toLowerCase().includes(query);
             const matchesSeries = series === 'all' || book.series === series;
-            return matchesTitle && matchesSeries;
+            return (matchesTitle || matchesAuthor) && matchesSeries;
         });
+        
         renderBooks(filtered);
     }
 
-    searchInput.addEventListener('input', filterBooks);
-    seriesFilter.addEventListener('change', filterBooks);
+    // ============================================================
+    // ФУНКЦИИ ДЛЯ КНОПОК (ГЛОБАЛЬНЫЕ)
+    // ============================================================
     
-    renderBooks(books);
+    // Модальное окно с выбором поисковика
+    window.readBookModal = function(bookTitle, bookAuthor) {
+        const searchQuery = `${bookTitle} ${bookAuthor}`;
+        const encodedQuery = encodeURIComponent(searchQuery);
+        const encodedTitle = encodeURIComponent(bookTitle);
+        const encodedAuthor = encodeURIComponent(bookAuthor);
+        
+        const modal = document.createElement('div');
+        modal.className = 'search-choice-modal';
+        modal.innerHTML = `
+            <div class="search-choice-content">
+                <h3>
+                    <i class="fas fa-book-open"></i> 
+                    Где читать?
+                </h3>
+                <p style="color: #a0a8b0; text-align: center; margin-bottom: 20px; font-size: 0.9rem;">
+                    "${bookTitle}" — ${bookAuthor}
+                </p>
+                <div class="search-options">
+                    <button class="search-option yandex" onclick="window.open('https://yandex.ru/search/?text=${encodedQuery}+читать+онлайн', '_blank'); this.closest('.search-choice-modal').remove();">
+                        <i class="fab fa-yandex"></i> Яндекс (все сайты)
+                    </button>
+                    <button class="search-option google" onclick="window.open('https://www.google.com/search?q=${encodedQuery}+читать+онлайн', '_blank'); this.closest('.search-choice-modal').remove();">
+                        <i class="fab fa-google"></i> Google
+                    </button>
+                    <button class="search-option litres" onclick="window.open('https://www.litres.ru/search/?q=${encodedQuery}', '_blank'); this.closest('.search-choice-modal').remove();">
+                        <i class="fas fa-shopping-cart"></i> Литрес (купить)
+                    </button>
+                    <button class="search-option flibusta" onclick="window.open('https://flibusta.is/booksearch?ask=${encodedQuery}', '_blank'); this.closest('.search-choice-modal').remove();">
+                        <i class="fas fa-dragon"></i> Флибуста
+                    </button>
+                    <button class="search-option royallib" onclick="window.open('https://royallib.com/gsearch?q=${encodedQuery}', '_blank'); this.closest('.search-choice-modal').remove();">
+                        <i class="fas fa-crown"></i> РоялЛиб
+                    </button>
+                </div>
+                <button class="close-modal-btn" onclick="this.closest('.search-choice-modal').remove();">
+                    <i class="fas fa-times"></i> Отмена
+                </button>
+            </div>
+        `;
+        
+        document.body.appendChild(modal);
+        
+        // Закрытие по клику на фон
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) modal.remove();
+        });
+        
+        // Закрытие по Escape
+        const escHandler = (e) => {
+            if (e.key === 'Escape') {
+                modal.remove();
+                document.removeEventListener('keydown', escHandler);
+            }
+        };
+        document.addEventListener('keydown', escHandler);
+    };
+
+    // Простой переход на Яндекс (без модалки)
+    window.readBookQuick = function(bookTitle, bookAuthor) {
+        const searchQuery = `${bookTitle} ${bookAuthor} читать онлайн`;
+        const encodedQuery = encodeURIComponent(searchQuery);
+        window.open(`https://yandex.ru/search/?text=${encodedQuery}`, '_blank');
+    };
+
+    // Показ информации о книге
+    window.showBookInfo = function(title, author, series, year, isbn) {
+        const modal = document.createElement('div');
+        modal.className = 'search-choice-modal';
+        modal.innerHTML = `
+            <div class="search-choice-content" style="max-width: 400px;">
+                <h3 style="margin-bottom: 20px;">
+                    <i class="fas fa-scroll"></i> 
+                    Информация о книге
+                </h3>
+                <div style="color: #e8d5b5; line-height: 1.8;">
+                    <p><strong style="color: #b99b6b;">Название:</strong> ${title}</p>
+                    <p><strong style="color: #b99b6b;">Автор:</strong> ${author}</p>
+                    <p><strong style="color: #b99b6b;">Серия:</strong> ${series}</p>
+                    <p><strong style="color: #b99b6b;">Год издания:</strong> ${year}</p>
+                    <p><strong style="color: #b99b6b;">ISBN:</strong> ${isbn}</p>
+                </div>
+                <div style="margin-top: 25px;">
+                    <button class="book-btn read-btn" style="width: 100%; padding: 14px;" onclick="window.readBookModal('${title.replace(/'/g, "\\'")}', '${author.replace(/'/g, "\\'")}'); this.closest('.search-choice-modal').remove();">
+                        <i class="fas fa-search"></i> Найти для чтения
+                    </button>
+                </div>
+                <button class="close-modal-btn" style="margin-top: 15px;" onclick="this.closest('.search-choice-modal').remove();">
+                    <i class="fas fa-times"></i> Закрыть
+                </button>
+            </div>
+        `;
+        
+        document.body.appendChild(modal);
+        
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) modal.remove();
+        });
+        
+        document.addEventListener('keydown', function escHandler(e) {
+            if (e.key === 'Escape') {
+                modal.remove();
+                document.removeEventListener('keydown', escHandler);
+            }
+        });
+    };
+
+    // Инициализация
+    function init() {
+        if (bookGrid) {
+            renderBooks(books);
+        }
+        
+        if (searchInput) {
+            searchInput.addEventListener('input', filterBooks);
+        }
+        
+        if (seriesFilter) {
+            seriesFilter.addEventListener('change', filterBooks);
+        }
+    }
+
+    // Запуск
+    init();
+
 })();
 </script>
 
@@ -5124,137 +5725,213 @@ applyTransform();
     }
 })();
 </script>
-                 <!-- СТРАНИЦА 12: МУЛЬТИМЕДИА -->
+ <!-- ===== СТРАНИЦА 12: МУЛЬТИМЕДИА (ПЕРЕРАБОТАННАЯ) ===== -->
 <div id="page-multimedia" class="page-container">
-    <h1>Мультимедиа Warhammer 40,000</h1>
-    <p style="color: #a0a8b0; margin-bottom: 30px;">Видео, аудио, 3D-модели и интерактивный контент по вселенной.</p>
-
-    <!-- Видео раздел -->
-    <h2>Видео</h2>
-    <div class="video-grid">
-        <div class="video-card">
-            <iframe src="https://www.youtube.com/watch?v=aAUk7Rcsohk" allowfullscreen></iframe>
-            <div class="video-info">
-                <h4>Astartes (Fan Film)</h4>
-                <p>Легендарный фанатский проект, покоривший миллионы зрителей.</p>
-            </div>
-        </div>
-        <div class="video-card">
-            <iframe src="https://vk.com/video-387766_456266233" allowfullscreen></iframe>
-            <div class="video-info">
-                <h4>Space Marine 2 - Трейлер</h4>
-                <p>Официальный трейлер долгожданной игры.</p>
-            </div>
-        </div>
-        <div class="video-card">
-            <iframe src="https://vk.com/video-387766_456266904" allowfullscreen></iframe>
-            <div class="video-info">
-                <h4>Warhammer 40,000: Darktide</h4>
-                <p>Кооперативный экшен от создателей Vermintide.</p>
-            </div>
-        </div>
-        <div class="video-card">
-            <iframe src="https://vk.com/video-176294899_456239674" allowfullscreen></iframe>
-            <div class="video-info">
-                <h4>The Lord Inquisitor</h4>
-                <p>Фанатский CGI-проект высокого качества.</p>
-            </div>
-        </div>
+    <!-- Шапка раздела -->
+    <div class="section-header">
+        <h1 class="glitch-title" data-text="Мультимедиа Warhammer 40,000">Мультимедиа Warhammer 40,000</h1>
+        <p class="section-subtitle">
+            <i class="fas fa-video"></i> Видео • <i class="fas fa-headphones"></i> Аудио • 
+            <i class="fas fa-cube"></i> 3D • <i class="fas fa-scroll"></i> Лор
+        </p>
     </div>
 
-    <!-- Аудио раздел -->
-    <h2 style="margin-top: 50px;">Аудио</h2>
-    <div class="audio-grid">
-        <div class="audio-card">
-            <div class="audio-info">
-                <h4>Саундтрек: Space Marine</h4>
-                <p>Главная тема игры Warhammer 40,000: Space Marine.</p>
-                <div class="audio-player">
-                    <audio controls>
-                        <source src="https://raw.githubusercontent.com/teemr2007/cho-to/main/Space%20Marine%20OST%20%E2%80%94%20Titus'%20Theme%20(www.lightaudio.ru).mp3" type="audio/mpeg">
-                    </audio>
+    <!-- ===== ВИДЕО РАЗДЕЛ ===== -->
+    <div class="media-section">
+        <div class="section-title-wrapper">
+            <h2><i class="fas fa-play-circle"></i> Видеохроники Империума</h2>
+            <div class="title-decoration"></div>
+        </div>
+        <div class="video-grid">
+            <!-- Карточка 1: Astartes -->
+            <div class="video-card-enhanced">
+                <div class="video-wrapper">
+                    <iframe src="https://vkvideo.ru/video184870598_456239135" allowfullscreen loading="lazy"></iframe>
+                </div>
+                <div class="video-overlay"></div>
+                <div class="video-info-enhanced">
+                    <div class="video-badge">Fan Film</div>
+                    <h4>Astartes</h4>
+                    <p>Легендарный проект Syama Pedersen, признанный Games Workshop каноном.</p>
                 </div>
             </div>
-        </div>
-        <div class="audio-card">
-            <div class="audio-info">
-                <h4>Атмосфера: Варп</h4>
-                <p>Эмбиент для погружения в атмосферу 41-го тысячелетия.</p>
-                <div class="audio-player">
-                    <audio controls>
-                        <source src="https://raw.githubusercontent.com/teemr2007/cho-to/main/dremlyushchaya-med-70-821582.mp3" type="audio/mpeg">
-                    </audio>
+            <!-- Карточка 2: Space Marine 2 -->
+            <div class="video-card-enhanced">
+                <div class="video-wrapper">
+                    <iframe src="https://vk.com/video-387766_456266233" allowfullscreen loading="lazy"></iframe>
+                </div>
+                <div class="video-overlay"></div>
+                <div class="video-info-enhanced">
+                    <div class="video-badge">Official</div>
+                    <h4>Space Marine 2</h4>
+                    <p>Титус возвращается. Трейлер долгожданного сиквела.</p>
                 </div>
             </div>
-        </div>
-        <div class="audio-card">
-            <div class="audio-info">
-                <h4>Лор-подкаст: Ересь Хоруса</h4>
-                <p>Краткий обзор величайшего предательства в истории человечества.</p>
-                <div class="audio-player">
-                    <audio controls>
-                        <source src="https://drive.google.com/uc?export=download&id=16LbjRc8tAYVwSHsYqe7PG-tpYFxZJFiz" type="audio/mpeg">
-                    </audio>
+            <!-- Карточка 3: Darktide -->
+            <div class="video-card-enhanced">
+                <div class="video-wrapper">
+                    <iframe src="https://vk.com/video-387766_456266904" allowfullscreen loading="lazy"></iframe>
+                </div>
+                <div class="video-overlay"></div>
+                <div class="video-info-enhanced">
+                    <div class="video-badge">Co-op</div>
+                    <h4>Darktide</h4>
+                    <p>Атмосферный экшен в улье Терциум от создателей Vermintide.</p>
+                </div>
+            </div>
+            <!-- Карточка 4: Lord Inquisitor -->
+            <div class="video-card-enhanced">
+                <div class="video-wrapper">
+                    <iframe src="https://vk.com/video-176294899_456239674" allowfullscreen loading="lazy"></iframe>
+                </div>
+                <div class="video-overlay"></div>
+                <div class="video-info-enhanced">
+                    <div class="video-badge">CGI Cinema</div>
+                    <h4>The Lord Inquisitor</h4>
+                    <p>Потрясающий фанатский CGI-фильм о серых буднях Инквизиции.</p>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Случайный факт и цитата дня -->
-    <div style="margin: 50px 0; display: flex; flex-wrap: wrap;">
-        <div class="fact-section">
-            <div class="fact-card" id="factCard">
-                <i class="fas fa-skull"></i>
-                <div class="fact-text" id="factText">Загрузка факта...</div>
-                <div class="fact-source" id="factSource"></div>
-                <button class="refresh-fact" onclick="refreshFact()">Другой факт</button>
+    <!-- ===== АУДИО РАЗДЕЛ ===== -->
+    <div class="media-section">
+        <div class="section-title-wrapper">
+            <h2><i class="fas fa-headphones"></i> Аудиоархив Ордо Маллеус</h2>
+            <div class="title-decoration"></div>
+        </div>
+        <div class="audio-grid-enhanced">
+            <!-- Карточка 1: Space Marine OST -->
+            <div class="audio-card-enhanced">
+                <div class="audio-icon-wrapper">
+                    <i class="fas fa-music"></i>
+                </div>
+                <div class="audio-content">
+                    <h4>Саундтрек: Space Marine</h4>
+                    <p class="audio-desc">Главная тема Тита — гимн Адептус Астартес.</p>
+                    <div class="audio-player-styled">
+                        <audio controls>
+                            <source src="https://raw.githubusercontent.com/teemr2007/cho-to/main/Space%20Marine%20OST%20%E2%80%94%20Titus'%20Theme%20(www.lightaudio.ru).mp3" type="audio/mpeg">
+                        </audio>
+                    </div>
+                </div>
+            </div>
+            <!-- Карточка 2: Warp Ambience -->
+            <div class="audio-card-enhanced">
+                <div class="audio-icon-wrapper">
+                    <i class="fas fa-ghost"></i>
+                </div>
+                <div class="audio-content">
+                    <h4>Атмосфера: Шёпот Варпа</h4>
+                    <p class="audio-desc">Эмбиент для медитаций и осознания тщетности бытия.</p>
+                    <div class="audio-player-styled">
+                        <audio controls>
+                            <source src="https://raw.githubusercontent.com/teemr2007/cho-to/main/dremlyushchaya-med-70-821582.mp3" type="audio/mpeg">
+                        </audio>
+                    </div>
+                </div>
+            </div>
+            <!-- Карточка 3: Horus Heresy Podcast (Исправленная) -->
+            <div class="audio-card-enhanced">
+                <div class="audio-icon-wrapper">
+                    <i class="fas fa-podcast"></i>
+                </div>
+                <div class="audio-content">
+                    <h4>Лор-подкаст: Ересь Хоруса</h4>
+                    <p class="audio-desc">Величайшее предательство, расколовшее Галактику.</p>
+                    <div class="audio-player-styled drive-player">
+                        <!-- Оптимизированный плеер для Google Диска -->
+                        <div class="drive-audio-wrapper">
+                            <iframe 
+                                src="https://drive.google.com/file/d/16LbjRc8tAYVwSHsYqe7PG-tpYFxZJFiz/preview"
+                                width="100%" 
+                                height="60" 
+                                allow="autoplay"
+                                frameborder="0">
+                            </iframe>
+                        </div>
+                        <a href="https://drive.google.com/file/d/16LbjRc8tAYVwSHsYqe7PG-tpYFxZJFiz/view" target="_blank" class="download-link">
+                            <i class="fas fa-download"></i> Открыть на Диске
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="quote-section">
-            <div class="quote-card" id="quoteCard">
-                <i class="fas fa-quote-left"></i>
-                <div class="quote-text" id="quoteText">Загрузка цитаты...</div>
-                <div class="quote-author" id="quoteAuthor"></div>
-                <button class="refresh-quote" onclick="refreshQuote()">Другая цитата</button>
+    </div>
+
+    <!-- ===== ФАКТЫ И ЦИТАТЫ (УЛУЧШЕННЫЕ) ===== -->
+    <div class="knowledge-section">
+        <div class="fact-card-enhanced" id="factCard">
+            <div class="card-inner">
+                <i class="fas fa-skull card-icon"></i>
+                <div class="card-content">
+                    <span class="card-label">ФАКТ ДНЯ ОТ ОРДО КСЕНОС</span>
+                    <div class="fact-text" id="factText">Анализ данных...</div>
+                    <div class="fact-source" id="factSource"></div>
+                </div>
+                <button class="refresh-btn" onclick="refreshFact()">
+                    <i class="fas fa-sync-alt"></i> Другой факт
+                </button>
+            </div>
+        </div>
+        <div class="quote-card-enhanced" id="quoteCard">
+            <div class="card-inner">
+                <i class="fas fa-quote-right card-icon"></i>
+                <div class="card-content">
+                    <span class="card-label">СЛОВО ИМПЕРАТОРА</span>
+                    <div class="quote-text" id="quoteText">Извлечение цитаты...</div>
+                    <div class="quote-author" id="quoteAuthor"></div>
+                </div>
+                <button class="refresh-btn" onclick="refreshQuote()">
+                    <i class="fas fa-sync-alt"></i> Другая цитата
+                </button>
             </div>
         </div>
     </div>
 
-    <!-- 3D модель -->
-    <h2>3D-модель: Космический десантник</h2>
-    <div class="model-container">
-        <canvas id="model-canvas"></canvas>
-        <div class="model-controls">
-            <button class="model-btn" onclick="resetModelView()">Сбросить вид</button>
-            <button class="model-btn" onclick="toggleAutoRotate()">Автовращение</button>
+    <!-- ===== 3D МОДЕЛЬ (УЛУЧШЕННАЯ) ===== -->
+    <div class="media-section">
+        <div class="section-title-wrapper">
+            <h2><i class="fas fa-cube"></i> Гололитическая проекция: Астартес</h2>
+            <div class="title-decoration"></div>
+        </div>
+        <div class="model-container-enhanced">
+            <div class="model-frame">
+                <div class="model-watermark">SKETCHFAB // IMPERIAL ARCHIVES</div>
+                <iframe 
+                    title="Astartes Space Marine - Cinematic Character" 
+                    frameborder="0" 
+                    allowfullscreen 
+                    mozallowfullscreen="true" 
+                    webkitallowfullscreen="true" 
+                    allow="autoplay; fullscreen; xr-spatial-tracking" 
+                    xr-spatial-tracking 
+                    src="https://sketchfab.com/models/09c720316b01455b8f982436b38e105c/embed" 
+                    class="model-iframe">
+                </iframe>
+            </div>
+            <div class="model-toolbar">
+                <button class="toolbar-btn" onclick="location.reload();">
+                    <i class="fas fa-undo-alt"></i> Сброс камеры
+                </button>
+                <button class="toolbar-btn primary" onclick="window.open('https://sketchfab.com/models/09c720316b01455b8f982436b38e105c', '_blank');">
+                    <i class="fab fa-sketchfab"></i> Открыть в Sketchfab
+                </button>
+            </div>
         </div>
     </div>
 
-    <!-- Статистика фракций -->
-    <div class="stats-section">
-        <h2 style="text-align: center;">Сила фракций в галактике</h2>
-        <div class="stats-grid" id="statsGrid"></div>
-    </div>
-</div>
-
-    <!-- ЛАЙТБОКС -->
-    <div class="lightbox" id="lightbox" onclick="closeLightbox()">
-        <span class="lightbox-close">&times;</span>
-        <img id="lightbox-img" src="" alt="">
-    </div>
-
-    <!-- ФУТЕР -->
-    <footer class="footer-modern">
-        <div class="container">
-            <p>✦ IN THE GRIM DARKNESS OF THE FAR FUTURE THERE IS ONLY WAR ✦</p>
-            <p style="margin-top: 20px;">© 2026 <span>CODEX IMPERIALIS</span>. Warhammer 40,000 и связанные логотипы являются товарными знаками Games Workshop Limited.</p>
+    <!-- ===== СТАТИСТИКА ФРАКЦИЙ (УЛУЧШЕННАЯ) ===== -->
+    <div class="stats-section-enhanced">
+        <div class="stats-header">
+            <h2>Тактическая оценка угроз</h2>
+            <p>Сравнительный анализ военной мощи основных фракций</p>
         </div>
-    </footer>
-
-    
-   <!-- МУЗЫКАЛЬНАЯ КНОПКА -->
-<div class="music-control-modern" id="musicToggle">
-    <i class="fas fa-volume-mute"></i>
+        <div class="stats-grid-enhanced" id="statsGrid"></div>
+        <div class="stats-footnote">
+            <i class="fas fa-exclamation-triangle"></i> Данные предоставлены Инквизицией. Ересь карается смертью.
+        </div>
+    </div>
 </div>
 
 <audio id="bgMusic" loop preload="auto">
@@ -5318,14 +5995,15 @@ applyTransform();
 
    </style>
     <script>// ========== СЛУЧАЙНЫЙ ФАКТ ==========
-const warhammerFacts = [
+const factCard = [
     { text: "Космический десантник может функционировать до 10 дней без сна благодаря 'каталепсеанскому узлу' — импланту, который позволяет отдыхать частями мозга.", source: "Кодекс: Космодесант" },
     { text: "Газгкулл Маг Урук Трака — единственный орк, который понял, что если верить, что красный цвет делает машину быстрее, то это действительно так. Он носит красную броню.", source: "Кодекс: Орки" },
     { text: "Император Человечества создал 20 примархов, но двое из них были 'утеряны' — их имена и судьбы засекречены Инквизицией.", source: "Книга: Ересь Хоруса" },
-    { text: "Титан 'Император-класса' настолько огромен, что на его плечах могут располагаться целые батальоны пехоты и артиллерийские батареи.", source: "Адептус Механикус" },
-    { text: "Средний срок службы рядового имперского гвардейца в активной боевой зоне составляет около 15 часов.", source: "Астра Милитарум" },
-    { text: "Некроны спят уже более 60 миллионов лет. Некоторые из них пробуждаются с повреждёнными когнитивными функциями.", source: "Кодекс: Некроны" },
+    { text: "Титан 'Класса-Император' настолько огромен, что на его плечах могут располагаться целые батальоны пехоты и артиллерийские батареи.", source: "Адептус Механикус" },
+    { text: "Средний срок службы рядового имперского гвардейца в активной боевой зоне составляет около 27 минут.", source: "Астра Милитарум" },
+    { text: "Некроны спят уже более 60 миллионов лет. И до сих пор не могут выспаться. Некоторые из них пробуждаются с повреждёнными когнитивными функциями.", source: "Кодекс: Некроны" },
     { text: "Тау — самая молодая раса в галактике. Они вышли в космос всего 6000 лет назад.", source: "Кодекс: Тау" },
+    { text: "Вулкан и Робаут Жиллиман оба любат эльдарок, но есть нюанс...", source: "Кодекс: Космодесант" },
     { text: "Тираниды уже поглотили биомассу, эквивалентную тысячам галактик, прежде чем достичь Млечного Пути.", source: "Инквизиция" }
 ];
 
@@ -5336,7 +6014,7 @@ function refreshFact() {
 }
 
 // ========== ЦИТАТА ДНЯ ==========
-const warhammerQuotes = [
+const quoteCard = [
     { text: "В мрачном будущем далёкого 41-го тысячелетия есть только война.", author: "Кодекс Warhammer 40,000" },
     { text: "Счастье — это пища для червей. Лучше умереть стоя, чем жить на коленях.", author: "Комиссар Яррик" },
     { text: "Незнание — сила. Служить Императору — высшая цель человечества.", author: "Имперская Истина" },
@@ -5383,7 +6061,7 @@ function renderStats() {
     `).join('');
 }
 
-// ========== 3D МОДЕЛЬ (Three.js) ==========
+// ========== 3D МОДЕЛЬ АСТАРТЕС (Three.js) ==========
 let scene, camera, renderer, model, autoRotate = false;
 
 function init3DModel() {
@@ -5392,118 +6070,417 @@ function init3DModel() {
     
     // Создаем сцену
     scene = new THREE.Scene();
-    scene.background = null;
-    scene.fog = new THREE.FogExp2(0x0a121a, 0.005);
+    scene.background = null; // Прозрачный фон
+    scene.fog = new THREE.FogExp2(0x050a10, 0.008);
     
     // Камера
-    camera = new THREE.PerspectiveCamera(45, canvas.clientWidth / canvas.clientHeight, 0.1, 1000);
-    camera.position.set(3, 2, 5);
-    camera.lookAt(0, 0, 0);
+    camera = new THREE.PerspectiveCamera(40, canvas.clientWidth / canvas.clientHeight, 0.1, 1000);
+    camera.position.set(2.5, 2.2, 5.5);
+    camera.lookAt(0, 1.2, 0);
     
     // Рендерер
-    renderer = new THREE.WebGLRenderer({ canvas, alpha: true });
+    renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
     renderer.setSize(canvas.clientWidth, canvas.clientHeight);
-    renderer.setPixelRatio(window.devicePixelRatio);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     
-    // Освещение
-    const ambientLight = new THREE.AmbientLight(0x404040);
+    // --- Освещение ---
+    const ambientLight = new THREE.AmbientLight(0x404066, 0.45);
     scene.add(ambientLight);
     
-    const mainLight = new THREE.DirectionalLight(0xffffff, 1);
-    mainLight.position.set(2, 5, 3);
-    scene.add(mainLight);
+    // Ключевой свет (холодный)
+    const keyLight = new THREE.DirectionalLight(0xccddff, 1.2);
+    keyLight.position.set(3, 6, 4);
+    keyLight.castShadow = true;
+    keyLight.receiveShadow = true;
+    keyLight.shadow.mapSize.width = 1024;
+    keyLight.shadow.mapSize.height = 1024;
+    const d = 6;
+    keyLight.shadow.camera.left = -d;
+    keyLight.shadow.camera.right = d;
+    keyLight.shadow.camera.top = d;
+    keyLight.shadow.camera.bottom = -d;
+    keyLight.shadow.camera.near = 1;
+    keyLight.shadow.camera.far = 15;
+    keyLight.shadow.bias = -0.0005;
+    scene.add(keyLight);
     
-    const backLight = new THREE.PointLight(0x8B0000, 0.5);
-    backLight.position.set(-2, 1, -3);
-    scene.add(backLight);
-    
-    const fillLight = new THREE.PointLight(0xD4AF37, 0.3);
-    fillLight.position.set(1, 2, 2);
+    // Заполняющий свет (теплый)
+    const fillLight = new THREE.PointLight(0xffaa66, 0.8);
+    fillLight.position.set(-2, 2, 3);
     scene.add(fillLight);
     
-    // Создаем упрощенную модель космического десантника
-    const group = new THREE.Group();
+    // Контровой свет (красный/злой)
+    const backLight = new THREE.PointLight(0xaa2222, 0.5);
+    backLight.position.set(-1, 2, -4);
+    scene.add(backLight);
     
-    // Тело
-    const bodyGeo = new THREE.BoxGeometry(0.8, 1.2, 0.6);
-    const bodyMat = new THREE.MeshStandardMaterial({ color: 0x2a5f8a, metalness: 0.7, roughness: 0.3 });
-    const body = new THREE.Mesh(bodyGeo, bodyMat);
-    body.position.y = 0;
-    group.add(body);
+    // Акцент на золоте
+    const goldLight = new THREE.PointLight(0xffaa00, 0.4);
+    goldLight.position.set(2, 1.5, 2);
+    scene.add(goldLight);
     
-    // Грудь (орнамент)
-    const chestGeo = new THREE.BoxGeometry(0.7, 0.5, 0.2);
-    const chestMat = new THREE.MeshStandardMaterial({ color: 0xD4AF37, metalness: 0.9, roughness: 0.2 });
-    const chest = new THREE.Mesh(chestGeo, chestMat);
-    chest.position.set(0, 0.3, 0.35);
-    group.add(chest);
+    // --- Материалы ---
+    // Основная броня (Ультрамарины)
+    const armorMaterial = new THREE.MeshStandardMaterial({
+        color: 0x1a3a7a,
+        metalness: 0.75,
+        roughness: 0.35,
+        emissive: new THREE.Color(0x000000),
+        emissiveIntensity: 0
+    });
     
-    // Голова
-    const headGeo = new THREE.SphereGeometry(0.4, 32, 32);
-    const headMat = new THREE.MeshStandardMaterial({ color: 0x2a5f8a, metalness: 0.6 });
-    const head = new THREE.Mesh(headGeo, headMat);
-    head.position.y = 0.9;
-    group.add(head);
+    // Золотые элементы
+    const goldMaterial = new THREE.MeshStandardMaterial({
+        color: 0xd4af37,
+        metalness: 0.95,
+        roughness: 0.25,
+        emissive: new THREE.Color(0x442200),
+        emissiveIntensity: 0.1
+    });
     
-    // Шлем (лицевая часть)
-    const faceGeo = new THREE.BoxGeometry(0.5, 0.3, 0.1);
-    const faceMat = new THREE.MeshStandardMaterial({ color: 0xD4AF37, metalness: 0.8 });
-    const face = new THREE.Mesh(faceGeo, faceMat);
-    face.position.set(0, 0.9, 0.45);
-    group.add(face);
+    // Серебро/Сталь (болтер, цепной меч)
+    const steelMaterial = new THREE.MeshStandardMaterial({
+        color: 0x556677,
+        metalness: 0.9,
+        roughness: 0.4
+    });
     
-    // Плечи (наплечники)
-    const shoulderGeo = new THREE.SphereGeometry(0.45, 24, 24);
-    const shoulderMat = new THREE.MeshStandardMaterial({ color: 0xD4AF37, metalness: 0.85 });
+    const darkSteelMaterial = new THREE.MeshStandardMaterial({
+        color: 0x2a2a35,
+        metalness: 0.85,
+        roughness: 0.5
+    });
     
-    const leftShoulder = new THREE.Mesh(shoulderGeo, shoulderMat);
-    leftShoulder.position.set(-0.65, 0.7, 0);
-    leftShoulder.scale.set(0.8, 0.5, 0.6);
-    group.add(leftShoulder);
+    // Красные элементы (глаза, уплотнители)
+    const redMaterial = new THREE.MeshStandardMaterial({
+        color: 0xcc2222,
+        metalness: 0.1,
+        roughness: 0.4,
+        emissive: new THREE.Color(0x440000),
+        emissiveIntensity: 0.8
+    });
     
-    const rightShoulder = new THREE.Mesh(shoulderGeo, shoulderMat);
-    rightShoulder.position.set(0.65, 0.7, 0);
-    rightShoulder.scale.set(0.8, 0.5, 0.6);
-    group.add(rightShoulder);
+    // Кожа/лицо (если будет видно, но тут шлем)
+    const leatherMaterial = new THREE.MeshStandardMaterial({
+        color: 0x332211,
+        roughness: 0.9
+    });
+
+    // --- Создание модели ---
+    const astartesGroup = new THREE.Group();
     
-    // Руки
-    const armGeo = new THREE.CylinderGeometry(0.2, 0.2, 0.8, 8);
-    const armMat = new THREE.MeshStandardMaterial({ color: 0x2a5f8a, metalness: 0.6 });
+    // 1. НОГИ
+    // Бедра
+    const thighGeo = new THREE.CylinderGeometry(0.45, 0.5, 0.9, 8);
+    const leftThigh = new THREE.Mesh(thighGeo, armorMaterial);
+    leftThigh.position.set(-0.4, 0.2, 0);
+    leftThigh.castShadow = true;
+    leftThigh.receiveShadow = true;
+    astartesGroup.add(leftThigh);
     
-    const leftArm = new THREE.Mesh(armGeo, armMat);
-    leftArm.position.set(-0.9, 0.4, 0);
-    group.add(leftArm);
+    const rightThigh = new THREE.Mesh(thighGeo, armorMaterial);
+    rightThigh.position.set(0.4, 0.2, 0);
+    rightThigh.castShadow = true;
+    rightThigh.receiveShadow = true;
+    astartesGroup.add(rightThigh);
     
-    const rightArm = new THREE.Mesh(armGeo, armMat);
-    rightArm.position.set(0.9, 0.4, 0);
-    group.add(rightArm);
+    // Голени (более массивные)
+    const shinGeo = new THREE.CylinderGeometry(0.55, 0.5, 0.9, 8);
+    const leftShin = new THREE.Mesh(shinGeo, armorMaterial);
+    leftShin.position.set(-0.4, -0.65, 0);
+    leftShin.castShadow = true;
+    leftShin.receiveShadow = true;
+    astartesGroup.add(leftShin);
     
-    // Ноги
-    const legGeo = new THREE.CylinderGeometry(0.25, 0.3, 0.9, 8);
+    const rightShin = new THREE.Mesh(shinGeo, armorMaterial);
+    rightShin.position.set(0.4, -0.65, 0);
+    rightShin.castShadow = true;
+    rightShin.receiveShadow = true;
+    astartesGroup.add(rightShin);
     
-    const leftLeg = new THREE.Mesh(legGeo, armMat);
-    leftLeg.position.set(-0.35, -0.65, 0);
-    group.add(leftLeg);
+    // Коленные чашки (золото)
+    const kneeGeo = new THREE.SphereGeometry(0.22, 16, 16);
+    const leftKnee = new THREE.Mesh(kneeGeo, goldMaterial);
+    leftKnee.position.set(-0.4, -0.2, 0.35);
+    leftKnee.scale.set(0.9, 0.5, 0.5);
+    leftKnee.castShadow = true;
+    astartesGroup.add(leftKnee);
     
-    const rightLeg = new THREE.Mesh(legGeo, armMat);
-    rightLeg.position.set(0.35, -0.65, 0);
-    group.add(rightLeg);
+    const rightKnee = new THREE.Mesh(kneeGeo, goldMaterial);
+    rightKnee.position.set(0.4, -0.2, 0.35);
+    rightKnee.scale.set(0.9, 0.5, 0.5);
+    rightKnee.castShadow = true;
+    astartesGroup.add(rightKnee);
     
-    // Болтер в руке
-    const bolterGeo = new THREE.BoxGeometry(0.6, 0.2, 0.25);
-    const bolterMat = new THREE.MeshStandardMaterial({ color: 0x333333, metalness: 0.8 });
-    const bolter = new THREE.Mesh(bolterGeo, bolterMat);
-    bolter.position.set(1.2, 0.45, 0.3);
-    group.add(bolter);
+    // Ботинки
+    const bootGeo = new THREE.BoxGeometry(0.7, 0.25, 1.1);
+    const leftBoot = new THREE.Mesh(bootGeo, darkSteelMaterial);
+    leftBoot.position.set(-0.4, -1.15, 0.1);
+    leftBoot.castShadow = true;
+    leftBoot.receiveShadow = true;
+    astartesGroup.add(leftBoot);
     
-    const bolterBarrelGeo = new THREE.CylinderGeometry(0.08, 0.08, 0.4, 6);
-    const barrel = new THREE.Mesh(bolterBarrelGeo, bolterMat);
-    barrel.position.set(1.5, 0.45, 0.4);
-    barrel.rotation.x = Math.PI / 2;
-    group.add(barrel);
+    const rightBoot = new THREE.Mesh(bootGeo, darkSteelMaterial);
+    rightBoot.position.set(0.4, -1.15, 0.1);
+    rightBoot.castShadow = true;
+    rightBoot.receiveShadow = true;
+    astartesGroup.add(rightBoot);
     
-    scene.add(group);
-    model = group;
+    // 2. ТОРС
+    // Основной корпус (трапециевидный)
+    const torsoGeo = new THREE.CylinderGeometry(0.9, 1.1, 1.4, 8);
+    const torso = new THREE.Mesh(torsoGeo, armorMaterial);
+    torso.position.set(0, 0.65, 0);
+    torso.castShadow = true;
+    torso.receiveShadow = true;
+    astartesGroup.add(torso);
+    
+    // Ранцевый блок (за спиной)
+    const backpackGeo = new THREE.BoxGeometry(1.0, 1.1, 0.6);
+    const backpack = new THREE.Mesh(backpackGeo, darkSteelMaterial);
+    backpack.position.set(0, 0.75, -0.75);
+    backpack.castShadow = true;
+    backpack.receiveShadow = true;
+    astartesGroup.add(backpack);
+    
+    // Сопла ранца
+    const exhaustGeo = new THREE.CylinderGeometry(0.25, 0.3, 0.5, 8);
+    const exhaustMat = new THREE.MeshStandardMaterial({ color: 0x333333, metalness: 0.9, roughness: 0.3 });
+    const leftExhaust = new THREE.Mesh(exhaustGeo, exhaustMat);
+    leftExhaust.position.set(-0.45, 0.75, -1.0);
+    leftExhaust.rotation.x = Math.PI / 2;
+    leftExhaust.castShadow = true;
+    astartesGroup.add(leftExhaust);
+    
+    const rightExhaust = new THREE.Mesh(exhaustGeo, exhaustMat);
+    rightExhaust.position.set(0.45, 0.75, -1.0);
+    rightExhaust.rotation.x = Math.PI / 2;
+    rightExhaust.castShadow = true;
+    astartesGroup.add(rightExhaust);
+    
+    // Нагрудная пластина (Аквила)
+    const chestPlateGeo = new THREE.CylinderGeometry(0.8, 0.7, 0.25, 3); // Треугольная форма
+    const chestPlate = new THREE.Mesh(chestPlateGeo, goldMaterial);
+    chestPlate.position.set(0, 0.75, 0.65);
+    chestPlate.rotation.y = Math.PI / 6;
+    chestPlate.scale.set(0.8, 0.9, 0.3);
+    chestPlate.castShadow = true;
+    astartesGroup.add(chestPlate);
+    
+    // Центральный череп/камень на груди
+    const skullGeo = new THREE.SphereGeometry(0.15, 8, 8);
+    const skull = new THREE.Mesh(skullGeo, new THREE.MeshStandardMaterial({ color: 0xfff5e6, roughness: 0.6 }));
+    skull.position.set(0, 0.8, 0.85);
+    skull.scale.set(1.0, 0.8, 0.4);
+    skull.castShadow = true;
+    astartesGroup.add(skull);
+    
+    // Пояс
+    const beltGeo = new THREE.TorusGeometry(0.9, 0.08, 8, 24);
+    const belt = new THREE.Mesh(beltGeo, leatherMaterial);
+    belt.position.set(0, 0.05, 0);
+    belt.rotation.x = Math.PI / 2;
+    belt.scale.set(1.0, 1.0, 0.8);
+    belt.castShadow = true;
+    belt.receiveShadow = true;
+    astartesGroup.add(belt);
+    
+    // Пряжка пояса
+    const buckleGeo = new THREE.BoxGeometry(0.3, 0.2, 0.1);
+    const buckle = new THREE.Mesh(buckleGeo, goldMaterial);
+    buckle.position.set(0, 0.05, 0.55);
+    buckle.castShadow = true;
+    astartesGroup.add(buckle);
+    
+    // 3. НАПЛЕЧНИКИ (массивные)
+    const pauldronGeo = new THREE.SphereGeometry(0.65, 24, 16);
+    
+    // Левое плечо (с орнаментом)
+    const leftPauldron = new THREE.Mesh(pauldronGeo, armorMaterial);
+    leftPauldron.position.set(-1.05, 1.2, 0);
+    leftPauldron.scale.set(0.7, 0.6, 0.8);
+    leftPauldron.castShadow = true;
+    leftPauldron.receiveShadow = true;
+    astartesGroup.add(leftPauldron);
+    
+    const leftTrimGeo = new THREE.TorusGeometry(0.5, 0.06, 8, 24);
+    const leftTrim = new THREE.Mesh(leftTrimGeo, goldMaterial);
+    leftTrim.position.set(-1.05, 1.2, 0.4);
+    leftTrim.rotation.y = 0.3;
+    leftTrim.rotation.x = 0.2;
+    leftTrim.scale.set(0.8, 0.5, 0.5);
+    leftTrim.castShadow = true;
+    astartesGroup.add(leftTrim);
+    
+    // Правое плечо
+    const rightPauldron = new THREE.Mesh(pauldronGeo, armorMaterial);
+    rightPauldron.position.set(1.05, 1.2, 0);
+    rightPauldron.scale.set(0.7, 0.6, 0.8);
+    rightPauldron.castShadow = true;
+    rightPauldron.receiveShadow = true;
+    astartesGroup.add(rightPauldron);
+    
+    const rightTrimGeo = new THREE.TorusGeometry(0.5, 0.06, 8, 24);
+    const rightTrim = new THREE.Mesh(rightTrimGeo, goldMaterial);
+    rightTrim.position.set(1.05, 1.2, 0.4);
+    rightTrim.rotation.y = -0.3;
+    rightTrim.rotation.x = 0.2;
+    rightTrim.scale.set(0.8, 0.5, 0.5);
+    rightTrim.castShadow = true;
+    astartesGroup.add(rightTrim);
+    
+    // 4. ГОЛОВА (Шлем)
+    const headGroup = new THREE.Group();
+    
+    // Основа шлема
+    const helmetGeo = new THREE.SphereGeometry(0.45, 32, 24);
+    const helmet = new THREE.Mesh(helmetGeo, armorMaterial);
+    helmet.scale.set(0.9, 0.95, 0.8);
+    helmet.castShadow = true;
+    helmet.receiveShadow = true;
+    headGroup.add(helmet);
+    
+    // Лицевая маска (золотая/цветная)
+    const faceMaskGeo = new THREE.CylinderGeometry(0.35, 0.4, 0.25, 6);
+    const faceMask = new THREE.Mesh(faceMaskGeo, goldMaterial);
+    faceMask.position.set(0, 0.0, 0.4);
+    faceMask.rotation.x = 0.2;
+    faceMask.rotation.y = 0;
+    faceMask.scale.set(0.9, 0.6, 0.4);
+    faceMask.castShadow = true;
+    headGroup.add(faceMask);
+    
+    // Глаза (красные линзы)
+    const eyeGeo = new THREE.SphereGeometry(0.1, 8, 8);
+    const leftEye = new THREE.Mesh(eyeGeo, redMaterial);
+    leftEye.position.set(-0.2, 0.1, 0.6);
+    leftEye.scale.set(0.6, 0.3, 0.2);
+    leftEye.castShadow = true;
+    headGroup.add(leftEye);
+    
+    const rightEye = new THREE.Mesh(eyeGeo, redMaterial);
+    rightEye.position.set(0.2, 0.1, 0.6);
+    rightEye.scale.set(0.6, 0.3, 0.2);
+    rightEye.castShadow = true;
+    headGroup.add(rightEye);
+    
+    // Гребень шлема
+    const crestGeo = new THREE.BoxGeometry(0.25, 0.15, 0.45);
+    const crest = new THREE.Mesh(crestGeo, goldMaterial);
+    crest.position.set(0, 0.45, 0.0);
+    crest.scale.set(1.0, 1.0, 1.2);
+    crest.castShadow = true;
+    headGroup.add(crest);
+    
+    headGroup.position.set(0, 1.55, 0);
+    astartesGroup.add(headGroup);
+    
+    // 5. РУКИ
+    // Левая рука (держит щит или просто сжата)
+    const armGeo = new THREE.CylinderGeometry(0.3, 0.3, 0.9, 8);
+    
+    const leftArm = new THREE.Mesh(armGeo, armorMaterial);
+    leftArm.position.set(-0.95, 0.9, 0.1);
+    leftArm.rotation.z = 0.3;
+    leftArm.rotation.x = -0.2;
+    leftArm.castShadow = true;
+    leftArm.receiveShadow = true;
+    astartesGroup.add(leftArm);
+    
+    // Левый кулак
+    const fistGeo = new THREE.SphereGeometry(0.28, 8, 8);
+    const leftFist = new THREE.Mesh(fistGeo, armorMaterial);
+    leftFist.position.set(-1.35, 0.55, 0.25);
+    leftFist.scale.set(0.9, 0.8, 0.8);
+    leftFist.castShadow = true;
+    astartesGroup.add(leftFist);
+    
+    // Правая рука (с оружием)
+    const rightArm = new THREE.Mesh(armGeo, armorMaterial);
+    rightArm.position.set(0.95, 0.9, 0.1);
+    rightArm.rotation.z = -0.4;
+    rightArm.rotation.x = 0.3;
+    rightArm.castShadow = true;
+    rightArm.receiveShadow = true;
+    astartesGroup.add(rightArm);
+    
+    // 6. ОРУЖИЕ - ЦЕПНОЙ МЕЧ (в правой руке)
+    const weaponGroup = new THREE.Group();
+    
+    // Рукоять
+    const handleGeo = new THREE.CylinderGeometry(0.12, 0.12, 0.8, 6);
+    const handle = new THREE.Mesh(handleGeo, leatherMaterial);
+    handle.rotation.x = 0.2;
+    handle.rotation.z = 0.1;
+    handle.castShadow = true;
+    handle.receiveShadow = true;
+    weaponGroup.add(handle);
+    
+    // Гарда
+    const guardGeo = new THREE.BoxGeometry(0.5, 0.1, 0.15);
+    const guard = new THREE.Mesh(guardGeo, goldMaterial);
+    guard.position.set(0, 0.45, 0);
+    guard.castShadow = true;
+    weaponGroup.add(guard);
+    
+    // Лезвие (зубчатое)
+    const bladeGroup = new THREE.Group();
+    const bladeBaseGeo = new THREE.BoxGeometry(0.35, 1.8, 0.08);
+    const bladeBase = new THREE.Mesh(bladeBaseGeo, steelMaterial);
+    bladeBase.position.set(0, 1.4, 0);
+    bladeBase.castShadow = true;
+    bladeBase.receiveShadow = true;
+    bladeGroup.add(bladeBase);
+    
+    // Зубья цепного меча
+    for (let i = 0; i < 8; i++) {
+        const toothGeo = new THREE.BoxGeometry(0.1, 0.15, 0.15);
+        const tooth = new THREE.Mesh(toothGeo, darkSteelMaterial);
+        tooth.position.set(0.22, 0.8 + i * 0.2, 0);
+        tooth.castShadow = true;
+        bladeGroup.add(tooth);
+        
+        const toothBack = new THREE.Mesh(toothGeo, darkSteelMaterial);
+        toothBack.position.set(-0.22, 0.8 + i * 0.2, 0);
+        toothBack.castShadow = true;
+        bladeGroup.add(toothBack);
+    }
+    
+    bladeGroup.position.y = 0.1;
+    weaponGroup.add(bladeGroup);
+    
+    // Позиционируем меч в правой руке
+    weaponGroup.position.set(1.25, 1.2, 0.4);
+    weaponGroup.rotation.z = -0.6;
+    weaponGroup.rotation.x = -0.4;
+    weaponGroup.rotation.y = 0.2;
+    astartesGroup.add(weaponGroup);
+    
+    // 7. БОЛТЕР (в кобуре на бедре или просто висит)
+    const holsterGroup = new THREE.Group();
+    const holsterGeo = new THREE.BoxGeometry(0.4, 0.7, 0.3);
+    const holster = new THREE.Mesh(holsterGeo, leatherMaterial);
+    holster.position.set(0.65, -0.1, 0.45);
+    holster.castShadow = true;
+    holster.receiveShadow = true;
+    astartesGroup.add(holster);
+    
+    const gunBarrelGeo = new THREE.CylinderGeometry(0.08, 0.08, 0.5, 6);
+    const gunBarrel = new THREE.Mesh(gunBarrelGeo, steelMaterial);
+    gunBarrel.position.set(0.85, -0.1, 0.6);
+    gunBarrel.rotation.x = Math.PI / 2;
+    gunBarrel.rotation.z = 0.1;
+    gunBarrel.castShadow = true;
+    astartesGroup.add(gunBarrel);
+
+    // Добавляем всё на сцену
+    scene.add(astartesGroup);
+    model = astartesGroup;
+    
+    // Центрируем модель
+    model.position.y = 0.1;
     
     // Анимация
     function animate() {
@@ -5513,9 +6490,13 @@ function init3DModel() {
             model.rotation.y += 0.005;
         }
         
-        // Легкое покачивание
+        // Легкое дыхание (едва заметное движение)
         if (model && !autoRotate) {
-            model.rotation.y = Math.sin(Date.now() * 0.001) * 0.1;
+            model.rotation.y = Math.sin(Date.now() * 0.0008) * 0.05;
+            // Легкое покачивание меча
+            if (weaponGroup) {
+                weaponGroup.rotation.z = -0.6 + Math.sin(Date.now() * 0.005) * 0.01;
+            }
         }
         
         renderer.render(scene, camera);
@@ -5532,7 +6513,8 @@ function init3DModel() {
         renderer.setSize(width, height);
     });
 }
-
+ 
+ 
 window.resetModelView = function() {
     if (model) {
         model.rotation.set(0, 0, 0);
@@ -5541,11 +6523,11 @@ window.resetModelView = function() {
         autoRotate = false;
     }
 };
-
+   
 window.toggleAutoRotate = function() {
     autoRotate = !autoRotate;
 };
-
+   
 // ========== ПРОГРЕСС-БАР ЧТЕНИЯ ==========
 function initReadingProgress() {
     const progressBar = document.createElement('div');
@@ -5599,281 +6581,675 @@ setTimeout(() => {
 }, 100);
 </script>
 
-    <script>
-        (function() {
-            // Создание звёзд
-            function createStars() {
-                const starsContainer = document.getElementById('stars');
-                if (!starsContainer) return;
-                
-                for (let i = 0; i < 200; i++) {
-                    const star = document.createElement('div');
-                    star.className = 'star';
-                    
-                    const size = Math.random() * 2 + 1;
-                    const left = Math.random() * 100;
-                    const top = Math.random() * 100;
-                    const duration = Math.random() * 3 + 2;
-                    const opacityStart = Math.random() * 0.3 + 0.2;
-                    const opacityEnd = Math.random() * 0.8 + 0.2;
-                    
-                    star.style.width = size + 'px';
-                    star.style.height = size + 'px';
-                    star.style.left = left + '%';
-                    star.style.top = top + '%';
-                    star.style.setProperty('--duration', duration + 's');
-                    star.style.setProperty('--opacity-start', opacityStart);
-                    star.style.setProperty('--opacity-end', opacityEnd);
-                    
-                    starsContainer.appendChild(star);
-                }
+<script>
+    (function() {
+        // ========== 3D МОДЕЛЬ (исправленная) ==========
+        let scene, camera, renderer, model, autoRotate = false;
+        let modelInitialized = false;
+        let animationId = null;
+
+        function init3DModel() {
+            const canvas = document.getElementById('model-canvas');
+            if (!canvas) {
+                console.log('Canvas not found');
+                return;
             }
-
-            // Создание частиц
-            function createParticles() {
-                const particlesContainer = document.getElementById('particles');
-                if (!particlesContainer) return;
-                
-                for (let i = 0; i < 30; i++) {
-                    const particle = document.createElement('div');
-                    particle.className = 'particle';
-                    
-                    const left = Math.random() * 100;
-                    const duration = Math.random() * 20 + 15;
-                    const delay = Math.random() * 10;
-                    
-                    particle.style.left = left + '%';
-                    particle.style.animationDuration = duration + 's';
-                    particle.style.animationDelay = delay + 's';
-                    
-                    particlesContainer.appendChild(particle);
-                }
+            
+            // Проверяем видимость canvas - если родительская страница скрыта, откладываем инициализацию
+            const multimediaPage = document.getElementById('page-multimedia');
+            if (multimediaPage && multimediaPage.style.display !== 'block' && !multimediaPage.classList.contains('active-page')) {
+                console.log('Multimedia page not visible, delaying 3D init');
+                setTimeout(init3DModel, 500);
+                return;
             }
-
-            // Переключение страниц
-            const tabs = document.querySelectorAll('.menu-tab');
-            const pages = document.querySelectorAll('.page-container, .map-page');
-            const homePage = document.getElementById('home-page');
-            const mapPage = document.getElementById('map-page');
-            const body = document.body;
-
-            window.switchToPage = function(pageId) {
-                if (pageId === 'home') {
-                    homePage.style.display = 'block';
-                    if (mapPage) mapPage.style.display = 'none';
-                    pages.forEach(p => p.classList.remove('active-page'));
-                    body.setAttribute('data-page', 'home');
-                    body.setAttribute('data-theme', 'imperium');
-                } else if (pageId === 'map') {
-                    homePage.style.display = 'none';
-                    if (mapPage) {
-                        mapPage.style.display = 'block';
-                        mapPage.classList.add('active-page');
-                    }
-                    pages.forEach(p => {
-                        if (p !== mapPage) p.classList.remove('active-page');
-                    });
-                    body.setAttribute('data-page', 'map');
-                    body.setAttribute('data-theme', 'imperium');
-                } else {
-                    homePage.style.display = 'none';
-                    if (mapPage) mapPage.style.display = 'none';
-                    
-                    // Убираем активный класс со всех страниц
-                    pages.forEach(p => p.classList.remove('active-page'));
-                    
-                    // Активируем нужную страницу
-                    const targetPage = document.getElementById(pageId);
-                    if (targetPage) {
-                        targetPage.classList.add('active-page');
-                    }
-                    else if (pageId === 'glossary') {
-    homePage.style.display = 'none';
-    if (mapPage) mapPage.style.display = 'none';
-    pages.forEach(p => p.classList.remove('active-page'));
-    const glossaryPage = document.getElementById('page-glossary');
-    if (glossaryPage) glossaryPage.classList.add('active-page');
-    body.setAttribute('data-page', 'glossary');
-    body.setAttribute('data-theme', 'imperium');
-}
-else if (pageId === 'multimedia') {
-    homePage.style.display = 'none';
-    if (mapPage) mapPage.style.display = 'none';
-    pages.forEach(p => p.classList.remove('active-page'));
-    const multimediaPage = document.getElementById('page-multimedia');
-    if (multimediaPage) multimediaPage.classList.add('active-page');
-    body.setAttribute('data-page', 'multimedia');
-    body.setAttribute('data-theme', 'imperium');
-}
-                    
-                    // Установка темы в зависимости от страницы
-                    const themeMap = {
-                        'page1': 'imperium',
-                        'page2': 'chaos',
-                        'page3': 'eldar',
-                        'page4': 'ork',
-                        'page5': 'necron',
-                        'page6': 'tyranid',
-                        'page7': 'tau',
-                        'page8': 'votann',
-                        'page9': 'imperium',
-                        'page10': 'imperium'
-                    };
-                    if (themeMap[pageId]) {
-                        body.setAttribute('data-theme', themeMap[pageId]);
-                    }
-                    body.setAttribute('data-page', 'faction');
-                }
-                
-                // Обновление активной вкладки в меню
-                tabs.forEach(t => t.classList.remove('active-tab'));
-                const activeTab = Array.from(tabs).find(tab => tab.getAttribute('data-page') === pageId);
-                if (activeTab) activeTab.classList.add('active-tab');
-                
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-                
-            };
-
-            tabs.forEach(tab => {
-                tab.addEventListener('click', () => {
-                    const pageId = tab.getAttribute('data-page');
-                    switchToPage(pageId);
-                });
+            
+            // Проверяем, загружен ли Three.js
+            if (typeof THREE === 'undefined') {
+                console.log('Three.js not loaded yet, waiting...');
+                setTimeout(init3DModel, 100);
+                return;
+            }
+            
+            if (modelInitialized) {
+                console.log('Model already initialized');
+                return;
+            }
+            
+            // Проверяем, что canvas имеет ненулевые размеры
+            const rect = canvas.getBoundingClientRect();
+            if (rect.width === 0 || rect.height === 0) {
+                console.log('Canvas has zero size, waiting...');
+                setTimeout(init3DModel, 200);
+                return;
+            }
+            
+            console.log('Initializing 3D model, canvas size:', rect.width, 'x', rect.height);
+            modelInitialized = true;
+            
+            // Создаем сцену
+            scene = new THREE.Scene();
+            scene.background = new THREE.Color(0x0a121a);
+            scene.fog = new THREE.FogExp2(0x0a121a, 0.008);
+            
+            // Камера
+            camera = new THREE.PerspectiveCamera(40, rect.width / rect.height, 0.1, 1000);
+            camera.position.set(2.5, 2.2, 5.5);
+            camera.lookAt(0, 1.2, 0);
+            
+            // Рендерер
+            renderer = new THREE.WebGLRenderer({ canvas, alpha: false, antialias: true });
+            renderer.setSize(rect.width, rect.height);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            renderer.shadowMap.enabled = true;
+            renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+            
+            // --- Освещение ---
+            const ambientLight = new THREE.AmbientLight(0x404066, 0.45);
+            scene.add(ambientLight);
+            
+            // Ключевой свет
+            const keyLight = new THREE.DirectionalLight(0xccddff, 1.2);
+            keyLight.position.set(3, 6, 4);
+            keyLight.castShadow = true;
+            keyLight.receiveShadow = true;
+            keyLight.shadow.mapSize.width = 1024;
+            keyLight.shadow.mapSize.height = 1024;
+            keyLight.shadow.camera.left = -6;
+            keyLight.shadow.camera.right = 6;
+            keyLight.shadow.camera.top = 6;
+            keyLight.shadow.camera.bottom = -6;
+            keyLight.shadow.camera.near = 1;
+            keyLight.shadow.camera.far = 15;
+            scene.add(keyLight);
+            
+            // Заполняющий свет
+            const fillLight = new THREE.PointLight(0xffaa66, 0.8);
+            fillLight.position.set(-2, 2, 3);
+            scene.add(fillLight);
+            
+            // Контровой свет
+            const backLight = new THREE.PointLight(0xaa2222, 0.5);
+            backLight.position.set(-1, 2, -4);
+            scene.add(backLight);
+            
+            // Акцент на золоте
+            const goldLight = new THREE.PointLight(0xffaa00, 0.4);
+            goldLight.position.set(2, 1.5, 2);
+            scene.add(goldLight);
+            
+            // --- Материалы ---
+            const armorMaterial = new THREE.MeshStandardMaterial({
+                color: 0x1a3a7a,
+                metalness: 0.75,
+                roughness: 0.35
             });
-
-            // Колесо фракций
-            window.updateCenter = function(name, desc) {
-                document.getElementById('faction-name').innerText = name;
-                document.getElementById('faction-desc').innerText = desc;
-            };
-
-            // Музыка
-            const music = document.getElementById('bgMusic');
-            const toggleBtn = document.getElementById('musicToggle');
-            let musicPlaying = false;
+            
+            const goldMaterial = new THREE.MeshStandardMaterial({
+                color: 0xd4af37,
+                metalness: 0.95,
+                roughness: 0.25,
+                emissive: new THREE.Color(0x442200),
+                emissiveIntensity: 0.1
+            });
+            
+            const steelMaterial = new THREE.MeshStandardMaterial({
+                color: 0x556677,
+                metalness: 0.9,
+                roughness: 0.4
+            });
+            
+            const darkSteelMaterial = new THREE.MeshStandardMaterial({
+                color: 0x2a2a35,
+                metalness: 0.85,
+                roughness: 0.5
+            });
+            
+            const redMaterial = new THREE.MeshStandardMaterial({
+                color: 0xcc2222,
+                metalness: 0.1,
+                roughness: 0.4,
+                emissive: new THREE.Color(0x440000),
+                emissiveIntensity: 0.8
+            });
+            
+            const leatherMaterial = new THREE.MeshStandardMaterial({
+                color: 0x332211,
+                roughness: 0.9
+            });
+            
+            // --- Создание модели ---
+            const astartesGroup = new THREE.Group();
+            
+            // НОГИ
+            const thighGeo = new THREE.CylinderGeometry(0.45, 0.5, 0.9, 8);
+            const leftThigh = new THREE.Mesh(thighGeo, armorMaterial);
+            leftThigh.position.set(-0.4, 0.2, 0);
+            leftThigh.castShadow = true;
+            astartesGroup.add(leftThigh);
+            
+            const rightThigh = new THREE.Mesh(thighGeo, armorMaterial);
+            rightThigh.position.set(0.4, 0.2, 0);
+            rightThigh.castShadow = true;
+            astartesGroup.add(rightThigh);
+            
+            const shinGeo = new THREE.CylinderGeometry(0.55, 0.5, 0.9, 8);
+            const leftShin = new THREE.Mesh(shinGeo, armorMaterial);
+            leftShin.position.set(-0.4, -0.65, 0);
+            leftShin.castShadow = true;
+            astartesGroup.add(leftShin);
+            
+            const rightShin = new THREE.Mesh(shinGeo, armorMaterial);
+            rightShin.position.set(0.4, -0.65, 0);
+            rightShin.castShadow = true;
+            astartesGroup.add(rightShin);
+            
+            // Колени
+            const kneeGeo = new THREE.SphereGeometry(0.22, 16, 16);
+            const leftKnee = new THREE.Mesh(kneeGeo, goldMaterial);
+            leftKnee.position.set(-0.4, -0.2, 0.35);
+            leftKnee.scale.set(0.9, 0.5, 0.5);
+            leftKnee.castShadow = true;
+            astartesGroup.add(leftKnee);
+            
+            const rightKnee = new THREE.Mesh(kneeGeo, goldMaterial);
+            rightKnee.position.set(0.4, -0.2, 0.35);
+            rightKnee.scale.set(0.9, 0.5, 0.5);
+            rightKnee.castShadow = true;
+            astartesGroup.add(rightKnee);
+            
+            // Ботинки
+            const bootGeo = new THREE.BoxGeometry(0.7, 0.25, 1.1);
+            const leftBoot = new THREE.Mesh(bootGeo, darkSteelMaterial);
+            leftBoot.position.set(-0.4, -1.15, 0.1);
+            leftBoot.castShadow = true;
+            astartesGroup.add(leftBoot);
+            
+            const rightBoot = new THREE.Mesh(bootGeo, darkSteelMaterial);
+            rightBoot.position.set(0.4, -1.15, 0.1);
+            rightBoot.castShadow = true;
+            astartesGroup.add(rightBoot);
+            
+            // ТОРС
+            const torsoGeo = new THREE.CylinderGeometry(0.9, 1.1, 1.4, 8);
+            const torso = new THREE.Mesh(torsoGeo, armorMaterial);
+            torso.position.set(0, 0.65, 0);
+            torso.castShadow = true;
+            astartesGroup.add(torso);
+            
+            // Ранец
+            const backpackGeo = new THREE.BoxGeometry(1.0, 1.1, 0.6);
+            const backpack = new THREE.Mesh(backpackGeo, darkSteelMaterial);
+            backpack.position.set(0, 0.75, -0.75);
+            backpack.castShadow = true;
+            astartesGroup.add(backpack);
+            
+            // Сопла ранца
+            const exhaustGeo = new THREE.CylinderGeometry(0.25, 0.3, 0.5, 8);
+            const exhaustMat = new THREE.MeshStandardMaterial({ color: 0x333333, metalness: 0.9, roughness: 0.3 });
+            const leftExhaust = new THREE.Mesh(exhaustGeo, exhaustMat);
+            leftExhaust.position.set(-0.45, 0.75, -1.0);
+            leftExhaust.rotation.x = Math.PI / 2;
+            leftExhaust.castShadow = true;
+            astartesGroup.add(leftExhaust);
+            
+            const rightExhaust = new THREE.Mesh(exhaustGeo, exhaustMat);
+            rightExhaust.position.set(0.45, 0.75, -1.0);
+            rightExhaust.rotation.x = Math.PI / 2;
+            rightExhaust.castShadow = true;
+            astartesGroup.add(rightExhaust);
+            
+            // Нагрудная пластина
+            const chestPlateGeo = new THREE.CylinderGeometry(0.8, 0.7, 0.25, 3);
+            const chestPlate = new THREE.Mesh(chestPlateGeo, goldMaterial);
+            chestPlate.position.set(0, 0.75, 0.65);
+            chestPlate.rotation.y = Math.PI / 6;
+            chestPlate.scale.set(0.8, 0.9, 0.3);
+            chestPlate.castShadow = true;
+            astartesGroup.add(chestPlate);
+            
+            // Череп на груди
+            const skullGeo = new THREE.SphereGeometry(0.15, 8, 8);
+            const skull = new THREE.Mesh(skullGeo, new THREE.MeshStandardMaterial({ color: 0xfff5e6, roughness: 0.6 }));
+            skull.position.set(0, 0.8, 0.85);
+            skull.scale.set(1.0, 0.8, 0.4);
+            skull.castShadow = true;
+            astartesGroup.add(skull);
+            
+            // Пояс
+            const beltGeo = new THREE.TorusGeometry(0.9, 0.08, 8, 24);
+            const belt = new THREE.Mesh(beltGeo, leatherMaterial);
+            belt.position.set(0, 0.05, 0);
+            belt.rotation.x = Math.PI / 2;
+            belt.scale.set(1.0, 1.0, 0.8);
+            belt.castShadow = true;
+            astartesGroup.add(belt);
+            
+            // НАПЛЕЧНИКИ
+            const pauldronGeo = new THREE.SphereGeometry(0.65, 24, 16);
+            
+            const leftPauldron = new THREE.Mesh(pauldronGeo, armorMaterial);
+            leftPauldron.position.set(-1.05, 1.2, 0);
+            leftPauldron.scale.set(0.7, 0.6, 0.8);
+            leftPauldron.castShadow = true;
+            astartesGroup.add(leftPauldron);
+            
+            const rightPauldron = new THREE.Mesh(pauldronGeo, armorMaterial);
+            rightPauldron.position.set(1.05, 1.2, 0);
+            rightPauldron.scale.set(0.7, 0.6, 0.8);
+            rightPauldron.castShadow = true;
+            astartesGroup.add(rightPauldron);
+            
+            // Окантовка наплечников
+            const trimGeo = new THREE.TorusGeometry(0.5, 0.06, 8, 24);
+            const leftTrim = new THREE.Mesh(trimGeo, goldMaterial);
+            leftTrim.position.set(-1.05, 1.2, 0.4);
+            leftTrim.rotation.y = 0.3;
+            leftTrim.rotation.x = 0.2;
+            leftTrim.scale.set(0.8, 0.5, 0.5);
+            astartesGroup.add(leftTrim);
+            
+            const rightTrim = new THREE.Mesh(trimGeo, goldMaterial);
+            rightTrim.position.set(1.05, 1.2, 0.4);
+            rightTrim.rotation.y = -0.3;
+            rightTrim.rotation.x = 0.2;
+            rightTrim.scale.set(0.8, 0.5, 0.5);
+            astartesGroup.add(rightTrim);
+            
+            // ГОЛОВА
+            const headGroup = new THREE.Group();
+            const helmetGeo = new THREE.SphereGeometry(0.45, 32, 24);
+            const helmet = new THREE.Mesh(helmetGeo, armorMaterial);
+            helmet.scale.set(0.9, 0.95, 0.8);
+            helmet.castShadow = true;
+            headGroup.add(helmet);
+            
+            const faceMaskGeo = new THREE.CylinderGeometry(0.35, 0.4, 0.25, 6);
+            const faceMask = new THREE.Mesh(faceMaskGeo, goldMaterial);
+            faceMask.position.set(0, 0.0, 0.4);
+            faceMask.rotation.x = 0.2;
+            faceMask.scale.set(0.9, 0.6, 0.4);
+            faceMask.castShadow = true;
+            headGroup.add(faceMask);
+            
+            // Глаза
+            const eyeGeo = new THREE.SphereGeometry(0.1, 8, 8);
+            const leftEye = new THREE.Mesh(eyeGeo, redMaterial);
+            leftEye.position.set(-0.2, 0.1, 0.6);
+            leftEye.scale.set(0.6, 0.3, 0.2);
+            headGroup.add(leftEye);
+            
+            const rightEye = new THREE.Mesh(eyeGeo, redMaterial);
+            rightEye.position.set(0.2, 0.1, 0.6);
+            rightEye.scale.set(0.6, 0.3, 0.2);
+            headGroup.add(rightEye);
+            
+            // Гребень шлема
+            const crestGeo = new THREE.BoxGeometry(0.25, 0.15, 0.45);
+            const crest = new THREE.Mesh(crestGeo, goldMaterial);
+            crest.position.set(0, 0.45, 0.0);
+            crest.scale.set(1.0, 1.0, 1.2);
+            headGroup.add(crest);
+            
+            headGroup.position.set(0, 1.55, 0);
+            astartesGroup.add(headGroup);
+            
+            // РУКИ
+            const armGeo = new THREE.CylinderGeometry(0.3, 0.3, 0.9, 8);
+            
+            const leftArm = new THREE.Mesh(armGeo, armorMaterial);
+            leftArm.position.set(-0.95, 0.9, 0.1);
+            leftArm.rotation.z = 0.3;
+            leftArm.rotation.x = -0.2;
+            leftArm.castShadow = true;
+            astartesGroup.add(leftArm);
+            
+            const rightArm = new THREE.Mesh(armGeo, armorMaterial);
+            rightArm.position.set(0.95, 0.9, 0.1);
+            rightArm.rotation.z = -0.4;
+            rightArm.rotation.x = 0.3;
+            rightArm.castShadow = true;
+            astartesGroup.add(rightArm);
+            
+            // ОРУЖИЕ - Цепной меч
+            const weaponGroup = new THREE.Group();
+            
+            const handleGeo = new THREE.CylinderGeometry(0.12, 0.12, 0.8, 6);
+            const handle = new THREE.Mesh(handleGeo, leatherMaterial);
+            handle.rotation.x = 0.2;
+            handle.rotation.z = 0.1;
+            weaponGroup.add(handle);
+            
+            const guardGeo = new THREE.BoxGeometry(0.5, 0.1, 0.15);
+            const guard = new THREE.Mesh(guardGeo, goldMaterial);
+            guard.position.set(0, 0.45, 0);
+            weaponGroup.add(guard);
+            
+            const bladeBaseGeo = new THREE.BoxGeometry(0.35, 1.8, 0.08);
+            const bladeBase = new THREE.Mesh(bladeBaseGeo, steelMaterial);
+            bladeBase.position.set(0, 1.4, 0);
+            bladeBase.castShadow = true;
+            weaponGroup.add(bladeBase);
+            
+            // Зубья цепного меча
+            for (let i = 0; i < 8; i++) {
+                const toothGeo = new THREE.BoxGeometry(0.1, 0.15, 0.15);
+                const tooth = new THREE.Mesh(toothGeo, darkSteelMaterial);
+                tooth.position.set(0.22, 0.8 + i * 0.2, 0);
+                weaponGroup.add(tooth);
+                
+                const toothBack = new THREE.Mesh(toothGeo, darkSteelMaterial);
+                toothBack.position.set(-0.22, 0.8 + i * 0.2, 0);
+                weaponGroup.add(toothBack);
+            }
+            
+            weaponGroup.position.set(1.25, 1.2, 0.4);
+            weaponGroup.rotation.z = -0.6;
+            weaponGroup.rotation.x = -0.4;
+            weaponGroup.rotation.y = 0.2;
+            astartesGroup.add(weaponGroup);
+            
+            // Болтер на бедре
+            const holsterGeo = new THREE.BoxGeometry(0.4, 0.7, 0.3);
+            const holster = new THREE.Mesh(holsterGeo, leatherMaterial);
+            holster.position.set(0.65, -0.1, 0.45);
+            holster.castShadow = true;
+            astartesGroup.add(holster);
+            
+            const gunBarrelGeo = new THREE.CylinderGeometry(0.08, 0.08, 0.5, 6);
+            const gunBarrel = new THREE.Mesh(gunBarrelGeo, steelMaterial);
+            gunBarrel.position.set(0.85, -0.1, 0.6);
+            gunBarrel.rotation.x = Math.PI / 2;
+            gunBarrel.rotation.z = 0.1;
+            gunBarrel.castShadow = true;
+            astartesGroup.add(gunBarrel);
+            
+            scene.add(astartesGroup);
+            model = astartesGroup;
+            model.position.y = 0.1;
+            
+            // Анимация
+            function animate() {
+                animationId = requestAnimationFrame(animate);
+                
+                if (autoRotate && model) {
+                    model.rotation.y += 0.005;
+                } else if (model) {
+                    model.rotation.y = Math.sin(Date.now() * 0.0008) * 0.05;
+                }
+                
+                if (renderer && scene && camera) {
+                    renderer.render(scene, camera);
+                }
+            }
+            
+            animate();
+            console.log('3D model initialized successfully');
+        }
+        
+        // Функция для проверки видимости мультимедиа страницы и переинициализации
+        function checkAndInitModel() {
+            const multimediaPage = document.getElementById('page-multimedia');
+            if (multimediaPage && (multimediaPage.style.display === 'block' || multimediaPage.classList.contains('active-page'))) {
+                if (!modelInitialized) {
+                    setTimeout(init3DModel, 100);
+                } else if (renderer && camera) {
+                    // Обновляем размеры canvas
+                    const canvas = document.getElementById('model-canvas');
+                    if (canvas) {
+                        const rect = canvas.getBoundingClientRect();
+                        if (rect.width > 0 && rect.height > 0) {
+                            renderer.setSize(rect.width, rect.height);
+                            camera.aspect = rect.width / rect.height;
+                            camera.updateProjectionMatrix();
+                        }
+                    }
+                }
+            }
+        }
+        
+        window.resetModelView = function() {
+            if (model) {
+                model.rotation.set(0, 0, 0);
+                if (camera) {
+                    camera.position.set(2.5, 2.2, 5.5);
+                    camera.lookAt(0, 1.2, 0);
+                }
+                autoRotate = false;
+            }
+        };
+        
+        window.toggleAutoRotate = function() {
+            autoRotate = !autoRotate;
+        };
+        
+        // ========== ОСТАЛЬНЫЕ ФУНКЦИИ ==========
+        
+        function createStars() {
+            const starsContainer = document.getElementById('stars');
+            if (!starsContainer) return;
+            
+            for (let i = 0; i < 200; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.width = (Math.random() * 2 + 1) + 'px';
+                star.style.height = (Math.random() * 2 + 1) + 'px';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.setProperty('--duration', (Math.random() * 3 + 2) + 's');
+                star.style.setProperty('--opacity-start', Math.random() * 0.3 + 0.2);
+                star.style.setProperty('--opacity-end', Math.random() * 0.8 + 0.2);
+                starsContainer.appendChild(star);
+            }
+        }
+        
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            if (!particlesContainer) return;
+            
+            for (let i = 0; i < 30; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDuration = (Math.random() * 20 + 15) + 's';
+                particle.style.animationDelay = (Math.random() * 10) + 's';
+                particlesContainer.appendChild(particle);
+            }
+        }
+        
+        // Переключение страниц
+        const tabs = document.querySelectorAll('.menu-tab');
+        const pages = document.querySelectorAll('.page-container, .map-page');
+        const homePage = document.getElementById('home-page');
+        const mapPage = document.getElementById('map-page');
+        const body = document.body;
+        
+        window.switchToPage = function(pageId) {
+            if (pageId === 'home') {
+                if (homePage) homePage.style.display = 'block';
+                if (mapPage) mapPage.style.display = 'none';
+                pages.forEach(p => p.classList.remove('active-page'));
+                body.setAttribute('data-page', 'home');
+                body.setAttribute('data-theme', 'imperium');
+            } else if (pageId === 'map') {
+                if (homePage) homePage.style.display = 'none';
+                if (mapPage) {
+                    mapPage.style.display = 'block';
+                    mapPage.classList.add('active-page');
+                }
+                pages.forEach(p => {
+                    if (p !== mapPage) p.classList.remove('active-page');
+                });
+                body.setAttribute('data-page', 'map');
+                body.setAttribute('data-theme', 'imperium');
+            } else {
+                if (homePage) homePage.style.display = 'none';
+                if (mapPage) mapPage.style.display = 'none';
+                pages.forEach(p => p.classList.remove('active-page'));
+                
+                const targetPage = document.getElementById(pageId);
+                if (targetPage) targetPage.classList.add('active-page');
+                else if (pageId === 'glossary') {
+                    const glossaryPage = document.getElementById('page-glossary');
+                    if (glossaryPage) glossaryPage.classList.add('active-page');
+                } else if (pageId === 'multimedia') {
+                    const multimediaPage = document.getElementById('page-multimedia');
+                    if (multimediaPage) {
+                        multimediaPage.classList.add('active-page');
+                        // При переключении на мультимедиа страницу проверяем и инициализируем 3D модель
+                        setTimeout(checkAndInitModel, 100);
+                    }
+                }
+                
+                const themeMap = {
+                    'page1': 'imperium', 'page2': 'chaos', 'page3': 'eldar',
+                    'page4': 'ork', 'page5': 'necron', 'page6': 'tyranid',
+                    'page7': 'tau', 'page8': 'votann', 'page9': 'imperium', 'page10': 'imperium'
+                };
+                if (themeMap[pageId]) body.setAttribute('data-theme', themeMap[pageId]);
+                body.setAttribute('data-page', 'faction');
+            }
+            
+            tabs.forEach(t => t.classList.remove('active-tab'));
+            const activeTab = Array.from(tabs).find(tab => tab.getAttribute('data-page') === pageId);
+            if (activeTab) activeTab.classList.add('active-tab');
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        };
+        
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                const pageId = tab.getAttribute('data-page');
+                window.switchToPage(pageId);
+            });
+        });
+        
+        window.updateCenter = function(name, desc) {
+            const nameEl = document.getElementById('faction-name');
+            const descEl = document.getElementById('faction-desc');
+            if (nameEl) nameEl.innerText = name;
+            if (descEl) descEl.innerText = desc;
+        };
+        
+        // Музыка
+        const music = document.getElementById('bgMusic');
+        const toggleBtn = document.getElementById('musicToggle');
+        let musicPlaying = false;
+        if (music) {
             music.volume = 0.3;
-
-            function attemptAutoPlay() {
-                music.play().then(() => {
-                    musicPlaying = true;
-                    toggleBtn.innerHTML = '<i class="fas fa-volume-up"></i>';
-                }).catch(() => {
-                    musicPlaying = false;
-                    toggleBtn.innerHTML = '<i class="fas fa-volume-mute"></i>';
+            music.play().catch(() => {});
+            
+            if (toggleBtn) {
+                toggleBtn.addEventListener('click', () => {
+                    if (musicPlaying) {
+                        music.pause();
+                        const icon = toggleBtn.querySelector('i');
+                        if (icon) icon.className = 'fas fa-volume-mute';
+                        musicPlaying = false;
+                    } else {
+                        music.play().then(() => {
+                            const icon = toggleBtn.querySelector('i');
+                            if (icon) icon.className = 'fas fa-volume-up';
+                            musicPlaying = true;
+                        }).catch(() => {});
+                    }
                 });
             }
-            attemptAutoPlay();
-
-            toggleBtn.addEventListener('click', () => {
-                if (musicPlaying) {
-                    music.pause();
-                    toggleBtn.innerHTML = '<i class="fas fa-volume-mute"></i>';
-                    musicPlaying = false;
-                } else {
-                    music.play().then(() => {
-                        toggleBtn.innerHTML = '<i class="fas fa-volume-up"></i>';
-                        musicPlaying = true;
-                    }).catch(() => {
-                        alert('Не удалось воспроизвести аудио.');
-                    });
-                }
+        }
+        
+        // Функции карты
+        let mapScale = 1;
+        let panX = 0;
+        let panY = 0;
+        let isDragging = false;
+        let startX, startY;
+        const mapEl = document.getElementById('galaxyMap');
+        
+        window.zoomIn = function() {
+            mapScale = Math.min(mapScale + 0.1, 2);
+            applyMapTransform();
+        };
+        
+        window.zoomOut = function() {
+            mapScale = Math.max(mapScale - 0.1, 0.5);
+            applyMapTransform();
+        };
+        
+        window.resetMap = function() {
+            mapScale = 1;
+            panX = 0;
+            panY = 0;
+            applyMapTransform();
+        };
+        
+        function applyMapTransform() {
+            if (mapEl) {
+                mapEl.style.transform = `scale(${mapScale}) translate(${panX}px, ${panY}px)`;
+                mapEl.style.transformOrigin = 'center';
+            }
+        }
+        
+        if (mapEl) {
+            mapEl.addEventListener('mousedown', (e) => {
+                isDragging = true;
+                startX = e.clientX - panX;
+                startY = e.clientY - panY;
+                mapEl.style.cursor = 'grabbing';
+                e.preventDefault();
             });
-
-            // Функции для карты
-            let scale = 1;
-            let panX = 0;
-            let panY = 0;
-            let isDragging = false;
-            let startX, startY;
             
-            const map = document.getElementById('galaxyMap');
+            window.addEventListener('mousemove', (e) => {
+                if (!isDragging) return;
+                panX = e.clientX - startX;
+                panY = e.clientY - startY;
+                applyMapTransform();
+            });
             
-            window.zoomIn = function() {
-                scale = Math.min(scale + 0.1, 2);
-                applyTransform();
-            };
+            window.addEventListener('mouseup', () => {
+                isDragging = false;
+                if (mapEl) mapEl.style.cursor = 'grab';
+            });
             
-            window.zoomOut = function() {
-                scale = Math.max(scale - 0.1, 0.5);
-                applyTransform();
-            };
+            mapEl.style.cursor = 'grab';
+        }
+        
+        window.showWorldInfo = function(worldId) {
+            const worldData = document.getElementById(worldId);
+            if (!worldData) return;
             
-            window.resetMap = function() {
-                scale = 1;
-                panX = 0;
-                panY = 0;
-                applyTransform();
-            };
+            const title = worldData.getAttribute('data-title');
+            const faction = worldData.getAttribute('data-faction');
+            const coord = worldData.getAttribute('data-coord');
+            const desc = worldData.getAttribute('data-desc');
             
-            function applyTransform() {
-                if (map) {
-                    map.style.transform = `scale(${scale}) translate(${panX}px, ${panY}px)`;
-                    map.style.transformOrigin = 'center';
-                }
+            let factionColor = '#808080';
+            if (faction === 'Империум') factionColor = '#d5cb05';
+            else if (faction === 'Хаос') factionColor = '#a61d1d';
+            else if (faction === 'Эльдары') factionColor = '#751099';
+            else if (faction === 'Орки') factionColor = '#199500';
+            else if (faction === 'Некроны') factionColor = '#163118';
+            else if (faction === 'Тираниды') factionColor = '#d8559f';
+            else if (faction === 'Тау') factionColor = '#07ad97';
+            else if (faction === 'Лиги Воттан') factionColor = '#bd7518';
+            
+            const worldDetails = document.getElementById('worldDetails');
+            if (worldDetails) {
+                worldDetails.innerHTML = `
+                    <div class="world-card">
+                        <h3>${title}</h3>
+                        <div class="faction-tag" style="background: ${factionColor}20; color: ${factionColor};">${faction}</div>
+                        <div class="coord">${coord}</div>
+                        <p class="desc">${desc}</p>
+                    </div>
+                `;
             }
             
-            if (map) {
-                map.addEventListener('mousedown', (e) => {
-                    isDragging = true;
-                    startX = e.clientX - panX;
-                    startY = e.clientY - panY;
-                    map.style.cursor = 'grabbing';
-                });
-                
-                window.addEventListener('mousemove', (e) => {
-                    if (!isDragging) return;
-                    e.preventDefault();
-                    panX = e.clientX - startX;
-                    panY = e.clientY - startY;
-                    applyTransform();
-                });
-                
-                window.addEventListener('mouseup', () => {
-                    isDragging = false;
-                    map.style.cursor = 'grab';
-                });
-            }
-            
-            window.showWorldInfo = function(worldId) {
-                const worldData = document.getElementById(worldId);
-                if (!worldData) return;
-                
-                const title = worldData.getAttribute('data-title');
-                const faction = worldData.getAttribute('data-faction');
-                const coord = worldData.getAttribute('data-coord');
-                const desc = worldData.getAttribute('data-desc');
-                
-                let factionColor;
-                switch(faction) {
-                    case 'Империум': factionColor = '#d5cb05'; break;
-                    case 'Хаос': factionColor = '#a61d1d'; break;
-                    case 'Эльдары': factionColor = '#751099'; break;
-                    case 'Орки': factionColor = '#199500'; break;
-                    case 'Некроны': factionColor = '#163118'; break;
-                    case 'Тираниды': factionColor = '#d8559f'; break;
-                    case 'Тау': factionColor = '#07ad97'; break;
-                    case 'Лиги Воттан': factionColor = '#bd7518'; break;
-                    default: factionColor = '#808080';
-                }
-                
-                const worldDetails = document.getElementById('worldDetails');
-                if (worldDetails) {
-                    worldDetails.innerHTML = `
-                        <div class="world-card">
-                            <h3>${title}</h3>
-                            <div class="faction-tag" style="background: ${factionColor}20; color: ${factionColor};">${faction}</div>
-                            <div class="coord">${coord}</div>
-                            <p class="desc">${desc}</p>
-                        </div>
-                    `;
-                }
-                
-                const titleElement = document.getElementById('selectedWorldTitle');
-                if (titleElement) titleElement.innerText = title;
-            };
-
-            // Фильтр таймлайна
-            const filterBtns = document.querySelectorAll('.filter-btn');
+            const titleEl = document.getElementById('selectedWorldTitle');
+            if (titleEl) titleEl.innerText = title;
+        };
+        
+        // Фильтр таймлайна
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        if (filterBtns.length) {
             filterBtns.forEach(btn => {
                 btn.addEventListener('click', function() {
                     filterBtns.forEach(b => b.classList.remove('active'));
@@ -5889,51 +7265,162 @@ else if (pageId === 'multimedia') {
                     });
                 });
             });
-
-            // Поиск в библиотеке
-            const searchInput = document.getElementById('librarySearch');
-            if (searchInput) {
-                searchInput.addEventListener('input', function() {
-                    const query = this.value.toLowerCase();
-                    const books = document.querySelectorAll('.book-card');
-                    books.forEach(book => {
-                        const title = book.dataset.title.toLowerCase();
-                        if (title.includes(query)) {
-                            book.style.display = 'block';
-                        } else {
-                            book.style.display = 'none';
-                        }
-                    });
-                });
-            }
-
-            // Лайтбокс
-            window.openLightbox = function(element) {
-                const img = element.querySelector('img');
-                const lightbox = document.getElementById('lightbox');
-                const lightboxImg = document.getElementById('lightbox-img');
-                lightboxImg.src = img.src;
-                lightbox.classList.add('active');
-            };
-
-            window.closeLightbox = function() {
-                document.getElementById('lightbox').classList.remove('active');
-            };
-
-            // Инициализация
-            createStars();
-            createParticles();
-            resetMap();
+        }
+        
+        // Горизонтальный скролл таймлайна
+        const timelineWrapper = document.querySelector('.timeline-wrapper');
+        if (timelineWrapper) {
+            timelineWrapper.addEventListener('wheel', (e) => {
+                if (e.deltaY !== 0) {
+                    e.preventDefault();
+                    timelineWrapper.scrollLeft += e.deltaY;
+                }
+            });
+        }
+        
+        // Лайтбокс
+        window.openLightbox = function(element) {
+            const img = element.querySelector('img');
+            const lightbox = document.getElementById('lightbox');
+            const lightboxImg = document.getElementById('lightbox-img');
+            if (lightboxImg && img) lightboxImg.src = img.src;
+            if (lightbox) lightbox.classList.add('active');
+        };
+        
+        window.closeLightbox = function() {
+            const lightbox = document.getElementById('lightbox');
+            if (lightbox) lightbox.classList.remove('active');
+        };
+        
+        // Случайные факты и цитаты
+        const warhammerFacts = [
+            { text: "Космический десантник может функционировать до 10 дней без сна благодаря 'каталепсеанскому узлу' — импланту, который позволяет отдыхать частями мозга.", source: "Кодекс: Космодесант" },
+            { text: "Газгкулл Маг Урук Трака — единственный орк, который понял, что если верить, что красный цвет делает машину быстрее, то это действительно так. Он носит красную броню.", source: "Кодекс: Орки" },
+            { text: "Император Человечества создал 20 примархов, но двое из них были 'утеряны' — их имена и судьбы засекречены Инквизицией.", source: "Книга: Ересь Хоруса" },
+            { text: "Титан 'Класса-Император' настолько огромен, что на его плечах могут располагаться целые батальоны пехоты и артиллерийские батареи.", source: "Адептус Механикус" },
+            { text: "Средний срок службы рядового имперского гвардейца в активной боевой зоне составляет около 27 минут.", source: "Астра Милитарум" },
+            { text: "Некроны спят уже более 60 миллионов лет. И до сих пор не могут выспаться. Некоторые из них пробуждаются с повреждёнными когнитивными функциями.", source: "Кодекс: Некроны" },
+            { text: "Тау — самая молодая раса в галактике. Они вышли в космос всего 6000 лет назад.", source: "Кодекс: Тау" },
+            { text: "Вулкан и Робаут Жиллиман оба любат эльдарок, но есть нюанс...", source: "Кодекс: Космодесант" },
+            { text: "Тираниды уже поглотили биомассу, эквивалентную тысячам галактик, прежде чем достичь Млечного Пути.", source: "Инквизиция" }
+        ];
+        
+        const warhammerQuotes = [
+            { text: "В мрачном будущем далёкого 41-го тысячелетия есть только война.", author: "Кодекс Warhammer 40,000" },
+            { text: "Счастье — это пища для червей. Лучше умереть стоя, чем жить на коленях.", author: "Комиссар Яррик" },
+            { text: "Незнание — сила. Служить Императору — высшая цель человечества.", author: "Имперская Истина" },
+            { text: "Кровь для Кровавого Бога! Черепа для Трона Черепов!", author: "Кхорн" },
+            { text: "Кровь для Бога Императора! Черепа для Золотого Трона!", author: "Кархарадон" },
+            { text: "Знание — это сила. Сила — это знание.", author: "Инквизиция" },
+            { text: "Надежда — первый шаг на пути к разочарованию.", author: "Лоргар Аврелиан" },
+            { text: "Иногда единственный выход — это путь через упож.", author: "Робаут Жиллиман" },
+            { text: "А часики то тикают. Воровская жизнь не легкая, но ее надо придерживаться", author: "Габриэль Ангелос"}
+        ];
+        
+        window.refreshFact = function() {
+            const randomFact = warhammerFacts[Math.floor(Math.random() * warhammerFacts.length)];
+            const factText = document.getElementById('factText');
+            const factSource = document.getElementById('factSource');
+            if (factText) factText.innerText = randomFact.text;
+            if (factSource) factSource.innerHTML = `— ${randomFact.source}`;
+        };
+        
+        window.refreshQuote = function() {
+            const randomQuote = warhammerQuotes[Math.floor(Math.random() * warhammerQuotes.length)];
+            const quoteText = document.getElementById('quoteText');
+            const quoteAuthor = document.getElementById('quoteAuthor');
+            if (quoteText) quoteText.innerText = randomQuote.text;
+            if (quoteAuthor) quoteAuthor.innerHTML = `— ${randomQuote.author}`;
+        };
+        
+        // Статистика фракций
+        const factionStats = [
+            { name: "Империум", value: 65, color: "#d5cb05" },
+            { name: "Орки", value: 55, color: "#199500" },
+            { name: "Хаос", value: 48, color: "#a61d1d" },
+            { name: "Некроны", value: 40, color: "#163118" },
+            { name: "Тираниды", value: 38, color: "#d8559f" },
+            { name: "Эльдары", value: 25, color: "#751099" },
+            { name: "Тау", value: 22, color: "#07ad97" }
+        ];
+        
+        function renderStats() {
+            const statsGrid = document.getElementById('statsGrid');
+            if (!statsGrid) return;
+            statsGrid.innerHTML = factionStats.map(stat => `
+                <div class="stat-item">
+                    <div class="stat-number">${stat.value}%</div>
+                    <div class="stat-label">${stat.name}</div>
+                    <div class="stat-bar">
+                        <div class="stat-fill" style="--target: ${stat.value}%; background: ${stat.color};"></div>
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        // Прогресс-бар чтения
+        function initReadingProgress() {
+            const progressBar = document.createElement('div');
+            progressBar.className = 'reading-progress';
+            document.body.appendChild(progressBar);
             
-            // Показать главную страницу по умолчанию
-            homePage.style.display = 'block';
-            if (mapPage) mapPage.style.display = 'none';
-            body.setAttribute('data-page', 'home');
-            body.setAttribute('data-theme', 'imperium');
+            window.addEventListener('scroll', () => {
+                const windowHeight = document.documentElement.scrollHeight - window.innerHeight;
+                const scrolled = (window.scrollY / windowHeight) * 100;
+                progressBar.style.width = scrolled + '%';
+            });
+        }
+        
+        // Кнопка наверх
+        function initScrollTop() {
+            const scrollBtn = document.createElement('div');
+            scrollBtn.className = 'scroll-top';
+            scrollBtn.innerHTML = '<i class="fas fa-arrow-up"></i>';
+            document.body.appendChild(scrollBtn);
             
-            // Показать Терру на карте по умолчанию
-            setTimeout(() => showWorldInfo('terra'), 100);
-        })();
-    </script>
+            scrollBtn.addEventListener('click', () => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+            
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 500) scrollBtn.classList.add('show');
+                else scrollBtn.classList.remove('show');
+            });
+        }
+        
+        // Загрузка Three.js и запуск
+        if (typeof THREE === 'undefined') {
+            const threeScript = document.createElement('script');
+            threeScript.src = 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js';
+            threeScript.onload = () => {
+                console.log('Three.js loaded');
+                // Не запускаем сразу, ждём когда пользователь перейдёт на мультимедиа страницу
+            };
+            document.head.appendChild(threeScript);
+        }
+        
+        // Инициализация остальных компонентов
+        createStars();
+        createParticles();
+        renderStats();
+        initReadingProgress();
+        initScrollTop();
+        
+        window.refreshFact();
+        window.refreshQuote();
+        
+        // Показываем главную страницу
+        if (homePage) homePage.style.display = 'block';
+        if (mapPage) mapPage.style.display = 'none';
+        body.setAttribute('data-page', 'home');
+        body.setAttribute('data-theme', 'imperium');
+        
+        // Запускаем проверку 3D модели каждые 2 секунды (на случай переключения страницы)
+        setInterval(checkAndInitModel, 2000);
+        
+        setTimeout(() => window.showWorldInfo('terra'), 100);
+    })();
+</script>
+
 </body>
 </html>
